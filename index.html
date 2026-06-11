@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commit Canvas — Turn Git History Into a Cinematic Story Page</title>
+    <meta name="description" content="One command. A single HTML file. Your project's story, told like it deserves to be told. Zero cost. Zero auth. Pure git.">
+    
+    <meta property="og:title" content="Commit Canvas — Turn Git History Into a Cinematic Story Page">
+    <meta property="og:description" content="One command. A single HTML file. Your project's story, told like it deserves to be told.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Commit Canvas">
+    <meta name="twitter:description" content="Turn your git history into something worth sharing.">
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='none' stroke='%23e2ff3a' stroke-width='2'/><path d='M10 16 L16 10 L22 16 L16 22 Z' fill='%23e2ff3a'/><circle cx='16' cy='16' r='3' fill='%23e2ff3a'/></svg>">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+    /* ═══════════════════════════════════════════════════════════
+       CANVAS — Landing Page
+       Signal Yellow · Void Black · Space Grotesk
+       ═══════════════════════════════════════════════════════════ */
+    
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+        --void: #04050a;
+        --deep: #07090f;
+        --surface: #0c0f18;
+        --card: #111422;
+        --card-hover: #171b2c;
+        --border: #1a1f32;
+        --border-bright: #252d44;
+        --signal: #e2ff3a;
+        --signal-dim: rgba(226, 255, 58, 0.12);
+        --signal-glow: rgba(226, 255, 58, 0.25);
+        --text: #d4d8e8;
+        --text-dim: #7a8199;
+        --text-faint: #454b62;
+        --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    html { scroll-behavior: smooth; }
+    
+    body {
+        font-family: 'Space Grotesk', -apple-system, sans-serif;
+        background: var(--void);
+        color: var(--text);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+    }
+    
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--void); }
+    ::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-faint); }
+    
+    /* ── Ambient Background ── */
+    .bg {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+    }
+    
+    .bg::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: 
+            radial-gradient(ellipse 60% 50% at 20% -20%, rgba(226,255,58,0.06) 0%, transparent 60%),
+            radial-gradient(ellipse 50% 40% at 80% 110%, rgba(226,255,58,0.03) 0%, transparent 50%);
+        animation: bgPulse 14s ease-in-out infinite;
+    }
+    
+    @keyframes bgPulse {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+    }
+    
+    .bg::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: 
+            linear-gradient(rgba(226,255,58,0.025) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(226,255,58,0.025) 1px, transparent 1px);
+        background-size: 80px 80px;
+        mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 0%, transparent 75%);
+    }
+    
+    /* ── Navigation ── */
+    .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 20px 0;
+        backdrop-filter: blur(12px);
+        background: rgba(4, 5, 10, 0.8);
+        border-bottom: 1px solid var(--border);
+    }
+    
+    .nav-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: var(--text);
+        font-weight: 700;
+        font-size: 15px;
+    }
+    
+    .nav-logo svg { width: 24px; height: 24px; }
+    
+    .nav-links {
+        display: flex;
+        gap: 32px;
+        list-style: none;
+    }
+    
+    .nav-links a {
+        color: var(--text-dim);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        transition: color 0.2s;
+    }
+    
+    .nav-links a:hover { color: var(--text); }
+    
+    .nav-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--signal);
+        color: #0a0a00;
+        border: none;
+        border-radius: 100px;
+        padding: 8px 20px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.2s var(--ease);
+    }
+    
+    .nav-cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 24px var(--signal-glow);
+    }
+    
+    /* ── Layout ── */
+    .canvas {
+        position: relative;
+        z-index: 1;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 32px;
+    }
+    
+    section { padding: 96px 0; position: relative; }
+    section:first-of-type { padding-top: 140px; }
+    
+    /* ── Hero ── */
+    .hero {
+        min-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-bottom: 80px;
+    }
+    
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--signal-dim);
+        border: 1px solid rgba(226,255,58,0.2);
+        border-radius: 100px;
+        padding: 6px 16px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--signal);
+        margin-bottom: 40px;
+        width: fit-content;
+        opacity: 0;
+        animation: fadeUp 0.6s var(--ease) 0.2s forwards;
+    }
+    
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(24px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .hero-badge::before {
+        content: '';
+        width: 20px;
+        height: 1px;
+        background: var(--signal);
+        animation: growLine 0.4s var(--ease) 0.4s both;
+        transform-origin: left;
+    }
+    
+    @keyframes growLine {
+        from { transform: scaleX(0); }
+        to { transform: scaleX(1); }
+    }
+    
+    .hero-title {
+        font-size: clamp(3rem, 8vw, 6.5rem);
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        line-height: 0.95;
+        margin-bottom: 32px;
+        overflow: hidden;
+    }
+    
+    .hero-title span {
+        display: block;
+        opacity: 0;
+        animation: titleReveal 1s var(--ease) 0.5s both;
+    }
+    
+    .hero-title .line2 {
+        color: var(--signal);
+        animation-delay: 0.7s;
+    }
+    
+    @keyframes titleReveal {
+        from { clip-path: inset(0 100% 0 0); }
+        to { clip-path: inset(0 0 0 0); }
+    }
+    
+    .hero-desc {
+        font-size: clamp(1rem, 2vw, 1.2rem);
+        color: var(--text-dim);
+        max-width: 520px;
+        line-height: 1.7;
+        margin-bottom: 48px;
+        opacity: 0;
+        animation: fadeUp 0.7s var(--ease) 1s forwards;
+    }
+    
+    .hero-actions {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 80px;
+        opacity: 0;
+        animation: fadeUp 0.6s var(--ease) 1.2s forwards;
+    }
+    
+    .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--signal);
+        color: #0a0a00;
+        border: none;
+        border-radius: 100px;
+        padding: 14px 28px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.25s var(--ease);
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 40px var(--signal-glow);
+    }
+    
+    .btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: transparent;
+        color: var(--text);
+        border: 1px solid var(--border-bright);
+        border-radius: 100px;
+        padding: 14px 28px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.25s var(--ease);
+    }
+    
+    .btn-secondary:hover {
+        border-color: var(--text-faint);
+        background: var(--card);
+    }
+    
+    /* Terminal preview */
+    .hero-preview {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+        max-width: 640px;
+        opacity: 0;
+        animation: fadeUp 0.8s var(--ease) 1.4s forwards;
+    }
+    
+    .preview-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+    }
+    
+    .preview-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+    }
+    
+    .preview-dot.red { background: #ff5f57; }
+    .preview-dot.yellow { background: #febc2e; }
+    .preview-dot.green { background: #28c840; }
+    
+    .preview-title {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        color: var(--text-faint);
+        margin-left: 8px;
+    }
+    
+    .preview-body {
+        padding: 24px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 13px;
+        line-height: 2;
+        color: var(--text-dim);
+    }
+    
+    .preview-body .prompt { color: var(--signal); }
+    .preview-body .comment { color: var(--text-faint); }
+    .preview-body .output { color: var(--text); }
+    .preview-body .accent { color: var(--signal); }
+    
+    .preview-body .cmd { margin-bottom: 12px; }
+    
+    .preview-body .result {
+        display: flex;
+        gap: 48px;
+        margin-top: 8px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+    }
+    
+    .preview-stat { text-align: center; }
+    .preview-stat-val {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--text);
+        display: block;
+    }
+    
+    .preview-stat-lbl {
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--text-faint);
+    }
+    
+    /* ── Section Headers ── */
+    .section-label {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--signal);
+        margin-bottom: 12px;
+    }
+    
+    .section-title {
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        line-height: 1.1;
+        margin-bottom: 20px;
+    }
+    
+    .section-desc {
+        font-size: 15px;
+        color: var(--text-dim);
+        max-width: 480px;
+        line-height: 1.7;
+    }
+    
+    /* ── Visual Preview (The Demo) ── */
+    .visual-preview {
+        padding: 80px 0;
+    }
+    
+    .visual-header {
+        text-align: center;
+        margin-bottom: 64px;
+    }
+    
+    .visual-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+    }
+    
+    .story-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+        text-decoration: none;
+        display: block;
+        transition: all 0.3s var(--ease);
+    }
+    
+    .story-card:hover {
+        border-color: rgba(226,255,58,0.3);
+        transform: translateY(-4px);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    
+    .story-thumb {
+        background: var(--surface);
+        padding: 32px;
+        height: 220px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .story-thumb::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--signal), transparent);
+        opacity: 0.6;
+    }
+    
+    .story-arc-tag {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--signal);
+        margin-bottom: 16px;
+    }
+    
+    .story-name {
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        color: var(--text);
+        margin-bottom: 8px;
+        line-height: 1.2;
+    }
+    
+    .story-summary {
+        font-size: 12px;
+        color: var(--text-dim);
+        font-style: italic;
+        line-height: 1.6;
+        margin-bottom: 24px;
+    }
+    
+    .story-stats {
+        display: flex;
+        gap: 24px;
+    }
+    
+    .story-stat { text-align: center; }
+    
+    .story-stat-val {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--text);
+        display: block;
+    }
+    
+    .story-stat-lbl {
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-faint);
+    }
+    
+    .story-meta {
+        padding: 20px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid var(--border);
+    }
+    
+    .story-meta-l {
+        font-size: 12px;
+        color: var(--text-faint);
+    }
+    
+    .story-meta-r {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--signal);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    
+    .story-meta-r svg { width: 14px; height: 14px; }
+    
+    /* ── How It Works ── */
+    .how-section {
+        background: var(--deep);
+    }
+    
+    .how-header {
+        margin-bottom: 64px;
+    }
+    
+    .how-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+    }
+    
+    .how-step {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 32px;
+        position: relative;
+    }
+    
+    .how-step-num {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--signal);
+        letter-spacing: 0.1em;
+        margin-bottom: 20px;
+    }
+    
+    .how-step-title {
+        font-size: 17px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        letter-spacing: -0.02em;
+    }
+    
+    .how-step-desc {
+        font-size: 13px;
+        color: var(--text-dim);
+        line-height: 1.7;
+    }
+    
+    .how-step code {
+        display: inline-block;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 4px 10px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 12px;
+        color: var(--signal);
+        margin-top: 16px;
+    }
+    
+    /* ── What You Get ── */
+    .features-section { padding: 80px 0; }
+    
+    .features-header { margin-bottom: 64px; }
+    
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+    }
+    
+    .feature-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 28px;
+        transition: all 0.3s var(--ease);
+    }
+    
+    .feature-card:hover {
+        border-color: var(--border-bright);
+        background: var(--card-hover);
+    }
+    
+    .feature-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 6px;
+        background: var(--signal-dim);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+    }
+    
+    .feature-icon svg { width: 18px; height: 18px; stroke: var(--signal); }
+    
+    .feature-title {
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+    
+    .feature-desc {
+        font-size: 12px;
+        color: var(--text-dim);
+        line-height: 1.6;
+    }
+    
+    /* ── Story Arcs ── */
+    .arcs-section {
+        background: var(--deep);
+    }
+    
+    .arcs-header { margin-bottom: 48px; }
+    
+    .arcs-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+    }
+    
+    .arc-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 24px;
+        border-left: 2px solid var(--signal);
+    }
+    
+    .arc-name {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--signal);
+        margin-bottom: 8px;
+    }
+    
+    .arc-desc {
+        font-size: 12px;
+        color: var(--text-dim);
+        line-height: 1.6;
+    }
+    
+    /* ── CTA Section ── */
+    .cta-section {
+        text-align: center;
+        padding: 120px 0;
+    }
+    
+    .cta-title {
+        font-size: clamp(2.5rem, 6vw, 4.5rem);
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        line-height: 1;
+        margin-bottom: 24px;
+    }
+    
+    .cta-desc {
+        font-size: 16px;
+        color: var(--text-dim);
+        max-width: 480px;
+        margin: 0 auto 48px;
+        line-height: 1.7;
+    }
+    
+    .cta-actions {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    /* ── Footer ── */
+    .footer {
+        border-top: 1px solid var(--border);
+        padding: 48px 0;
+    }
+    
+    .footer-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 24px;
+    }
+    
+    .footer-left {
+        font-size: 12px;
+        color: var(--text-faint);
+    }
+    
+    .footer-left a {
+        color: var(--signal);
+        text-decoration: none;
+        font-weight: 600;
+    }
+    
+    .footer-left a:hover { text-decoration: underline; }
+    
+    .footer-right {
+        display: flex;
+        gap: 24px;
+    }
+    
+    .footer-right a {
+        font-size: 12px;
+        color: var(--text-faint);
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    
+    .footer-right a:hover { color: var(--text); }
+    
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+        .nav { padding: 16px 0; }
+        .nav-links { display: none; }
+        .canvas { padding: 0 20px; }
+        section { padding: 64px 0; }
+        section:first-of-type { padding-top: 100px; }
+        .visual-grid { grid-template-columns: 1fr; }
+        .how-grid { grid-template-columns: 1fr; }
+        .features-grid { grid-template-columns: 1fr; }
+        .arcs-grid { grid-template-columns: 1fr; }
+        .hero-stats { flex-wrap: wrap; }
+        .preview-body { font-size: 11px; }
+    }
+    
+    @media (max-width: 480px) {
+        .hero-title { font-size: 2.5rem; }
+    }
+    </style>
+</head>
+<body>
+
+<!-- Background -->
+<div class="bg"></div>
+
+<!-- Navigation -->
+<nav class="nav">
+    <div class="nav-inner">
+        <a href="#" class="nav-logo">
+            <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+                <circle cx="16" cy="16" r="14" stroke="#e2ff3a" stroke-width="1.5"/>
+                <path d="M10 16 L16 10 L22 16 L16 22 Z" fill="#e2ff3a"/>
+                <circle cx="16" cy="16" r="2.5" fill="#e2ff3a"/>
+            </svg>
+            Commit Canvas
+        </a>
+        <ul class="nav-links">
+            <li><a href="#how">How it works</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#arcs">Story arcs</a></li>
+            <li><a href="https://github.com/ahmadrrrtx/commit-canvas" target="_blank">GitHub</a></li>
+        </ul>
+        <a href="https://github.com/ahmadrrrtx/commit-canvas" target="_blank" class="nav-cta">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+            Star on GitHub
+        </a>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="canvas">
+        
+        <div class="hero-badge">
+            <span>Open Source · Zero Cost</span>
+        </div>
+        
+        <h1 class="hero-title">
+            <span>Turn your git history</span>
+            <span class="line2">into a story worth sharing.</span>
+        </h1>
+        
+        <p class="hero-desc">
+            One command. A single HTML file. Your project's journey — cinematic, animated, designed to be screenshotted and posted anywhere.
+        </p>
+        
+        <div class="hero-actions">
+            <a href="https://github.com/ahmadrrrtx/commit-canvas" target="_blank" class="btn-primary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                </svg>
+                View on GitHub
+            </a>
+            <a href="https://ahmadrrrtx.github.io/commit-canvas/demo/vite-story.html" target="_blank" class="btn-secondary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polygon points="10 8 16 12 10 16 10 8"/>
+                </svg>
+                See a live demo
+            </a>
+        </div>
+        
+        <!-- Terminal preview -->
+        <div class="hero-preview">
+            <div class="preview-bar">
+                <div class="preview-dot red"></div>
+                <div class="preview-dot yellow"></div>
+                <div class="preview-dot green"></div>
+                <span class="preview-title">terminal</span>
+            </div>
+            <div class="preview-body">
+                <div class="cmd">
+                    <span class="prompt">$</span> <span class="comment"># Clone and go</span><br>
+                    git clone https://github.com/ahmadrrrtx/commit-canvas.git<br>
+                    cd commit-canvas<br>
+                    ./run.sh . --open
+                </div>
+                <div class="result">
+                    <div class="preview-stat">
+                        <span class="preview-stat-val">487</span>
+                        <span class="preview-stat-lbl">Commits</span>
+                    </div>
+                    <div class="preview-stat">
+                        <span class="preview-stat-val">234</span>
+                        <span class="preview-stat-lbl">Days</span>
+                    </div>
+                    <div class="preview-stat">
+                        <span class="preview-stat-val">31</span>
+                        <span class="preview-stat-lbl">Best Streak</span>
+                    </div>
+                    <div class="preview-stat">
+                        <span class="preview-stat-val accent">The Marathon</span>
+                        <span class="preview-stat-lbl">Story Arc</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Visual Preview -->
+<section class="visual-preview" id="demos">
+    <div class="canvas">
+        <div class="visual-header">
+            <div class="section-label">Live Examples</div>
+            <h2 class="section-title">Generated with Commit Canvas</h2>
+            <p class="section-desc">Real project stories. Open them in your browser to see the full experience.</p>
+        </div>
+        
+        <div class="visual-grid">
+            <a href="https://ahmadrrrtx.github.io/commit-canvas/demo/vite-story.html" target="_blank" class="story-card">
+                <div class="story-thumb">
+                    <div class="story-arc-tag">The Marathon</div>
+                    <div class="story-name">Vite</div>
+                    <div class="story-summary">"36 days of deliberate work spanning 4.5 years. That's not luck — that's discipline, built into a tool that served millions of developers."</div>
+                    <div class="story-stats">
+                        <div class="story-stat">
+                            <span class="story-stat-val">36</span>
+                            <span class="story-stat-lbl">Commits</span>
+                        </div>
+                        <div class="story-stat">
+                            <span class="story-stat-val">36</span>
+                            <span class="story-stat-lbl">Days</span>
+                        </div>
+                        <div class="story-stat">
+                            <span class="story-stat-val">10</span>
+                            <span class="story-stat-lbl">Releases</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="story-meta">
+                    <span class="story-meta-l">36 commits · Vite ecosystem</span>
+                    <span class="story-meta-r">
+                        Open story
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"/>
+                        </svg>
+                    </span>
+                </div>
+            </a>
+            
+            <a href="https://ahmadrrrtx.github.io/commit-canvas/demo/commit-canvas-story.html" target="_blank" class="story-card">
+                <div class="story-thumb">
+                    <div class="story-arc-tag">The Marathon</div>
+                    <div class="story-name">Commit Canvas</div>
+                    <div class="story-summary">"18 days of focused building. From first commit to open-source launch in one deliberate push."</div>
+                    <div class="story-stats">
+                        <div class="story-stat">
+                            <span class="story-stat-val">18</span>
+                            <span class="story-stat-lbl">Commits</span>
+                        </div>
+                        <div class="story-stat">
+                            <span class="story-stat-val">18</span>
+                            <span class="story-stat-lbl">Days</span>
+                        </div>
+                        <div class="story-stat">
+                            <span class="story-stat-val">1</span>
+                            <span class="story-stat-lbl">Contributor</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="story-meta">
+                    <span class="story-meta-l">18 commits · 1 author</span>
+                    <span class="story-meta-r">
+                        Open story
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"/>
+                        </svg>
+                    </span>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="how-section" id="how">
+    <div class="canvas">
+        <div class="how-header">
+            <div class="section-label">The Process</div>
+            <h2 class="section-title">Three steps from repo to story</h2>
+            <p class="section-desc">No account. No API key. No server. Just you and your git history.</p>
+        </div>
+        
+        <div class="how-grid">
+            <div class="how-step">
+                <div class="how-step-num">01</div>
+                <div class="how-step-title">Clone the repo</div>
+                <div class="how-step-desc">
+                    Clone Commit Canvas once. It lives in your toolbox forever — no install, no package manager, no accounts.
+                </div>
+                <code>./run.sh /path/to/project</code>
+            </div>
+            
+            <div class="how-step">
+                <div class="how-step-num">02</div>
+                <div class="how-step-title">Watch it read your git</div>
+                <div class="how-step-desc">
+                    It reads your .git directory directly. No API calls, no network requests, no authentication. Your data never leaves your machine.
+                </div>
+            </div>
+            
+            <div class="how-step">
+                <div class="how-step-num">03</div>
+                <div class="how-step-title">Get a story page</div>
+                <div class="how-step-desc">
+                    A single HTML file opens in any browser. Cinematic title reveal, animated timeline, activity ring, milestone cards, contributor ranking, and a shareable certificate.
+                </div>
+                <code>story.html → screenshot → post</code>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section class="features-section" id="features">
+    <div class="canvas">
+        <div class="features-header">
+            <div class="section-label">What's Inside</div>
+            <h2 class="section-title">Not a stats dashboard.<br>A story page.</h2>
+            <p class="section-desc">Every section is designed to tell part of your project's story — not display data.</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                </div>
+                <div class="feature-title">Cinematic Hero</div>
+                <div class="feature-desc">Title types itself in, a line draws beneath it, stats count up. The opening sequence sets the tone.</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                    </svg>
+                </div>
+                <div class="feature-title">Story Arc Detection</div>
+                <div class="feature-desc">"The Marathon", "The Climb", "The Sprint", "The Return". The tool understands what kind of project you have.</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                </div>
+                <div class="feature-title">Animated Timeline</div>
+                <div class="feature-desc">A film-strip timeline that draws itself as you scroll. Drag left and right. Every node has a story.</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                </div>
+                <div class="feature-title">Turning Points</div>
+                <div class="feature-desc">First commit, version releases, comeback moments, peak months. The milestones that shaped your project.</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 2a10 10 0 0 1 10 10" stroke-dasharray="4 2"/>
+                    </svg>
+                </div>
+                <div class="feature-title">Activity Ring</div>
+                <div class="feature-desc">A single SVG ring that captures your consistency pattern. Not a grid — an iconic visualization.</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                </div>
+                <div class="feature-title">Ranked Contributors</div>
+                <div class="feature-desc">Gold, silver, bronze badges. Animated progress bars. Every contributor, ranked by commits.</div>
+            </div>
+            
+            <div class="feature-card" style="grid-column: span 3;">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                    </svg>
+                </div>
+                <div class="feature-title">The Shareable Artifact</div>
+                <div class="feature-desc">A proof-of-work certificate at the bottom of every story page. Screenshot it. Post it on LinkedIn. Share it anywhere. This is the artifact that makes the whole thing worth building.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Story Arcs -->
+<section class="arcs-section" id="arcs">
+    <div class="canvas">
+        <div class="arcs-header">
+            <div class="section-label">The Narrative Engine</div>
+            <h2 class="section-title">Every project has a shape</h2>
+            <p class="section-desc">Commit Canvas doesn't just show stats — it understands what kind of journey you took.</p>
+        </div>
+        
+        <div class="arcs-grid">
+            <div class="arc-card">
+                <div class="arc-name">The Marathon</div>
+                <div class="arc-desc">Consistent work over a long time. Not flashy. Just showed up, day after day. The most underrated form of momentum.</div>
+            </div>
+            <div class="arc-card">
+                <div class="arc-name">The Climb</div>
+                <div class="arc-desc">Started quiet, got louder. Real momentum building. When early commits become late commits by an order of magnitude.</div>
+            </div>
+            <div class="arc-card">
+                <div class="arc-name">The Sprint</div>
+                <div class="arc-desc">Built in intense sessions. Deep work, compressed into focused bursts. Not consistent — but remarkable when it happens.</div>
+            </div>
+            <div class="arc-card">
+                <div class="arc-name">The Return</div>
+                <div class="arc-desc">Projects die when makers stop. This one didn't. Six months gone and then — a commit. That means something.</div>
+            </div>
+            <div class="arc-card">
+                <div class="arc-name">The Foundation</div>
+                <div class="arc-desc">Started strong, found its rhythm. A mature project that doesn't need to prove anything anymore — just keeps working.</div>
+            </div>
+            <div class="arc-card">
+                <div class="arc-name">Fresh Start</div>
+                <div class="arc-desc">Just begun. Every great project starts here — one commit, one decision, one step into the unknown.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+    <div class="canvas">
+        <div class="section-label" style="justify-content: center; display: flex;">Get Started</div>
+        <h2 class="cta-title">Your project's story<br>is waiting to be told.</h2>
+        <p class="cta-desc">Clone it. Run it on your best project. Screenshot the certificate. Post it somewhere. Watch what happens.</p>
+        
+        <div class="cta-actions">
+            <a href="https://github.com/ahmadrrrtx/commit-canvas" target="_blank" class="btn-primary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                </svg>
+                Star on GitHub
+            </a>
+            <a href="https://ahmadrrrtx.github.io/commit-canvas/demo/vite-story.html" target="_blank" class="btn-secondary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polygon points="10 8 16 12 10 16 10 8"/>
+                </svg>
+                Try a demo
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-inner">
+        <div class="footer-left">
+            <a href="https://github.com/ahmadrrrtx/commit-canvas" target="_blank">Commit Canvas</a> · MIT License · Built by <a href="https://github.com/ahmadrrrtx" target="_blank">RRRTX</a>
+        </div>
+        <div class="footer-right">
+            <a href="https://github.com/ahmadrrrtx/commit-canvas" target="_blank">GitHub</a>
+            <a href="https://github.com/ahmadrrrtx/commit-canvas/issues" target="_blank">Issues</a>
+            <a href="https://github.com/ahmadrrrtx/commit-canvas/blob/main/README.md" target="_blank">Docs</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
