@@ -1,10 +1,9 @@
-# Jekyll config — keep minimal to avoid build failures
+# Jekyll config
 title: Commit Canvas
 description: Turn any git repository into a beautiful animated story page
 theme: null
 plugins: []
 exclude:
-  - "*.html"
   - "cc/"
   - "tests/"
   - "demo/"
