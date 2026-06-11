@@ -1,0 +1,19 @@
+# Jekyll config — keep minimal to avoid build failures
+title: Commit Canvas
+description: Turn any git repository into a beautiful animated story page
+theme: null
+plugins: []
+exclude:
+  - "*.html"
+  - "cc/"
+  - "tests/"
+  - "demo/"
+  - ".github/"
+  - "_config.yml"
+  - "_config.local.yml"
+  - "Gemfile"
+  - "Gemfile.lock"
+  - "node_modules/"
+safe: true
+lsi: false
+incremental: false
