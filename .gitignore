@@ -1,9 +1,72 @@
+# Byte-compiled / optimized / DLL files
 __pycache__/
-*.pyc
-.pytest_cache/
-*.egg-info/
-commit_canvas.egg-info/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.Python
 build/
+develop-eggs/
 dist/
-.cc-story-temp/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+.cc_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Project-specific
 story.html
+*.story.html
+.cc-story-temp/
+demo/*.html
+!demo/vite-story.html
+!demo/commit-canvas-story.html

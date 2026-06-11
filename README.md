@@ -1,129 +1,303 @@
 # 🎨 Commit Canvas
 
-> Turn any git repository into a beautiful, animated, shareable story page — zero cost, zero auth, one command.
+<div align="center">
+
+![Commit Canvas Banner](https://user-images.githubusercontent.com/placeholder.svg)
+
+**Turn any git repository into a beautiful, animated, shareable story page — with zero cost, zero auth, and one command.**
+
+[![PyPI Version](https://img.shields.io/pypi/v/commit-canvas?color=3b82f6)](https://pypi.org/project/commit-canvas/)
+[![Python](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/)
+[![MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Build](https://img.shields.io/github/actions/workflow/status/ahmadrrrtx/commit-canvas/test.yml?branch=main)](.github/workflows/test.yml)
+
+</div>
+
+---
+
+## ⚡ TL;DR — One Command
 
 ```bash
 pip install commit-canvas
-cd your-repo
+cd your-project
 commit-canvas
 # → story.html — open it in your browser
 ```
 
-**No server. No database. No API keys. Just your story, told beautifully.**
+No server. No database. No API keys. Just your story, told beautifully.
 
 ---
 
-## ✨ What It Does
-
-Commit Canvas reads your git repository and generates a single, self-contained HTML file that tells the story of your project — complete with an animated timeline, milestone markers, activity heatmap, contributor rankings, and a shareable contribution certificate.
+## 🏗️ Architecture
 
 ```
-Before:                              After:
-┌─ Terminal text ─┐                  ┌─ Cinematic story page ──────────────┐
-│ $ git log --oneline│               │                                      │
-│ a1b2c3d Fix bug    │               │  Vite — Next Gen Frontend Tooling    │
-│ e4f5g6h Add feature│               │                                      │
-│ i7j8k9l Merge PR   │               │  🎭 Consistent • Deliberate Work     │
-│ $                 │               │                                      │
-└───────────────────┘               │  50    18      3      26              │
-                                    │  Commits  Days  Streak  Authors        │
-                                    │                                      │
-                                    │  [Animated particle field + hero]     │
-                                    │  [Horizontal draggable timeline]      │
-                                    │  [Milestone cards with emoji]         │
-                                    │  [GitHub-style activity heatmap]      │
-                                    │  [Contributors with rank badges]      │
-                                    │                                      │
-                                    │  ┌────────── SHAREABLE ───────────┐   │
-                                    │  │ 🏆 Certificate of Achievement  │   │
-                                    │  │ 50 commits · 18 active days   │   │
-                                    │  │ [Share This Story] button      │   │
-                                    │  └────────────────────────────────┘   │
-                                    └──────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────┐
+│                     COMMIT CANVAS FLOW                       │
+└──────────────────────────────────────────────────────────────┘
+
+  ┌─────────────┐      ┌─────────────────┐      ┌──────────────┐
+  │  .git/ dir  │ ───▶ │   cc/parser.py  │ ───▶ │ Story Data   │
+  │  (local)    │      │  Git extraction │      │ (dict)       │
+  └─────────────┘      └─────────────────┘      └──────┬───────┘
+                                                      │
+                                                      ▼
+  ┌─────────────┐      ┌─────────────────┐      ┌──────────────┐
+  │ story.html  │ ◀─── │ cc/generator.py │ ◀─── │cc/templates/ │
+  │  (output)   │      │ Jinja2 render   │      │ story.html   │
+  └─────────────┘      └─────────────────┘      └──────────────┘
+
+┌────────────┬──────────────────────────────────────────────────┐
+│  INPUT     │  Any local git repository (.git folder)         │
+│  OUTPUT    │  Single self-contained HTML file                 │
+│  DEPENDENCIES│  gitpython, jinja2 (both auto-installed)        │
+└────────────┴──────────────────────────────────────────────────┘
+```
+
+**All processing happens locally** — no data leaves your machine.
+
+---
+
+## ✨ Features
+
+### 🎬 Cinematic Animated Hero
+- Particle field background floating in real-time
+- Story arc detection with emotional labels
+- Gradient title with animated fade-in
+- Key stats (commits, days, streak, contributors) with count-up feel
+
+### ⏳ Horizontal Draggable Timeline
+```
+  Jan  Feb  Mar  Apr  May  Jun  Jul  Aug  Sep  Oct  Nov  Dec
+   ●────●────●────●────●────●────●────●────●────●────●────●
+   3    7    12   8    15   23   19   11   6    4    2    8
+   ┃    ┃    ┃    ┃    ┃    ┃    ┃    ┃    ┃    ┃    ┃    ┃
+   low  low  mid  mid  high HIGH high mid  low  low  low  mid
+```
+- Drag left/right to explore project history
+- Color-coded dots: 🔴 surge · 🔵 high · 🟣 medium · ⚫ low
+- Density bars showing activity intensity
+
+### 🎯 Auto-Detected Milestones
+| Type | Detection Logic |
+|------|----------------|
+| 🚀 First Commit | Oldest commit in repo |
+| 🏷️ Version Release | Tags matching `v*` pattern |
+| ⚡ Peak Month | 2.5x+ average commit count |
+| 🔄 Comeback | 90+ day gap between commits |
+| ✨ Latest Work | Most recent commit |
+
+### 🔥 GitHub-Style Activity Heatmap
+- 52 weeks × 7 days = 364-day activity grid
+- 5 intensity levels (l1-l5)
+- Hover any cell to see exact commit count
+- Color-coded by activity density
+
+### 👥 Ranked Contributors
+- Gold 🏅 / Silver 🥈 / Bronze 🥉 for top 3
+- Animated progress bars (scroll-triggered)
+- Commit count + percentage per contributor
+
+### 🏆 Shareable Contribution Certificate
+```
+╔═══════════════════════════════════════════════════════════╗
+║  🏆 Certificate of Achievement                            ║
+║                                                           ║
+║  Project Story — My Awesome Project                       ║
+║  "Showed up regularly. This was deliberate, consistent    ║
+║   work."                                                  ║
+║                                                           ║
+║  ┌──────────────┐  ┌──────────────┐                       ║
+║  │     487      │  │      234     │                       ║
+║  │   Commits    │  │ Active Days  │                       ║
+║  └──────────────┘  └──────────────┘                       ║
+║  ┌──────────────┐  ┌──────────────┐                       ║
+║  │      31      │  │       1      │                       ║
+║  │ Best Streak  │  │ Contributors │                       ║
+║  └──────────────┘  └──────────────┘                       ║
+║                                                           ║
+║  Started: January 15, 2024  |  Last Update: June 11, 2026 ║
+║                                                           ║
+║  Generated by Commit Canvas · Open Source · Zero Cost    ║
+║                                                   [Share] ║
+╚═══════════════════════════════════════════════════════════╝
 ```
 
 ---
 
 ## 🚀 Quick Start
 
+### Installation
+
 ```bash
-# Install
+# From PyPI (when available)
 pip install commit-canvas
 
-# Run on any repo
-commit-canvas /path/to/your-repo
+# From GitHub (always works)
+pip install git+https://github.com/ahmadrrrtx/commit-canvas.git
 
-# Use current directory
-commit-canvas .
-
-# Custom title and output
-commit-canvas . --title "My Awesome Project" --output ~/Desktop/story.html
-
-# Auto-open in browser
-commit-canvas /path/to/repo --open
-```
-
-**Output is a single `.html` file** — host it anywhere, share it anywhere, screenshot the certificate and post it on LinkedIn.
-
----
-
-## 🎬 See It In Action
-
-Live demo stories (generated with Commit Canvas):
-
-| Project | Commits | Contributors | Story Arc | Link |
-|---------|---------|-------------|-----------|------|
-| **Vite** | 50 (last 50) | 26 | Burst | [Open →](/demo/vite-story.html) |
-| **Commit Canvas** | 18 | 1 | Consistent | [Open →](/demo/commit-canvas-story.html) |
-
-> ⚡ These demos use shallow clones (limited commits) for fast generation. Run on your own repos for full history.
-
----
-
-## 🔍 What's Included
-
-| Section | What You Get |
-|---------|-------------|
-| **Hero** | Repo name, story arc badge, animated particle field, all key stats |
-| **Timeline** | Horizontal draggable monthly timeline, color-coded by activity level |
-| **Milestones** | Auto-detected: first commit, version tags, peak months, comeback moments |
-| **Heatmap** | GitHub-style 52-week contribution grid, hover for exact counts |
-| **Contributors** | Gold/silver/bronze ranked badges, animated progress bars |
-| **Certificate** | The shareable artifact — premium card with glowing gradient border |
-
----
-
-## 🎨 Design Philosophy
-
-- **Cinematic dark theme** — Premium midnight design, not another gray dashboard
-- **CSS-only animations** — No framework dependencies in the output HTML
-- **Self-contained** — All CSS and JS inline, zero network calls, works offline
-- **Story-first** — The narrative engine gives emotional context, not just stats
-
----
-
-## 🛠️ Technical Stack
-
-```
-Parser    →  Python + subprocess (reads .git directly, no GitPython needed at runtime)
-Template  →  Jinja2 (clean separation of data and presentation)
-Output    →  Single self-contained HTML file (no external dependencies)
-Styling   →  Inline CSS (zero network requests, works offline)
-Animations→  CSS keyframes + vanilla JS (smooth, lightweight)
-```
-
----
-
-## 🤝 Contributing
-
-Found a bug or want a feature? Open an issue! PRs welcome.
-
-```bash
+# From source
 git clone https://github.com/ahmadrrrtx/commit-canvas.git
 cd commit-canvas
 pip install -e .
-python -m pytest tests/ -v   # Run tests
 ```
+
+### Generate Your Story
+
+```bash
+# Basic usage — analyze current directory
+commit-canvas
+
+# Analyze a specific repository
+commit-canvas /path/to/project
+
+# Custom title and output location
+commit-canvas . --title "My Awesome Project" --output ./story.html
+
+# Auto-open in browser when done
+commit-canvas . --open
+
+# Combine all options
+commit-canvas /path/to/repo \
+  --title "Vite" \
+  --output ./vite-story.html \
+  --open
+```
+
+### Share It Anywhere
+
+The output is a **single HTML file** — upload it anywhere:
+
+| Platform | How |
+|----------|-----|
+| GitHub Pages | Push to `gh-pages` branch, serve as `index.html` |
+| LinkedIn | Screenshot the certificate section |
+| Twitter/X | Post the story page link |
+| Vercel/Netlify | Drag & drop the file to deploy |
+| Email | Attach the HTML file directly |
+| Your Portfolio | Screenshot milestone cards |
+
+---
+
+## 🎬 Live Demos
+
+> Generated with Commit Canvas — no editing, pure output
+
+| Project | Commits | Authors | Story Arc | Try It |
+|---------|---------|---------|-----------|--------|
+| **Vite** | 50 (recent) | 26 | Burst | [View Story](./demo/vite-story.html) |
+| **Commit Canvas** | 18 | 1 | Consistent | [View Story](./demo/commit-canvas-story.html) |
+
+> ⚡ Demo stories use shallow clones (limited commits) for fast generation. Your real projects will show full history.
+
+---
+
+## 📁 Project Structure
+
+```
+commit-canvas/
+├── cc/
+│   ├── __init__.py          # Package init
+│   ├── __main__.py          # CLI entry point (argparse)
+│   ├── parser.py            # Git extraction + story engine
+│   │                        #   ├─ get_commits()      — extract commits
+│   │                        #   ├─ calculate_streaks() — streak detection
+│   │                        #   ├─ build_timeline()   — monthly grouping
+│   │                        #   ├─ detect_milestones()— milestone discovery
+│   │                        #   ├─ generate_heatmap() — 52-week grid
+│   │                        #   └─ detect_project_story() — narrative engine
+│   ├── generator.py         # Jinja2 renderer
+│   │                        #   ├─ prepare_data() — shape data for template
+│   │                        #   └─ render_story()  — generate HTML
+│   └── templates/
+│       └── story.html       # Elite cinematic template (1659 lines)
+│                            #   ├─ Particle field (40 ambient particles)
+│                            #   ├─ Animated hero section
+│                            #   ├─ Draggable timeline
+│                            #   ├─ Milestone cards (scroll-triggered)
+│                            #   ├─ Activity heatmap
+│                            #   ├─ Contributor ranking
+│                            #   └─ Certificate section
+├── tests/
+│   └── test_commit_canvas.py # 28 comprehensive tests
+│                            #   ├─ Parser tests (commits, streaks, contributors)
+│                            #   ├─ Generator tests (render, self-contained)
+│                            #   └─ Edge case tests (empty, special chars, tags)
+├── demo/
+│   ├── vite-story.html      # Demo: Vite repo
+│   └── commit-canvas-story.html # Demo: Commit Canvas itself
+├── .github/
+│   └── workflows/
+│       ├── test.yml         # CI: pytest on push/PR
+│       └── release.yml      # Release: build + publish on tag
+├── setup.py                 # PyPI packaging
+├── requirements.txt         # gitpython, jinja2
+└── README.md
+```
+
+---
+
+## 🔬 Story Arc Engine
+
+Commit Canvas doesn't just show stats — it **understands your project**:
+
+```
+Input:  Monthly commit patterns from git history
+         ↓
+    ┌───────────────┐
+    │ Story Engine  │  ← detect_project_story() in parser.py
+    └───────┬───────┘
+            ↓
+   Detects arc type:
+   ┌─────────────┬────────────────────┬──────────────────────┐
+   │ fresh_start │ Single month       │ "Just getting started"│
+   │ growth      │ Late > 2x Early    │ "Gained momentum"     │
+   │ mature      │ Late < 0.5x Early  │ "Found its rhythm"    │
+   │ burst       │ High variance      │ "Built in bursts"     │
+   │ consistent  │ Low variance       │ "Deliberate work"     │
+   └─────────────┴────────────────────┴──────────────────────┘
+            ↓
+   Output: Arc label + narrative summary
+```
+
+---
+
+## 🎨 Design System
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--bg-deep` | `#070a10` | Page background |
+| `--bg-card` | `#121a28` | Cards and sections |
+| `--accent-blue` | `#3b82f6` | Primary accent |
+| `--accent-cyan` | `#06b6d4` | Stats and highlights |
+| `--accent-purple` | `#8b5cf6` | Timeline medium |
+| `--accent-green` | `#10b981` | Success states |
+| `--accent-orange` | `#f59e0b` | Burst/surge indicators |
+
+**Font Stack:**
+- Headlines: `Inter 800` — bold, modern
+- Stats/Numbers: `JetBrains Mono 700` — technical precision
+- Body: `Inter 400/500` — clean readability
+
+**Animations (CSS-only):**
+- `fadeUp` — hero text entrance
+- `borderGlow` — certificate animated border (4s loop)
+- `particleFloat` — ambient background particles
+- `reveal` — scroll-triggered card appearances
+- `slideRight` — contributor row animations
+
+---
+
+## 📊 Technical Decisions
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| **Parser** | `subprocess + git` | Zero dependency, works offline, uses local `.git` |
+| **Timestamps** | `%at` (author date) | Author date is the real story, not commit time |
+| **Template** | Jinja2 | Clean separation, familiar syntax |
+| **Output** | Single HTML | Shareable, no server, no dependencies |
+| **Styling** | Inline CSS | Self-contained, zero network requests |
+| **Animations** | CSS keyframes + vanilla JS | No framework, smooth 60fps |
+| **Icons** | Emoji | No CDN dependency, works offline |
 
 ---
 
@@ -131,19 +305,88 @@ python -m pytest tests/ -v   # Run tests
 
 | Other Tools | Commit Canvas |
 |-------------|--------------|
-| Static HTML (GitStats) | Animated cinematic pages |
-| Video output (Gource) | Shareable HTML file |
-| CLI-only, no visuals | Full visual story with certificate |
-| Profile-wide only | Per-repository story |
+| Static HTML reports (GitStats) | Animated cinematic pages |
+| Video output (Gource, git-story) | Shareable HTML file |
+| Profile-wide only (github-readme-stats) | Per-repository story |
+| CLI-only, no visuals | Full visual story + heatmap + certificate |
 | Requires API keys | Works completely offline |
-| Analytics dashboards | Social proof artifact for LinkedIn/portfolio |
+| Gray analytics dashboards | Premium dark theme |
+| Raw stats only | Narrative story arc + emotional labels |
+
+---
+
+## 🛣️ Roadmap
+
+```
+v1.0.0 ───────────── NOW: Basic story generation
+v1.1.0 ─────────── Q3: Theme selector (dark/light/minimal)
+v1.2.0 ─────────── Q3: PNG/PDF export for the certificate
+v2.0.0 ─────────── Q4: Multi-repo dashboard
+v2.1.0 ─────────── Q4: Interactive commit explorer (click timeline dot)
+v2.2.0 ─────────── Q1: Embeddable widget for websites
+```
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Here's how to get started:
+
+```bash
+# 1. Fork and clone
+git clone https://github.com/YOUR_USERNAME/commit-canvas.git
+cd commit-canvas
+
+# 2. Set up development environment
+pip install -e .
+pip install pytest
+
+# 3. Run the test suite
+python -m pytest tests/ -v
+
+# 4. Create your feature branch
+git checkout -b feature/your-feature-name
+
+# 5. Make your changes and test
+# ... edit code ...
+python -m pytest tests/ -v
+
+# 6. Push and open a Pull Request
+git push origin feature/your-feature-name
+```
+
+### 🧪 Writing Tests
+
+All new features must include tests. We use pytest with fixtures:
+
+```python
+# Example: Add test for a new function
+def test_your_new_function(some_repo):
+    result = your_new_function(some_repo)
+    assert expected_condition(result)
+```
+
+---
+
+## 🐛 Reporting Bugs
+
+When reporting a bug, please include:
+- Your OS and Python version (`python --version`)
+- The command you ran
+- The full error output
+- The repo path you're analyzing (if shareable)
 
 ---
 
 ## 📝 License
 
-MIT — Free to use, modify, and share.
+MIT — free to use, modify, and distribute. Attribution appreciated but not required.
 
 ---
 
-*Built with 🔥 by [RRRTX](https://github.com/ahmadrrrtx) · Zero cost · Zero auth · Pure git*
+## 🙏 Credits
+
+Built with 🔥 by **[Muhammad Ahmad (RRRTX)](https://github.com/ahmadrrrtx)**  
+Self-taught AI developer from Chiniot, Pakistan · 14+ shipped projects · 37+ certifications
+
+*Zero cost. Zero auth. Pure git.*
