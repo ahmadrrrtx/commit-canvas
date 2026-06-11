@@ -8,6 +8,7 @@ import os
 import subprocess
 from datetime import datetime, timedelta
 from collections import defaultdict
+from typing import List, Dict
 
 
 # ─── UTILITIES ──────────────────────────────────────────────────────────────
@@ -28,7 +29,7 @@ def get_repo_name(repo_path: str) -> str:
 
 # ─── COMMIT EXTRACTION ─────────────────────────────────────────────────────
 
-def get_commits(repo_path: str, limit: int = None) -> list[dict]:
+def get_commits(repo_path: str, limit: int = None) -> List[dict]:
     output = run_git(
         repo_path,
         "log", "--all",
@@ -64,7 +65,7 @@ def get_commits(repo_path: str, limit: int = None) -> list[dict]:
     return commits
 
 
-def get_tags(repo_path: str) -> list[dict]:
+def get_tags(repo_path: str) -> List[dict]:
     output = run_git(repo_path, "tag", "--sort=-v:refname")
     
     tags = []
@@ -88,7 +89,7 @@ def get_tags(repo_path: str) -> list[dict]:
     return tags
 
 
-def get_branches(repo_path: str) -> list[str]:
+def get_branches(repo_path: str) -> List[str]:
     output = run_git(repo_path, "branch", "-a")
     return [b.strip().replace("  ", "").replace("* ", "")
             for b in output.split("\n") if b.strip()]
@@ -96,7 +97,7 @@ def get_branches(repo_path: str) -> list[str]:
 
 # ─── STREAKS ───────────────────────────────────────────────────────────────
 
-def calculate_streaks(commits: list[dict]) -> dict:
+def calculate_streaks(commits: List[dict]) -> dict:
     active_days = sorted(set(c["date"].date() for c in commits))
     
     if not active_days:
@@ -127,7 +128,7 @@ def calculate_streaks(commits: list[dict]) -> dict:
 
 # ─── CONTRIBUTORS ──────────────────────────────────────────────────────────
 
-def calculate_contributors(commits: list[dict]) -> list[dict]:
+def calculate_contributors(commits: List[dict]) -> List[dict]:
     stats = defaultdict(lambda: {"name": "", "commits": 0, "first_date": None, "last_date": None})
     
     for commit in commits:
@@ -151,7 +152,7 @@ def calculate_contributors(commits: list[dict]) -> list[dict]:
 
 # ─── TIMELINE ─────────────────────────────────────────────────────────────
 
-def build_timeline(commits: list[dict]) -> list[dict]:
+def build_timeline(commits: List[dict]) -> List[dict]:
     monthly = defaultdict(list)
     for commit in commits:
         monthly[commit["date"].strftime("%Y-%m")].append(commit)
@@ -198,7 +199,7 @@ _TYPE_LABELS = {
 }
 
 
-def detect_milestones(commits: list[dict], tags: list[dict]) -> list[dict]:
+def detect_milestones(commits: List[dict], tags: List[dict]) -> List[dict]:
     milestones = []
     if not commits:
         return milestones
@@ -280,7 +281,7 @@ def detect_milestones(commits: list[dict], tags: list[dict]) -> list[dict]:
 
 # ─── HEATMAP ──────────────────────────────────────────────────────────────
 
-def generate_heatmap(commits: list[dict]) -> dict:
+def generate_heatmap(commits: List[dict]) -> dict:
     today = datetime.now()
     start = today - timedelta(weeks=52)
     start = start - timedelta(days=(start.weekday() + 1) % 7)
@@ -341,7 +342,7 @@ _ARC_DEFINITIONS = {
 }
 
 
-def detect_project_story(timeline: list[dict], commits: list[dict]) -> dict:
+def detect_project_story(timeline: List[dict], commits: List[dict]) -> dict:
     if not timeline:
         return {"arc": "fresh_start", "arc_label": "Fresh Start",
                 "summary": "Just getting started. Every journey begins with a single commit.",
@@ -386,7 +387,7 @@ def detect_project_story(timeline: list[dict], commits: list[dict]) -> dict:
     }
 
 
-def find_memorable_commits(commits: list[dict]) -> list[dict]:
+def find_memorable_commits(commits: List[dict]) -> List[dict]:
     if not commits:
         return []
     
