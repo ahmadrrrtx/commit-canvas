@@ -2,42 +2,49 @@
 
 <div align="center">
 
-### Turn your git history into something worth sharing.
+### Your git history deserves to be seen, not just read.
 
-One command. A single HTML file. Your project's story — cinematic, animated, designed to be screenshotted and posted anywhere.
+One command. A single HTML file. Every commit you've ever made — transformed into a cinematic, animated, shareable story page.
 
-```bash
+```
 git clone https://github.com/ahmadrrrtx/commit-canvas.git
 cd commit-canvas
-./run.sh /path/to/your-project
+./run.sh .
 # → story.html — open it in your browser
 ```
 
-**No account. No API key. No server. No cost.**
+**No account. No API key. No server. No cost. Zero network requests.**
 
-[Live Demo (Vite)](https://ahmadrrrtx.github.io/commit-canvas/demo/vite-story.html)
-· [Live Demo (Commit Canvas)](https://ahmadrrrtx.github.io/commit-canvas/demo/commit-canvas-story.html)
-· [Landing Page](https://ahmadrrrtx.github.io/commit-canvas/)
+**[Live Story: Vite](https://ahmadrrrtx.github.io/commit-canvas/demo/vite-story.html)**
+**[Live Story: Commit Canvas](https://ahmadrrrtx.github.io/commit-canvas/demo/commit-canvas-story.html)**
+**[Landing Page](https://ahmadrrrtx.github.io/commit-canvas/)**
 
 </div>
 
 ---
 
-## What this actually is
+## The story, not the stats
 
-It's a single HTML file that tells your project's story. Not a chart. Not a dashboard. Not a badge. A designed piece of work that represents the work you did.
+GitHub shows you data. Commit Canvas shows you a story.
 
-The page opens with a cinematic title reveal. Below that, the narrative engine classifies your project as "The Marathon", "The Climb", "The Sprint", or "The Return" — based on your actual commit patterns, not just raw counts.
+Not a chart. Not a dashboard. Not a badge. A designed piece of work that represents the work you did.
 
-Scrolling through the page feels like moving through a film strip. An animated timeline draws itself. Milestone cards surface your first commit, your releases, your comeback moments. An activity ring replaces the generic GitHub heatmap with something iconic. Contributors are ranked with gold, silver, and bronze badges.
+The page opens with a cinematic title reveal. Below that, the narrative engine classifies your project as **"The Marathon"**, **"The Climb"**, **"The Sprint"**, or **"The Return"** — based on your actual commit patterns, not just raw counts.
 
-At the bottom: a proof-of-work certificate. Screenshot it. Post it on LinkedIn. Share it anywhere.
+Scrolling through the page feels like moving through a film strip:
+
+- An animated timeline draws itself as you scroll
+- Milestone cards surface your first commit, your releases, your comeback moments
+- An activity ring replaces the generic GitHub heatmap with something iconic
+- Contributors are ranked with gold, silver, and bronze badges
+
+And at the bottom: a **proof-of-work certificate**. Screenshot it. Post it on LinkedIn. Share it anywhere.
 
 ---
 
 ## Getting started
 
-### Option 1 — Clone and run (instant, zero setup)
+### The zero-dependency path (main flow)
 
 ```bash
 git clone https://github.com/ahmadrrrtx/commit-canvas.git
@@ -45,17 +52,9 @@ cd commit-canvas
 ./run.sh /path/to/your-project
 ```
 
-That's it. Works immediately. No `pip install`, no account, no nothing.
+That's it. Works immediately. `run.sh` is a shell script — it needs nothing but `git` and `python3`, which are already on every developer's machine.
 
-### Option 2 — Python (if you prefer)
-
-```bash
-python -m cc .
-python -m cc /path/to/repo --title "My Project" --open
-```
-
-### Options for customization
-
+Options:
 ```bash
 ./run.sh .                          # current directory
 ./run.sh /path/to/repo              # specific repo
@@ -64,24 +63,43 @@ python -m cc /path/to/repo --title "My Project" --open
 ./run.sh . --title "My Project"     # custom project name
 ```
 
+### The Python path (if you prefer)
+
+```bash
+python -m cc .
+python -m cc /path/to/repo --open --title "My Project"
+```
+
+### Install globally (optional)
+
+If you want `commit-canvas` available from anywhere:
+
+```bash
+pip install git+https://github.com/ahmadrrrtx/commit-canvas.git
+# then use anywhere:
+commit-canvas .
+```
+
 ---
 
 ## What you get
 
+A fully self-contained HTML file. All CSS inline. All JavaScript inline. Zero network requests. Works completely offline.
+
 | Section | What it shows |
 |---------|--------------|
 | **Hero** | Cinematic title reveal, story arc label, animated stats |
-| **Timeline** | Monthly film strip, self-drawing as you scroll, drag to explore |
+| **Timeline** | Monthly film strip — self-drawing as you scroll, drag to explore |
 | **Turning Points** | First commit, releases, comebacks, peak months |
-| **Activity Ring** | SVG circle — your consistency pattern, at a glance |
-| **Contributors** | Gold/silver/bronze ranking with animated progress bars |
-| **Certificate** | Shareable proof-of-work card — designed to be screenshotted |
+| **Activity Ring** | SVG circle — your consistency pattern at a glance |
+| **The Team** | Gold/silver/bronze contributor ranking with animated bars |
+| **Proof of Work** | Shareable certificate — designed to be screenshotted |
 
 ---
 
-## Story arcs
+## Story arcs — the narrative engine
 
-The narrative engine classifies your project by its actual shape:
+The tool reads your commit patterns and tells you what kind of project you have:
 
 | Arc | What it means |
 |-----|--------------|
@@ -96,36 +114,28 @@ The narrative engine classifies your project by its actual shape:
 
 ## Requirements
 
-- Python 3.8+
-- git (already on every developer's machine)
+- **Python** 3.8+
+- **git** (already on your machine)
 
-No packages to install. No accounts to create.
-
----
-
-## Install as a command (optional)
-
-If you want `commit-canvas` available from anywhere:
-
-```bash
-pip install git+https://github.com/ahmadrrrtx/commit-canvas.git
-# then use anywhere:
-commit-canvas .
-```
-
-Or in editable mode from a clone:
-
-```bash
-git clone https://github.com/ahmadrrrtx/commit-canvas.git
-cd commit-canvas
-pip install -e .
-```
+No packages to install. No accounts to create. No API keys. No cloud. No cost.
 
 ---
 
-## The output artifact
+## Why this over...
 
-The HTML file is fully self-contained. All CSS is inline. All JavaScript is inline. Zero network requests. Works completely offline. Copy it anywhere — GitHub Pages, Vercel, Netlify, your portfolio, email it, screenshot it.
+**vs GitHub Insights** — GitHub shows bars. We show a story. A title reveal, a detected arc, a certificate.
+
+**vs CLI tools (GitStats, git-quick-stats)** — Terminal text has zero shareability. One screenshot of a Commit Canvas story says more than a hundred CLI outputs.
+
+**vs Video tools (Gource, git-story)** — They produce MP4s. Ours produces a portable HTML file you can embed anywhere.
+
+**vs Profile tools (github-readme-stats)** — They show all repos combined. Commit Canvas tells the story of one specific project.
+
+---
+
+## The output
+
+The HTML file is a single, self-contained artifact. Copy it anywhere — GitHub Pages, Vercel, Netlify, your portfolio, email it, screenshot it. It's yours.
 
 ---
 
@@ -147,4 +157,10 @@ MIT — free to use, modify, share.
 
 ---
 
+<div align="center">
+
 *Built by [Muhammad Ahmad (RRRTX)](https://github.com/ahmadrrrtx) · Open Source · Zero cost · Zero auth · Pure git*
+
+**[Star on GitHub](https://github.com/ahmadrrrtx/commit-canvas)** · **[See a live story](https://ahmadrrrtx.github.io/commit-canvas/demo/vite-story.html)** · **[Landing page](https://ahmadrrrtx.github.io/commit-canvas/)**
+
+</div>

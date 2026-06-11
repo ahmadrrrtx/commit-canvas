@@ -24,8 +24,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   - Full data shaping for template compatibility
 
 - **Elite Template** (`cc/templates/story.html`):
-  - Cinematic dark theme (1800+ lines of CSS/JS)
-  - Animated particle field (40 ambient particles)
+  - Cinematic dark theme (1442+ lines of CSS/JS)
+  - Ambient gradient breathing + grid texture background (no particles)
   - Scroll-triggered CSS animations via Intersection Observer
   - Horizontal draggable timeline with density bars
   - GitHub-style 52-week activity heatmap

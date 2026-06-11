@@ -101,10 +101,11 @@
         pointer-events: none;
         z-index: 0;
         background-image: 
-            linear-gradient(rgba(226,255,58,0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(226,255,58,0.03) 1px, transparent 1px);
-        background-size: 80px 80px;
-        mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 0%, transparent 80%);
+            linear-gradient(rgba(226,255,58,0.025) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(226,255,58,0.025) 1px, transparent 1px);
+        background-size: 60px 60px;
+        -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 50%, black 0%, transparent 85%);
+        mask-image: radial-gradient(ellipse 90% 70% at 50% 50%, black 0%, transparent 85%);
     }
     
     /* ════════════════════════════════════════════════════════════════
@@ -1202,7 +1203,7 @@
         <div class="activity-layout">
             <div class="activity-text" data-reveal>
                 <h3>{{ total_active_days }} days of work.</h3>
-                <p>{% if longest_streak >= 30 %}Consistency is the trait of every great project. This one showed up for {{ longest_streak }} days straight. That's the real signal.{% elif longest_streak >= 14 %}A {{ longest_streak }}-day streak tells you something. This project had momentum — real momentum.{% elif longest_streak >= 7 %}Seven days in a row. That's how habits are built.{% else %}Every streak started with a first commit. This one has {{ total_commits }} of them.{% endif %}</p>
+                <p>{% if longest_streak >= 30 %}Consistency is the trait of every great project. This one showed up for {{ longest_streak }} days straight. That's the real signal.{% elif longest_streak >= 14 %}A {{ longest_streak }}-day streak is a statement. Not planned — earned.{% elif longest_streak >= 7 %}Seven days in a row. That's how habits are built.{% else %}{{ total_commits }} commits. Every one of them a choice to keep going.{% endif %}</p>
             </div>
             
             <div class="ring-wrap" data-reveal>
@@ -1265,7 +1266,7 @@
         
         <div class="section-head" data-reveal>
             <div class="section-num">05</div>
-            <h2 class="section-name">Proof of Work</h2>
+            <h2 class="section-name">Share Your Story</h2>
         </div>
         
         <div class="cert-wrap">
