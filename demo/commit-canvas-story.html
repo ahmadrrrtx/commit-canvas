@@ -3,92 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>tmpy2kiu54g — Project Story</title>
-    <meta name="description" content="A visual story of tmpy2kiu54g — 18 commits, 18 days of work.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Commit Canvas — Project Story</title>
+    <meta name="description" content="Showed up for 18 days. That&#39;s not luck — that&#39;s discipline.">
+    
+    <!-- Open Graph for social sharing -->
+    <meta property="og:title" content="Commit Canvas — Project Story">
+    <meta property="og:description" content="Showed up for 18 days. That&#39;s not luck — that&#39;s discipline.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Commit Canvas — Project Story">
+    <meta name="twitter:description" content="Showed up for 18 days. That&#39;s not luck — that&#39;s discipline.">
+    
     <style>
-    /* ═══════════════════════════════════════════════════════════════════════
-       COMMIT CANVAS — ELITE TEMPLATE
-       Cinematic motion story page
-       ═══════════════════════════════════════════════════════════════════════ */
+    /* ════════════════════════════════════════════════════════════════
+       CANVAS — Cinematic Project Story Page
+       Zero external dependencies. Self-contained.
+       ════════════════════════════════════════════════════════════════ */
+    
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap');
     
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     
     :root {
-        /* Colors */
-        --bg-deep: #070a10;
-        --bg-primary: #0a0e17;
-        --bg-secondary: #0e1420;
-        --bg-card: #121a28;
-        --bg-card-hover: #182336;
-        --bg-card-active: #1e2a40;
+        --void: #04050a;
+        --deep: #07090f;
+        --surface: #0c0f18;
+        --card: #111422;
+        --card-hover: #171b2c;
+        --border: #1a1f32;
+        --border-bright: #252d44;
         
-        --accent-blue: #3b82f6;
-        --accent-blue-dim: rgba(59, 130, 246, 0.15);
-        --accent-cyan: #06b6d4;
-        --accent-cyan-dim: rgba(6, 182, 212, 0.15);
-        --accent-purple: #8b5cf6;
-        --accent-purple-dim: rgba(139, 92, 246, 0.15);
-        --accent-green: #10b981;
-        --accent-green-dim: rgba(16, 185, 129, 0.15);
-        --accent-orange: #f59e0b;
-        --accent-orange-dim: rgba(245, 158, 11, 0.15);
-        --accent-pink: #ec4899;
-        --accent-pink-dim: rgba(236, 72, 153, 0.15);
+        /* Signal system — one dominant color, sharp accent */
+        --signal: #e2ff3a;
+        --signal-dim: rgba(226, 255, 58, 0.12);
+        --signal-glow: rgba(226, 255, 58, 0.3);
         
-        --text-bright: #f8fafc;
-        --text-primary: #e2e8f0;
-        --text-secondary: #94a3b8;
-        --text-muted: #64748b;
-        --text-faint: #475569;
+        --text: #d4d8e8;
+        --text-dim: #7a8199;
+        --text-faint: #454b62;
         
-        --border: #1e293b;
-        --border-bright: #334155;
-        
-        /* Glows */
-        --glow-blue: 0 0 30px rgba(59, 130, 246, 0.25);
-        --glow-cyan: 0 0 30px rgba(6, 182, 212, 0.25);
-        --glow-purple: 0 0 30px rgba(139, 92, 246, 0.25);
-        --glow-green: 0 0 30px rgba(16, 185, 129, 0.25);
-        
-        /* Spacing */
-        --space-xs: 4px;
-        --space-sm: 8px;
-        --space-md: 16px;
-        --space-lg: 24px;
-        --space-xl: 32px;
-        --space-2xl: 48px;
-        --space-3xl: 64px;
-        --space-4xl: 96px;
-        
-        /* Radius */
-        --radius-sm: 6px;
-        --radius-md: 12px;
-        --radius-lg: 20px;
-        --radius-xl: 28px;
-        
-        /* Transitions */
-        --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-        --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+        --ease: cubic-bezier(0.16, 1, 0.3, 1);
+        --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     
     html { scroll-behavior: smooth; }
     
     body {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        background: var(--bg-deep);
-        color: var(--text-primary);
-        line-height: 1.65;
+        font-family: 'Space Grotesk', -apple-system, sans-serif;
+        background: var(--void);
+        color: var(--text);
+        line-height: 1.6;
         overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
     }
     
-    /* ═══════════════════════════════════════════════════════════════════════
-       ANIMATIONS
-       ═══════════════════════════════════════════════════════════════════════ */
+    /* ════════════════════════════════════════════════════════════════
+       TYPOGRAPHY
+       ════════════════════════════════════════════════════════════════ */
+    
+    .display {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        font-size: clamp(3rem, 9vw, 7rem);
+        line-height: 0.95;
+        letter-spacing: -0.04em;
+        color: var(--text);
+    }
+    
+    .mono {
+        font-family: 'JetBrains Mono', monospace;
+    }
+    
+    /* ════════════════════════════════════════════════════════════════
+       AMBIENT BACKGROUND — No particles. Subtle gradient breathing.
+       ════════════════════════════════════════════════════════════════ */
+    
+    .bg-ambient {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        background: 
+            radial-gradient(ellipse 60% 40% at 20% 0%, rgba(226,255,58,0.04) 0%, transparent 60%),
+            radial-gradient(ellipse 50% 35% at 80% 100%, rgba(226,255,58,0.02) 0%, transparent 50%);
+        animation: ambientPulse 12s ease-in-out infinite;
+    }
+    
+    @keyframes ambientPulse {
+        0%, 100% { opacity: 0.6; }
+        50% { opacity: 1; }
+    }
+    
+    /* Grid texture */
+    .bg-grid {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        background-image: 
+            linear-gradient(rgba(226,255,58,0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(226,255,58,0.03) 1px, transparent 1px);
+        background-size: 80px 80px;
+        mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 0%, transparent 80%);
+    }
+    
+    /* ════════════════════════════════════════════════════════════════
+       KEYFRAME ANIMATIONS
+       ════════════════════════════════════════════════════════════════ */
+    
+    @keyframes titleReveal {
+        from { clip-path: inset(0 100% 0 0); }
+        to   { clip-path: inset(0 0 0 0); }
+    }
+    
+    @keyframes lineGrow {
+        from { transform: scaleX(0); }
+        to   { transform: scaleX(1); }
+    }
     
     @keyframes fadeUp {
-        from { opacity: 0; transform: translateY(32px); }
+        from { opacity: 0; transform: translateY(40px); }
         to   { opacity: 1; transform: translateY(0); }
     }
     
@@ -97,1347 +131,1146 @@
         to   { opacity: 1; }
     }
     
-    @keyframes scaleIn {
-        from { opacity: 0; transform: scale(0.85); }
-        to   { opacity: 1; transform: scale(1); }
-    }
-    
-    @keyframes slideRight {
-        from { opacity: 0; transform: translateX(-40px); }
-        to   { opacity: 1; transform: translateX(0); }
-    }
-    
-    @keyframes countUp {
-        from { opacity: 0; transform: translateY(16px); }
+    @keyframes statCount {
+        from { opacity: 0; transform: translateY(20px); }
         to   { opacity: 1; transform: translateY(0); }
     }
     
-    @keyframes borderGlow {
-        0%   { box-shadow: 0 0 20px rgba(59, 130, 246, 0.2), 0 0 40px rgba(59, 130, 246, 0.05); }
-        33%  { box-shadow: 0 0 30px rgba(6, 182, 212, 0.3), 0 0 60px rgba(6, 182, 212, 0.1); }
-        66%  { box-shadow: 0 0 25px rgba(139, 92, 246, 0.25), 0 0 50px rgba(139, 92, 246, 0.08); }
-        100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.2), 0 0 40px rgba(59, 130, 246, 0.05); }
+    @keyframes certReveal {
+        from { opacity: 0; transform: scale(0.92) translateY(40px); }
+        to   { opacity: 1; transform: scale(1) translateY(0); }
     }
     
-    @keyframes pulse {
+    @keyframes signalPulse {
         0%, 100% { opacity: 1; }
-        50% { opacity: 0.5; }
+        50% { opacity: 0.4; }
     }
     
-    @keyframes float {
+    @keyframes scrollBounce {
         0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-8px); }
+        50% { transform: translateY(8px); }
     }
     
-    @keyframes shimmer {
-        0% { background-position: -200% center; }
-        100% { background-position: 200% center; }
-    }
-    
-    @keyframes drawLine {
-        from { width: 0; }
-        to   { width: 100%; }
-    }
-    
-    @keyframes dotPop {
-        0%   { transform: scale(0); opacity: 0; }
-        60%  { transform: scale(1.3); }
-        100% { transform: scale(1); opacity: 1; }
-    }
-    
-    @keyframes revealUp {
-        from { opacity: 0; transform: translateY(24px) scale(0.97); }
-        to   { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    
-    @keyframes particleFloat {
-        0%   { transform: translateY(0) translateX(0); opacity: 0; }
-        10%  { opacity: 0.6; }
-        90%  { opacity: 0.3; }
-        100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
-    }
-    
-    @keyframes storyArcReveal {
-        from { clip-path: inset(0 100% 0 0); }
-        to   { clip-path: inset(0 0 0 0); }
-    }
-    
-    /* Scroll-triggered animations */
-    .reveal {
-        opacity: 0;
-        transform: translateY(28px);
-        transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
-    }
-    
-    .reveal.visible {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-    .reveal-delay-4 { transition-delay: 0.4s; }
-    
-    /* ═══════════════════════════════════════════════════════════════════════
+    /* ════════════════════════════════════════════════════════════════
        LAYOUT
-       ═══════════════════════════════════════════════════════════════════════ */
+       ════════════════════════════════════════════════════════════════ */
     
-    .container {
-        max-width: 1080px;
+    .canvas {
+        position: relative;
+        z-index: 1;
+        max-width: 1100px;
         margin: 0 auto;
-        padding: 0 var(--space-lg);
-    }
-    
-    .container--wide {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 var(--space-lg);
+        padding: 0 32px;
     }
     
     section {
-        padding: var(--space-4xl) 0;
+        padding: 96px 0;
+        position: relative;
     }
     
-    /* ═══════════════════════════════════════════════════════════════════════
-       PARTICLE FIELD (Background)
-       ═══════════════════════════════════════════════════════════════════════ */
-    
-    #particles {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        pointer-events: none;
-        z-index: 0;
-        overflow: hidden;
-    }
-    
-    .particle {
-        position: absolute;
-        width: 2px;
-        height: 2px;
-        background: var(--accent-blue);
-        border-radius: 50%;
-        opacity: 0;
-        animation: particleFloat linear infinite;
-    }
-    
-    .particle:nth-child(3n)   { background: var(--accent-cyan); width: 1px; height: 1px; }
-    .particle:nth-child(5n)   { background: var(--accent-purple); width: 3px; height: 3px; }
-    .particle:nth-child(7n)   { background: var(--accent-blue); width: 2px; height: 2px; }
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       HERO SECTION
-       ═══════════════════════════════════════════════════════════════════════ */
+    /* ════════════════════════════════════════════════════════════════
+       HERO — THE OPENING SEQUENCE
+       ════════════════════════════════════════════════════════════════ */
     
     .hero {
-        position: relative;
-        z-index: 1;
         min-height: 100vh;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: center;
-        text-align: center;
-        padding: var(--space-4xl) var(--space-lg);
-        overflow: hidden;
+        padding: 80px 0 120px;
     }
     
-    /* Atmospheric background */
-    .hero::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: 
-            radial-gradient(ellipse 80% 60% at 50% -10%, rgba(59, 130, 246, 0.08) 0%, transparent 70%),
-            radial-gradient(ellipse 60% 50% at 80% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 60%),
-            radial-gradient(ellipse 50% 40% at 15% 70%, rgba(6, 182, 212, 0.05) 0%, transparent 50%);
-        pointer-events: none;
-        z-index: -1;
-    }
-    
-    /* Story arc label */
-    .story-arc-badge {
+    /* Arc label — the spotlight moment */
+    .arc-label {
         display: inline-flex;
         align-items: center;
-        gap: var(--space-sm);
-        background: var(--accent-blue-dim);
-        border: 1px solid rgba(59, 130, 246, 0.25);
-        border-radius: 50px;
-        padding: 6px 16px;
+        gap: 8px;
+        margin-bottom: 32px;
+        opacity: 0;
+        animation: fadeIn 0.6s var(--ease) 0.3s forwards;
+    }
+    
+    .arc-label::before {
+        content: '';
+        display: block;
+        width: 24px;
+        height: 2px;
+        background: var(--signal);
+        animation: lineGrow 0.4s var(--ease) 0.5s both;
+        transform-origin: left;
+    }
+    
+    .arc-tag {
         font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 1.5px;
+        font-weight: 600;
+        letter-spacing: 0.2em;
         text-transform: uppercase;
-        color: var(--accent-blue);
-        margin-bottom: var(--space-xl);
-        opacity: 0;
-        animation: fadeUp 0.6s var(--ease-out) 0.2s forwards;
+        color: var(--signal);
     }
     
-    .story-arc-badge .dot {
-        width: 5px;
-        height: 5px;
-        background: var(--accent-cyan);
-        border-radius: 50%;
-        animation: pulse 2.5s ease-in-out infinite;
-    }
-    
-    /* Title */
+    /* Title — cinematic reveal */
     .hero-title {
-        font-size: clamp(2.75rem, 7vw, 5.5rem);
-        font-weight: 900;
-        letter-spacing: -3px;
-        line-height: 1.05;
-        margin-bottom: var(--space-lg);
-        background: linear-gradient(
-            135deg, 
-            var(--text-bright) 0%, 
-            var(--text-secondary) 60%,
-            var(--accent-cyan) 100%
-        );
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        opacity: 0;
-        animation: fadeUp 0.8s var(--ease-out) 0.35s forwards;
+        overflow: hidden;
+        margin-bottom: 16px;
     }
     
-    /* Story summary */
-    .hero-summary {
-        font-size: clamp(1rem, 2.5vw, 1.15rem);
-        color: var(--text-secondary);
-        max-width: 540px;
-        margin: 0 auto var(--space-3xl);
-        font-weight: 400;
-        line-height: 1.7;
-        opacity: 0;
-        animation: fadeUp 0.7s var(--ease-out) 0.5s forwards;
+    .hero-title-inner {
+        display: block;
+        animation: titleReveal 1.2s var(--ease) 0.6s both;
     }
     
-    /* Stats row */
+    /* Line under title */
+    .hero-line {
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg, var(--signal), transparent 60%);
+        margin-bottom: 48px;
+        transform-origin: left;
+        animation: lineGrow 1s var(--ease) 1.5s both;
+    }
+    
+    /* Story hook — the emotional line */
+    .hero-hook {
+        font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+        color: var(--text-dim);
+        max-width: 600px;
+        line-height: 1.65;
+        margin-bottom: 64px;
+        opacity: 0;
+        animation: fadeUp 0.8s var(--ease) 2s forwards;
+    }
+    
+    /* Stats — movie credits style */
     .hero-stats {
-        display: flex;
-        gap: var(--space-3xl);
-        flex-wrap: wrap;
-        justify-content: center;
-        margin-bottom: var(--space-3xl);
+        display: grid;
+        grid-template-columns: repeat(4, auto);
+        gap: 0;
+        width: fit-content;
         opacity: 0;
-        animation: fadeUp 0.7s var(--ease-out) 0.65s forwards;
+        animation: fadeUp 0.8s var(--ease) 2.2s forwards;
     }
     
     .hero-stat {
-        text-align: center;
+        padding: 0 48px 0 0;
+        position: relative;
+    }
+    
+    .hero-stat:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1px;
+        height: 40px;
+        background: var(--border);
     }
     
     .hero-stat-value {
-        font-size: clamp(2.25rem, 5vw, 3.25rem);
-        font-weight: 800;
-        letter-spacing: -2px;
-        line-height: 1;
         font-family: 'JetBrains Mono', monospace;
-        background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1;
+        margin-bottom: 8px;
+        letter-spacing: -0.03em;
     }
     
     .hero-stat-label {
         font-size: 10px;
-        font-weight: 700;
+        font-weight: 600;
+        letter-spacing: 0.15em;
         text-transform: uppercase;
-        letter-spacing: 1.5px;
-        color: var(--text-muted);
-        margin-top: 6px;
+        color: var(--text-faint);
     }
     
-    /* Meta info */
+    /* Meta line */
     .hero-meta {
+        margin-top: 48px;
         display: flex;
-        gap: var(--space-xl);
-        flex-wrap: wrap;
-        justify-content: center;
-        font-size: 12px;
+        gap: 32px;
+        font-size: 13px;
         color: var(--text-faint);
         opacity: 0;
-        animation: fadeUp 0.6s var(--ease-out) 0.8s forwards;
+        animation: fadeIn 0.6s var(--ease) 2.8s forwards;
     }
     
     .hero-meta-item {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 8px;
     }
     
-    .hero-meta-item svg {
-        width: 13px;
-        height: 13px;
-        opacity: 0.5;
+    /* Signal dot for "now" */
+    .signal-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--signal);
+        animation: signalPulse 2s ease-in-out infinite;
     }
     
     /* Scroll indicator */
-    .scroll-hint {
+    .scroll-cue {
         position: absolute;
-        bottom: var(--space-xl);
+        bottom: 48px;
         left: 50%;
         transform: translateX(-50%);
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: var(--space-sm);
-        color: var(--text-faint);
-        font-size: 10px;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
+        gap: 8px;
         cursor: pointer;
         opacity: 0;
-        animation: fadeIn 0.6s var(--ease-out) 1.2s forwards;
-        transition: color 0.3s;
+        animation: fadeIn 0.6s var(--ease) 3.5s forwards;
     }
     
-    .scroll-hint:hover { color: var(--text-secondary); }
-    
-    .scroll-hint svg {
-        width: 18px;
-        height: 18px;
-        animation: float 2.5s ease-in-out infinite;
-    }
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       SECTION HEADERS
-       ═══════════════════════════════════════════════════════════════════════ */
-    
-    .section-header {
-        text-align: center;
-        margin-bottom: var(--space-3xl);
-    }
-    
-    .section-label {
-        font-size: 10px;
-        font-weight: 700;
+    .scroll-cue span {
+        font-size: 9px;
+        letter-spacing: 0.2em;
         text-transform: uppercase;
-        letter-spacing: 3px;
-        color: var(--accent-blue);
-        margin-bottom: var(--space-md);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: var(--space-sm);
+        color: var(--text-faint);
     }
     
-    .section-label::before,
-    .section-label::after {
-        content: '';
-        width: 24px;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, var(--accent-blue));
+    .scroll-cue svg {
+        width: 20px;
+        height: 20px;
+        color: var(--text-faint);
+        animation: scrollBounce 2.5s ease-in-out infinite;
     }
     
-    .section-label::after {
-        background: linear-gradient(90deg, var(--accent-blue), transparent);
+    /* ════════════════════════════════════════════════════════════════
+       SECTION HEADER — Minimal, typographic
+       ════════════════════════════════════════════════════════════════ */
+    
+    .section-head {
+        margin-bottom: 64px;
     }
     
-    .section-title {
-        font-size: clamp(1.6rem, 3.5vw, 2.25rem);
-        font-weight: 800;
-        letter-spacing: -1px;
-        line-height: 1.2;
-        margin-bottom: var(--space-md);
+    .section-num {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        color: var(--signal);
+        letter-spacing: 0.15em;
+        margin-bottom: 12px;
+        opacity: 0;
+        transition: opacity 0.5s var(--ease);
     }
     
-    .section-desc {
-        font-size: 14px;
-        color: var(--text-secondary);
-        max-width: 460px;
-        margin: 0 auto;
-        line-height: 1.7;
+    .section-head.visible .section-num { opacity: 1; }
+    
+    .section-name {
+        font-size: clamp(2rem, 4vw, 2.8rem);
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+        opacity: 0;
+        transform: translateY(24px);
+        transition: all 0.7s var(--ease);
     }
     
-    /* ═══════════════════════════════════════════════════════════════════════
-       TIMELINE SECTION
-       ═══════════════════════════════════════════════════════════════════════ */
+    .section-head.visible .section-name {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    /* ════════════════════════════════════════════════════════════════
+       TIMELINE — Draw itself as you scroll
+       ════════════════════════════════════════════════════════════════ */
     
     .timeline-section {
-        background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-secondary) 100%);
-        padding-top: var(--space-4xl);
-        padding-bottom: var(--space-4xl);
+        padding: 80px 0 96px;
     }
     
-    .timeline-wrapper {
+    .timeline-canvas {
         position: relative;
-        overflow: hidden;
+        overflow-x: auto;
+        padding: 40px 0 80px;
+        cursor: grab;
     }
     
-    .timeline-scroll-hint {
-        display: flex;
-        align-items: center;
-        gap: var(--space-sm);
-        font-size: 11px;
-        color: var(--text-faint);
-        margin-bottom: var(--space-xl);
-        justify-content: center;
-    }
-    
-    .timeline-scroll-hint svg {
-        width: 14px;
-        height: 14px;
-    }
+    .timeline-canvas:active { cursor: grabbing; }
     
     .timeline-track {
         display: flex;
         align-items: center;
         gap: 0;
-        padding: var(--space-3xl) var(--space-xl);
         position: relative;
-        cursor: grab;
-        user-select: none;
-        overflow-x: auto;
-        min-width: 100%;
+        min-width: max-content;
+        padding: 0 32px;
     }
     
-    .timeline-track:active { cursor: grabbing; }
-    
-    /* The horizontal line */
-    .timeline-line {
+    /* The line itself */
+    .timeline-axis {
         position: absolute;
         top: 50%;
-        left: var(--space-xl);
-        right: var(--space-xl);
+        left: 32px;
+        right: 32px;
         height: 1px;
+        background: var(--border);
         transform: translateY(-50%);
-        background: linear-gradient(
-            90deg,
-            transparent 0%,
-            var(--border) 5%,
-            var(--accent-blue-dim) 20%,
-            var(--accent-purple-dim) 50%,
-            var(--accent-cyan-dim) 80%,
-            var(--border) 95%,
-            transparent 100%
-        );
+        transform-origin: left;
+        transition: transform 1s var(--ease);
     }
     
-    .timeline-month {
+    .timeline-axis.drawn {
+        background: linear-gradient(90deg, var(--signal), var(--border-bright));
+    }
+    
+    .timeline-node {
         display: flex;
         flex-direction: column;
         align-items: center;
+        padding: 0 56px;
         position: relative;
-        padding: 0 var(--space-xl);
         flex-shrink: 0;
-        min-width: 80px;
+        opacity: 0;
+        transform: translateY(16px);
+        transition: all 0.5s var(--ease);
     }
     
-    .timeline-month:first-child { padding-left: 0; }
-    .timeline-month:last-child { padding-right: 0; }
+    .timeline-node.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
     
-    .timeline-count-label {
-        font-size: 10px;
+    .timeline-node:first-child { padding-left: 0; }
+    .timeline-node:last-child { padding-right: 0; }
+    
+    /* Node count */
+    .node-count {
         font-family: 'JetBrains Mono', monospace;
-        font-weight: 600;
-        color: var(--text-muted);
-        margin-bottom: var(--space-md);
-        min-height: 16px;
+        font-size: 11px;
+        color: var(--text-faint);
+        margin-bottom: 20px;
         transition: color 0.2s;
+        min-width: 28px;
+        text-align: center;
     }
     
-    .timeline-month:hover .timeline-count-label {
-        color: var(--accent-cyan);
-    }
+    .timeline-node:hover .node-count { color: var(--signal); }
     
-    .timeline-dot {
+    /* The dot */
+    .node-dot {
         width: 10px;
         height: 10px;
         border-radius: 50%;
-        border: 2px solid var(--bg-secondary);
+        background: var(--border-bright);
+        border: 2px solid var(--surface);
         position: relative;
         z-index: 2;
-        transition: transform 0.3s var(--ease-spring), box-shadow 0.3s;
-        cursor: pointer;
+        transition: all 0.3s var(--spring);
     }
     
-    .timeline-dot:hover {
-        transform: scale(1.8);
-        box-shadow: var(--glow-cyan);
+    .timeline-node:hover .node-dot {
+        background: var(--signal);
+        box-shadow: 0 0 20px var(--signal-glow);
+        transform: scale(1.6);
     }
     
-    .timeline-dot.surge {
-        background: var(--accent-orange);
-        animation: pulse 2s ease-in-out infinite;
-        width: 14px;
-        height: 14px;
+    .node-dot.large {
+        width: 16px;
+        height: 16px;
+        background: var(--signal);
     }
     
-    .timeline-dot.high {
-        background: var(--accent-blue);
+    .node-dot.pulse {
+        animation: signalPulse 2s ease-in-out infinite;
     }
     
-    .timeline-dot.medium {
-        background: var(--accent-purple);
-    }
-    
-    .timeline-dot.low {
-        background: var(--border-bright);
-    }
-    
-    .timeline-month-label {
+    /* Node label */
+    .node-label {
         font-size: 9px;
-        color: var(--text-faint);
+        letter-spacing: 0.1em;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-top: var(--space-lg);
+        color: var(--text-faint);
+        margin-top: 20px;
         white-space: nowrap;
     }
     
-    /* Density bar under dot */
-    .timeline-density {
-        width: 4px;
-        height: 0;
-        background: var(--accent-cyan);
+    /* Density bar */
+    .node-density {
+        width: 3px;
+        background: var(--signal);
         border-radius: 2px;
-        margin-top: 4px;
-        transition: height 0.5s var(--ease-out);
-        max-height: 40px;
+        margin-top: 8px;
+        transition: height 0.8s var(--ease);
+        max-height: 48px;
     }
     
-    /* ═══════════════════════════════════════════════════════════════════════
-       MILESTONES
-       ═══════════════════════════════════════════════════════════════════════ */
+    /* Timeline scroll hint */
+    .timeline-hint {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        font-size: 10px;
+        color: var(--text-faint);
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        margin-bottom: 24px;
+        opacity: 0;
+        transition: opacity 0.5s var(--ease);
+    }
+    
+    .timeline-hint.visible { opacity: 1; }
+    
+    /* ════════════════════════════════════════════════════════════════
+       MILESTONES — Designed cards, not emoji lists
+       ════════════════════════════════════════════════════════════════ */
     
     .milestones-section {
-        padding-top: var(--space-4xl);
-        padding-bottom: var(--space-4xl);
+        background: var(--deep);
+        padding: 80px 0;
     }
     
     .milestones-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-        gap: var(--space-md);
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 16px;
     }
     
     .milestone-card {
-        background: var(--bg-card);
+        background: var(--card);
         border: 1px solid var(--border);
-        border-radius: var(--radius-lg);
-        padding: var(--space-xl);
+        border-radius: 4px;
+        padding: 28px;
         position: relative;
         overflow: hidden;
-        transition: all 0.35s var(--ease-out);
-        cursor: default;
         opacity: 0;
-        animation: revealUp 0.6s var(--ease-out) forwards;
+        transform: translateY(32px);
+        transition: all 0.5s var(--ease);
     }
     
+    .milestone-card.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    /* Signal accent on left */
     .milestone-card::before {
         content: '';
         position: absolute;
-        top: 0; left: 0; right: 0;
-        height: 2px;
-        background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: var(--signal);
         opacity: 0;
         transition: opacity 0.3s;
     }
     
     .milestone-card:hover {
-        background: var(--bg-card-hover);
-        border-color: rgba(59, 130, 246, 0.3);
-        transform: translateY(-4px);
+        background: var(--card-hover);
+        border-color: var(--border-bright);
+        transform: translateY(-3px);
     }
     
     .milestone-card:hover::before { opacity: 1; }
     
-    .milestone-icon {
-        font-size: 20px;
-        margin-bottom: var(--space-md);
-    }
-    
+    /* Card type label */
     .milestone-type {
         font-size: 9px;
         font-weight: 700;
+        letter-spacing: 0.2em;
         text-transform: uppercase;
-        letter-spacing: 2px;
-        color: var(--accent-blue);
-        margin-bottom: var(--space-sm);
+        color: var(--signal);
+        margin-bottom: 12px;
     }
     
     .milestone-title {
-        font-size: 0.95rem;
-        font-weight: 700;
-        margin-bottom: 6px;
-        letter-spacing: -0.2px;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 8px;
+        line-height: 1.4;
     }
     
-    .milestone-subtitle {
+    .milestone-desc {
         font-size: 12px;
-        color: var(--text-secondary);
-        margin-bottom: var(--space-md);
-        line-height: 1.5;
+        color: var(--text-dim);
         font-style: italic;
+        line-height: 1.5;
+        margin-bottom: 20px;
     }
     
-    .milestone-footer {
+    .milestone-foot {
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
     
     .milestone-date {
+        font-family: 'JetBrains Mono', monospace;
         font-size: 10px;
         color: var(--text-faint);
     }
     
     .milestone-hash {
-        font-size: 9px;
         font-family: 'JetBrains Mono', monospace;
-        color: var(--accent-cyan);
-        background: var(--accent-cyan-dim);
-        padding: 2px 8px;
-        border-radius: var(--radius-sm);
+        font-size: 9px;
+        color: var(--signal);
+        background: var(--signal-dim);
+        padding: 3px 8px;
+        border-radius: 2px;
     }
     
-    .milestone-card.first {
-        border-color: rgba(16, 185, 129, 0.3);
+    /* First card spans full width */
+    .milestone-card.wide {
         grid-column: 1 / -1;
-        padding: var(--space-2xl);
     }
     
-    .milestone-card.first::before {
-        background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));
+    .milestone-card.wide .milestone-title {
+        font-size: 18px;
     }
     
-    .milestone-card.first .milestone-type { color: var(--accent-green); }
+    /* ════════════════════════════════════════════════════════════════
+       ACTIVITY RING — Replace the heatmap with something iconic
+       ════════════════════════════════════════════════════════════════ */
     
-    .milestone-card.version {
-        border-color: rgba(245, 158, 11, 0.25);
+    .activity-section {
+        padding: 80px 0;
     }
     
-    .milestone-card.version::before {
-        background: linear-gradient(90deg, var(--accent-orange), var(--accent-pink));
-    }
-    
-    .milestone-card.version .milestone-type { color: var(--accent-orange); }
-    
-    .milestone-card.comeback {
-        border-color: rgba(139, 92, 246, 0.25);
-    }
-    
-    .milestone-card.comeback::before {
-        background: linear-gradient(90deg, var(--accent-purple), var(--accent-blue));
-    }
-    
-    .milestone-card.comeback .milestone-type { color: var(--accent-purple); }
-    
-    .milestone-card.burst {
-        border-color: rgba(245, 158, 11, 0.2);
-    }
-    
-    .milestone-card.burst .milestone-type { color: var(--accent-orange); }
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       HEATMAP
-       ═══════════════════════════════════════════════════════════════════════ */
-    
-    .heatmap-section {
-        background: var(--bg-secondary);
-        padding-top: var(--space-4xl);
-        padding-bottom: var(--space-4xl);
-    }
-    
-    .heatmap-container {
-        display: flex;
-        justify-content: center;
-        overflow-x: auto;
-        padding: var(--space-md) 0;
-    }
-    
-    .heatmap-row {
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
-        margin-right: 4px;
-    }
-    
-    .heatmap-cell {
-        width: 13px;
-        height: 13px;
-        border-radius: 3px;
-        background: var(--bg-card);
-        transition: transform 0.2s var(--ease-spring), box-shadow 0.2s;
-        cursor: pointer;
-    }
-    
-    .heatmap-cell:hover {
-        transform: scale(1.5);
-        z-index: 10;
-    }
-    
-    .heatmap-cell.l1 { background: rgba(59, 130, 246, 0.15); }
-    .heatmap-cell.l2 { background: rgba(59, 130, 246, 0.3); }
-    .heatmap-cell.l3 { background: rgba(59, 130, 246, 0.5); }
-    .heatmap-cell.l4 { background: rgba(59, 130, 246, 0.75); }
-    .heatmap-cell.l5 { background: var(--accent-blue); box-shadow: var(--glow-blue); }
-    
-    .heatmap-legend {
-        display: flex;
+    .activity-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 64px;
         align-items: center;
-        justify-content: center;
-        gap: var(--space-sm);
-        margin-top: var(--space-xl);
-        font-size: 10px;
-        color: var(--text-faint);
     }
     
-    .heatmap-legend span:first-child { margin-right: 4px; }
+    .activity-text h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 16px;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.6s var(--ease);
+    }
     
-    /* ═══════════════════════════════════════════════════════════════════════
-       CONTRIBUTORS
-       ═══════════════════════════════════════════════════════════════════════ */
+    .activity-text h3.visible { opacity: 1; transform: translateY(0); }
+    
+    .activity-text p {
+        font-size: 14px;
+        color: var(--text-dim);
+        line-height: 1.7;
+        opacity: 0;
+        transform: translateY(16px);
+        transition: all 0.6s var(--ease) 0.1s;
+    }
+    
+    .activity-text p.visible { opacity: 1; transform: translateY(0); }
+    
+    /* Activity ring chart */
+    .ring-wrap {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transform: scale(0.8);
+        transition: all 0.8s var(--ease);
+    }
+    
+    .ring-wrap.visible { opacity: 1; transform: scale(1); }
+    
+    .ring-svg {
+        width: 260px;
+        height: 260px;
+    }
+    
+    /* ════════════════════════════════════════════════════════════════
+       CONTRIBUTORS — Clean, ranked
+       ════════════════════════════════════════════════════════════════ */
     
     .contributors-section {
-        padding-top: var(--space-4xl);
-        padding-bottom: var(--space-4xl);
+        background: var(--deep);
+        padding: 80px 0;
     }
     
     .contributors-list {
-        max-width: 720px;
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-sm);
+        max-width: 680px;
     }
     
-    .contributor-row {
+    .contributor-item {
         display: flex;
         align-items: center;
-        gap: var(--space-lg);
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: var(--radius-md);
-        padding: var(--space-lg) var(--space-xl);
-        transition: all 0.3s var(--ease-out);
+        gap: 20px;
+        padding: 20px 0;
+        border-bottom: 1px solid var(--border);
         opacity: 0;
-        animation: slideRight 0.5s var(--ease-out) forwards;
+        transform: translateX(-20px);
+        transition: all 0.5s var(--ease);
     }
     
-    .contributor-row:hover {
-        background: var(--bg-card-hover);
-        border-color: var(--border-bright);
-        transform: translateX(6px);
+    .contributor-item.visible {
+        opacity: 1;
+        transform: translateX(0);
     }
     
-    .contributor-rank {
-        width: 32px;
-        height: 32px;
-        border-radius: var(--radius-sm);
+    .contributor-item:hover { padding-left: 8px; }
+    
+    /* Rank badge */
+    .rank-badge {
+        width: 36px;
+        height: 36px;
+        border-radius: 4px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-weight: 800;
-        font-size: 12px;
-        flex-shrink: 0;
         font-family: 'JetBrains Mono', monospace;
+        font-weight: 700;
+        font-size: 13px;
+        flex-shrink: 0;
     }
     
-    .contributor-rank.r1 {
-        background: linear-gradient(135deg, #b45309, #f59e0b);
-        color: white;
-    }
-    
-    .contributor-rank.r2 {
-        background: linear-gradient(135deg, #475569, #94a3b8);
-        color: white;
-    }
-    
-    .contributor-rank.r3 {
-        background: linear-gradient(135deg, #78350f, #b45309);
-        color: white;
-    }
-    
-    .contributor-rank.rn {
-        background: var(--bg-secondary);
-        color: var(--text-faint);
-    }
+    .rank-badge.gold { background: linear-gradient(135deg, #d4a800, #f0c800); color: #0a0800; }
+    .rank-badge.silver { background: linear-gradient(135deg, #6b7280, #9ca3af); color: #0a0a0a; }
+    .rank-badge.bronze { background: linear-gradient(135deg, #92400e, #b45309); color: #fff; }
+    .rank-badge.other { background: var(--card); color: var(--text-faint); }
     
     .contributor-info { flex: 1; min-width: 0; }
     
     .contributor-name {
         font-weight: 600;
-        font-size: 14px;
-        margin-bottom: 8px;
+        font-size: 15px;
+        margin-bottom: 10px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
     
-    .contributor-bar-track {
-        height: 5px;
-        background: var(--bg-secondary);
-        border-radius: 3px;
+    .contributor-bar {
+        height: 4px;
+        background: var(--border);
+        border-radius: 2px;
         overflow: hidden;
     }
     
-    .contributor-bar-fill {
+    .contributor-fill {
         height: 100%;
-        border-radius: 3px;
-        background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+        background: var(--signal);
+        border-radius: 2px;
+        transition: width 1.5s var(--ease);
         width: 0;
-        transition: width 1.2s var(--ease-out);
     }
     
-    .contributor-stats { text-align: right; flex-shrink: 0; }
+    .contributor-fill.anim { /* width set via JS */ }
     
-    .contributor-commits {
+    .contributor-count {
+        text-align: right;
+        flex-shrink: 0;
+    }
+    
+    .contributor-num {
         font-family: 'JetBrains Mono', monospace;
         font-weight: 700;
-        font-size: 16px;
-        color: var(--accent-cyan);
+        font-size: 20px;
+        color: var(--text);
+        line-height: 1;
     }
     
     .contributor-pct {
         font-size: 10px;
-        color: var(--text-muted);
+        color: var(--text-faint);
         margin-top: 2px;
     }
     
-    /* ═══════════════════════════════════════════════════════════════════════
-       CERTIFICATE (The Shareable Artifact)
-       ═══════════════════════════════════════════════════════════════════════ */
+    /* ════════════════════════════════════════════════════════════════
+       CERTIFICATE — The share artifact. Make it feel like a launch card.
+       ════════════════════════════════════════════════════════════════ */
     
-    .certificate-section {
-        padding-top: var(--space-4xl);
-        padding-bottom: var(--space-4xl);
-        background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-deep) 100%);
+    .cert-section {
+        padding: 80px 0 120px;
+        background: linear-gradient(180deg, var(--deep) 0%, var(--void) 100%);
     }
     
-    .certificate-wrapper {
-        max-width: 680px;
+    .cert-wrap {
+        max-width: 760px;
         margin: 0 auto;
     }
     
-    .certificate {
-        background: var(--bg-card);
-        border-radius: var(--radius-xl);
-        padding: var(--space-3xl);
+    .cert-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 56px;
         position: relative;
         overflow: hidden;
-        animation: borderGlow 4s ease-in-out infinite;
+        opacity: 0;
+        transform: scale(0.94) translateY(40px);
+        transition: all 0.8s var(--ease);
     }
     
-    /* Glowing border effect */
-    .certificate::before {
+    .cert-card.visible {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+    
+    /* Signal accent corner */
+    .cert-card::before {
         content: '';
         position: absolute;
-        inset: 0;
-        border-radius: var(--radius-xl);
-        padding: 2px;
-        background: linear-gradient(
-            135deg,
-            var(--accent-blue),
-            var(--accent-cyan),
-            var(--accent-purple),
-            var(--accent-green)
-        );
-        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-        -webkit-mask-composite: xor;
-        mask-composite: exclude;
-        opacity: 0.5;
-        animation: borderGlow 4s ease-in-out infinite;
+        top: 0;
+        right: 0;
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(circle at top right, var(--signal-dim), transparent 70%);
+        pointer-events: none;
     }
     
-    .certificate-inner {
-        position: relative;
-        z-index: 1;
+    /* Header */
+    .cert-header {
+        text-align: center;
+        margin-bottom: 48px;
     }
     
-    .cert-eyebrow {
-        display: flex;
-        justify-content: center;
-        margin-bottom: var(--space-xl);
-    }
-    
-    .cert-badge {
+    .cert-logo {
         display: inline-flex;
         align-items: center;
-        gap: var(--space-sm);
-        background: var(--accent-blue-dim);
-        border: 1px solid rgba(59, 130, 246, 0.2);
-        border-radius: 50px;
-        padding: 6px 14px;
+        gap: 10px;
+        background: var(--signal-dim);
+        border: 1px solid rgba(226,255,58,0.2);
+        border-radius: 100px;
+        padding: 8px 20px;
+        margin-bottom: 28px;
+    }
+    
+    .cert-logo-mark {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .cert-logo-text {
         font-size: 10px;
         font-weight: 700;
+        letter-spacing: 0.2em;
         text-transform: uppercase;
-        letter-spacing: 1.5px;
-        color: var(--accent-blue);
+        color: var(--signal);
     }
     
-    .cert-badge .icon {
+    .cert-project-name {
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        margin-bottom: 16px;
+        line-height: 1.1;
+    }
+    
+    .cert-tagline {
         font-size: 14px;
-    }
-    
-    .cert-title {
-        text-align: center;
-        font-size: 1.6rem;
-        font-weight: 900;
-        letter-spacing: -1px;
-        margin-bottom: var(--space-xs);
-    }
-    
-    .cert-subtitle {
-        text-align: center;
-        font-size: 14px;
-        color: var(--accent-cyan);
-        font-family: 'JetBrains Mono', monospace;
-        margin-bottom: var(--space-2xl);
-    }
-    
-    .cert-story-summary {
-        text-align: center;
-        font-size: 13px;
-        color: var(--text-secondary);
+        color: var(--text-dim);
         font-style: italic;
-        margin-bottom: var(--space-2xl);
-        padding: 0 var(--space-lg);
+        max-width: 480px;
+        margin: 0 auto;
+        line-height: 1.7;
     }
     
+    /* Stats grid */
     .cert-grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: var(--space-md);
-        margin-bottom: var(--space-xl);
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 40px;
     }
     
     .cert-stat {
-        background: var(--bg-secondary);
+        background: var(--surface);
         border: 1px solid var(--border);
-        border-radius: var(--radius-md);
-        padding: var(--space-xl) var(--space-lg);
+        border-radius: 4px;
+        padding: 24px 16px;
         text-align: center;
-        transition: border-color 0.3s, background 0.3s;
+        transition: all 0.3s;
     }
     
     .cert-stat:hover {
-        border-color: rgba(59, 130, 246, 0.3);
-        background: var(--bg-card-hover);
+        border-color: rgba(226,255,58,0.3);
+        background: var(--card-hover);
     }
     
-    .cert-stat-value {
-        font-size: 2rem;
-        font-weight: 800;
+    .cert-stat-val {
         font-family: 'JetBrains Mono', monospace;
-        letter-spacing: -1px;
-        background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text);
+        letter-spacing: -0.03em;
         line-height: 1;
         margin-bottom: 6px;
     }
     
-    .cert-stat-label {
+    .cert-stat-lbl {
         font-size: 9px;
         font-weight: 700;
+        letter-spacing: 0.15em;
         text-transform: uppercase;
-        letter-spacing: 1.5px;
-        color: var(--text-muted);
+        color: var(--text-faint);
     }
     
-    .cert-divider {
+    /* Divider */
+    .cert-div {
         height: 1px;
-        background: linear-gradient(90deg, transparent, var(--border-bright), transparent);
-        margin: var(--space-xl) 0;
+        background: linear-gradient(90deg, transparent, var(--border), transparent);
+        margin: 32px 0;
     }
     
+    /* Date range */
     .cert-dates {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: var(--space-md);
-        margin-bottom: var(--space-xl);
+        gap: 16px;
+        margin-bottom: 40px;
     }
     
-    .cert-date-block {
-        text-align: center;
-        padding: var(--space-lg);
-        background: var(--bg-secondary);
+    .cert-date-box {
+        background: var(--surface);
         border: 1px solid var(--border);
-        border-radius: var(--radius-md);
+        border-radius: 4px;
+        padding: 20px;
+        text-align: center;
     }
     
-    .cert-date-label {
+    .cert-date-lbl {
         font-size: 9px;
         font-weight: 700;
+        letter-spacing: 0.15em;
         text-transform: uppercase;
-        letter-spacing: 1px;
         color: var(--text-faint);
-        margin-bottom: 4px;
+        margin-bottom: 6px;
     }
     
-    .cert-date-value {
+    .cert-date-val {
+        font-family: 'JetBrains Mono', monospace;
         font-size: 13px;
         font-weight: 600;
-        color: var(--text-primary);
+        color: var(--text);
     }
     
-    .cert-footer {
+    /* Footer */
+    .cert-foot {
         display: flex;
         justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
-        gap: var(--space-md);
+        gap: 16px;
     }
     
-    .cert-footer-left {
+    .cert-foot-l {
         font-size: 11px;
         color: var(--text-faint);
     }
     
-    .cert-footer-left strong {
-        color: var(--text-secondary);
-    }
+    .cert-foot-l strong { color: var(--text-dim); }
     
-    .cert-share-btn {
+    .cert-cta {
         display: inline-flex;
         align-items: center;
-        gap: var(--space-sm);
-        background: var(--accent-blue-dim);
-        border: 1px solid rgba(59, 130, 246, 0.3);
-        border-radius: 50px;
-        padding: 10px 20px;
-        font-size: 12px;
+        gap: 10px;
+        background: var(--signal);
+        color: #0a0a00;
+        border: none;
+        border-radius: 100px;
+        padding: 14px 28px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 13px;
         font-weight: 700;
-        color: var(--accent-blue);
         cursor: pointer;
-        transition: all 0.3s;
         text-decoration: none;
+        transition: all 0.3s var(--ease);
     }
     
-    .cert-share-btn:hover {
-        background: rgba(59, 130, 246, 0.25);
+    .cert-cta:hover {
         transform: translateY(-2px);
-        box-shadow: var(--glow-blue);
+        box-shadow: 0 8px 32px var(--signal-glow);
     }
     
-    .cert-share-btn svg {
-        width: 14px;
-        height: 14px;
+    .cert-cta svg {
+        width: 16px;
+        height: 16px;
     }
     
-    .cert-tagline {
-        text-align: center;
-        font-size: 14px;
-        color: var(--text-muted);
-        font-style: italic;
-        margin-top: var(--space-xl);
-        padding: 0 var(--space-lg);
-    }
-    
-    /* ═══════════════════════════════════════════════════════════════════════
+    /* ════════════════════════════════════════════════════════════════
        FOOTER
-       ═══════════════════════════════════════════════════════════════════════ */
+       ════════════════════════════════════════════════════════════════ */
     
-    .footer {
+    .foot {
         text-align: center;
-        padding: var(--space-3xl) var(--space-lg);
+        padding: 48px 32px;
         border-top: 1px solid var(--border);
         font-size: 12px;
         color: var(--text-faint);
     }
     
-    .footer a {
-        color: var(--accent-blue);
+    .foot a {
+        color: var(--signal);
         text-decoration: none;
         font-weight: 600;
     }
     
-    .footer a:hover { text-decoration: underline; }
+    .foot a:hover { text-decoration: underline; }
     
-    /* ═══════════════════════════════════════════════════════════════════════
+    /* ════════════════════════════════════════════════════════════════
        RESPONSIVE
-       ═══════════════════════════════════════════════════════════════════════ */
+       ════════════════════════════════════════════════════════════════ */
     
     @media (max-width: 768px) {
-        .hero-stats { gap: var(--space-xl); }
+        .canvas { padding: 0 20px; }
+        section { padding: 64px 0; }
         
-        .milestone-card.first { grid-column: 1; }
+        .hero-stats {
+            grid-template-columns: repeat(2, auto);
+            gap: 24px 0;
+        }
         
+        .hero-stat { padding: 0 32px 16px 0; }
+        .hero-stat:not(:last-child)::after { right: 8px; height: 24px; }
+        
+        .activity-layout { grid-template-columns: 1fr; }
         .cert-grid { grid-template-columns: repeat(2, 1fr); }
-        .cert-dates { grid-template-columns: 1fr 1fr; }
+        .cert-card { padding: 36px 24px; }
         
-        .certificate { padding: var(--space-2xl) var(--space-xl); }
-        
-        .hero-meta { flex-direction: column; gap: var(--space-sm); }
-        
-        .contributor-row { padding: var(--space-md) var(--space-lg); }
+        .milestones-grid { grid-template-columns: 1fr; }
+        .milestone-card.wide { grid-column: 1; }
     }
     
     @media (max-width: 480px) {
-        .cert-grid { grid-template-columns: 1fr 1fr; gap: var(--space-sm); }
-        .cert-stat { padding: var(--space-lg) var(--space-sm); }
-        .cert-stat-value { font-size: 1.5rem; }
-    }
-    
-    /* ═══════════════════════════════════════════════════════════════════════
-       UTILITIES
-       ═══════════════════════════════════════════════════════════════════════ */
-    
-    .mono { font-family: 'JetBrains Mono', monospace; }
-    
-    /* Hide scrollbar but keep functionality */
-    .timeline-track::-webkit-scrollbar { height: 0; }
-    
-    /* Print-friendly */
-    @media print {
-        body { background: white; color: black; }
-        .hero { min-height: auto; padding: 40px 0; }
-        .particle { display: none; }
-        .certificate { border: 1px solid #ccc; }
+        .cert-grid { grid-template-columns: 1fr 1fr; }
+        .hero-meta { flex-direction: column; gap: 16px; }
     }
     </style>
 </head>
 <body>
 
-<!-- Particle field background -->
-<div id="particles"></div>
+<!-- Ambient background -->
+<div class="bg-ambient"></div>
+<div class="bg-grid"></div>
 
-<!-- ═══════════════════════════════════════════════════════════════════════
-     HERO
-     ═══════════════════════════════════════════════════════════════════════ -->
-<section class="hero" id="hero">
-    <div class="container">
+<!-- ════════════════════════════════════════════════════════════════
+     HERO — THE OPENING
+     ════════════════════════════════════════════════════════════════ -->
+<section class="hero">
+    <div class="canvas">
         
-        <!-- Story arc badge -->
-        <div class="story-arc-badge">
-            <span class="dot"></span>
-            <span id="story-arc-label">Showed up regularly. This was deliberate, consistent work.</span>
+        <!-- Arc label -->
+        <div class="arc-label">
+            <span class="arc-tag">The Marathon</span>
         </div>
         
         <!-- Title -->
-        <h1 class="hero-title">tmpy2kiu54g</h1>
+        <div class="hero-title">
+            <span class="hero-title-inner display">Commit Canvas</span>
+        </div>
         
-        <!-- Summary line -->
-        <p class="hero-summary">Showed up regularly. This was deliberate, consistent work.</p>
+        <!-- Underline -->
+        <div class="hero-line"></div>
+        
+        <!-- Hook -->
+        <p class="hero-hook">Showed up for 18 days. That&#39;s not luck — that&#39;s discipline.</p>
         
         <!-- Stats -->
         <div class="hero-stats">
             <div class="hero-stat">
-                <div class="hero-stat-value">18</div>
-                <div class="hero-stat-label">Total Commits</div>
+                <div class="hero-stat-value" data-target="18">18</div>
+                <div class="hero-stat-label">Commits</div>
             </div>
             <div class="hero-stat">
-                <div class="hero-stat-value">18</div>
+                <div class="hero-stat-value" data-target="18">18</div>
                 <div class="hero-stat-label">Active Days</div>
             </div>
             <div class="hero-stat">
-                <div class="hero-stat-value">2</div>
+                <div class="hero-stat-value" data-target="1">1</div>
                 <div class="hero-stat-label">Best Streak</div>
             </div>
             <div class="hero-stat">
                 <div class="hero-stat-value">1</div>
-                <div class="hero-stat-label">Contributors</div>
+                <div class="hero-stat-label">Contributor</div>
             </div>
         </div>
         
         <!-- Meta -->
         <div class="hero-meta">
             <div class="hero-meta-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="3" y="4" width="18" height="18" rx="2"/>
                     <line x1="16" y1="2" x2="16" y2="6"/>
                     <line x1="8" y1="2" x2="8" y2="6"/>
                     <line x1="3" y1="10" x2="21" y2="10"/>
                 </svg>
-                Jan 16, 2024
+                Jan 2024 — Jun 2024
             </div>
             <div class="hero-meta-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="12" r="10"/>
                     <polyline points="12 6 12 12 16 14"/>
                 </svg>
                 4 months
             </div>
             <div class="hero-meta-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-                </svg>
-                0.12 commits/day avg
+                <span class="signal-dot"></span>
+                Last activity: Jun 11, 2024
             </div>
+        </div>
+        
+        <!-- Scroll cue -->
+        <div class="scroll-cue" id="scroll-cue">
+            <span>Scroll</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"/>
+            </svg>
         </div>
     </div>
-    
-    <!-- Scroll hint -->
-    <a href="#timeline" class="scroll-hint">
-        <span>Scroll to explore</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="6 9 12 15 18 9"/>
-        </svg>
-    </a>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════════════════
-     TIMELINE
-     ═══════════════════════════════════════════════════════════════════════ -->
-<section class="timeline-section" id="timeline">
-    <div class="container">
+<!-- ════════════════════════════════════════════════════════════════
+     TIMELINE — The journey draws itself
+     ════════════════════════════════════════════════════════════════ -->
+<section class="timeline-section">
+    <div class="canvas">
         
-        <div class="section-header reveal">
-            <div class="section-label">Journey</div>
-            <h2 class="section-title">The Timeline</h2>
-            <p class="section-desc">Every month, compressed. Drag to explore. Hover for details.</p>
+        <div class="section-head" data-reveal>
+            <div class="section-num">01</div>
+            <h2 class="section-name">The Journey</h2>
         </div>
         
-        <div class="timeline-wrapper reveal reveal-delay-1">
-            <div class="timeline-scroll-hint">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="5 9 2 12 5 15"/>
-                    <polyline points="9 5 12 2 15 5"/>
-                    <polyline points="15 19 12 22 9 19"/>
-                    <polyline points="19 9 22 12 19 15"/>
-                    <line x1="2" y1="12" x2="22" y2="12"/>
-                    <line x1="12" y1="2" x2="12" y2="22"/>
-                </svg>
-                Drag to scroll
-            </div>
-            
-            <div class="timeline-track" id="timeline-track">
-                <div class="timeline-line"></div>
+        <div class="timeline-hint" id="tl-hint">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20"/>
+            </svg>
+            Drag to explore
+        </div>
+        
+        <div class="timeline-canvas" id="tl-canvas">
+            <div class="timeline-track">
+                <div class="timeline-axis" id="tl-axis"></div>
                 
                 
-                <div class="timeline-month" title="January 2024: 5 commits by 1 contributor(s)">
-                    <div class="timeline-count-label">5</div>
-                    
-                    
-                    
-                    
-                    
-                        <div class="timeline-dot high"></div>
-                    
-                    
-                    <div class="timeline-month-label">Jan 2024</div>
-                    <div class="timeline-density" style="height: 6.0px; opacity: 0.3333333333333333;"></div>
+                
+                
+                
+                <div class="timeline-node" data-reveal-tl style="transition-delay: 0.0s" title="January 2024: 3 commits">
+                    <div class="node-count">3</div>
+                    <div class="node-dot "></div>
+                    <div class="node-label">Jan '24</div>
+                    <div class="node-density" style="height: 10.0px; opacity: 0.3333333333333333;"></div>
                 </div>
                 
-                <div class="timeline-month" title="February 2024: 4 commits by 1 contributor(s)">
-                    <div class="timeline-count-label">4</div>
-                    
-                    
-                    
-                    
-                    
-                        <div class="timeline-dot medium"></div>
-                    
-                    
-                    <div class="timeline-month-label">Feb 2024</div>
-                    <div class="timeline-density" style="height: 6.0px; opacity: 0.3333333333333333;"></div>
+                
+                
+                
+                <div class="timeline-node" data-reveal-tl style="transition-delay: 0.06s" title="February 2024: 4 commits">
+                    <div class="node-count">4</div>
+                    <div class="node-dot large"></div>
+                    <div class="node-label">Feb '24</div>
+                    <div class="node-density" style="height: 10.0px; opacity: 0.3333333333333333;"></div>
                 </div>
                 
-                <div class="timeline-month" title="March 2024: 2 commits by 1 contributor(s)">
-                    <div class="timeline-count-label">2</div>
-                    
-                    
-                    
-                    
-                    
-                        <div class="timeline-dot low"></div>
-                    
-                    
-                    <div class="timeline-month-label">Mar 2024</div>
-                    <div class="timeline-density" style="height: 6.0px; opacity: 0.3333333333333333;"></div>
+                
+                
+                
+                <div class="timeline-node" data-reveal-tl style="transition-delay: 0.12s" title="March 2024: 4 commits">
+                    <div class="node-count">4</div>
+                    <div class="node-dot large"></div>
+                    <div class="node-label">Mar '24</div>
+                    <div class="node-density" style="height: 10.0px; opacity: 0.3333333333333333;"></div>
                 </div>
                 
-                <div class="timeline-month" title="April 2024: 2 commits by 1 contributor(s)">
-                    <div class="timeline-count-label">2</div>
-                    
-                    
-                    
-                    
-                    
-                        <div class="timeline-dot low"></div>
-                    
-                    
-                    <div class="timeline-month-label">Apr 2024</div>
-                    <div class="timeline-density" style="height: 6.0px; opacity: 0.3333333333333333;"></div>
+                
+                
+                
+                <div class="timeline-node" data-reveal-tl style="transition-delay: 0.18s" title="April 2024: 3 commits">
+                    <div class="node-count">3</div>
+                    <div class="node-dot "></div>
+                    <div class="node-label">Apr '24</div>
+                    <div class="node-density" style="height: 10.0px; opacity: 0.3333333333333333;"></div>
                 </div>
                 
-                <div class="timeline-month" title="May 2024: 2 commits by 1 contributor(s)">
-                    <div class="timeline-count-label">2</div>
-                    
-                    
-                    
-                    
-                    
-                        <div class="timeline-dot low"></div>
-                    
-                    
-                    <div class="timeline-month-label">May 2024</div>
-                    <div class="timeline-density" style="height: 6.0px; opacity: 0.3333333333333333;"></div>
+                
+                
+                
+                <div class="timeline-node" data-reveal-tl style="transition-delay: 0.24s" title="May 2024: 2 commits">
+                    <div class="node-count">2</div>
+                    <div class="node-dot "></div>
+                    <div class="node-label">May '24</div>
+                    <div class="node-density" style="height: 10.0px; opacity: 0.3333333333333333;"></div>
                 </div>
                 
-                <div class="timeline-month" title="June 2024: 3 commits by 1 contributor(s)">
-                    <div class="timeline-count-label">3</div>
-                    
-                    
-                    
-                    
-                    
-                        <div class="timeline-dot medium"></div>
-                    
-                    
-                    <div class="timeline-month-label">Jun 2024</div>
-                    <div class="timeline-density" style="height: 6.0px; opacity: 0.3333333333333333;"></div>
+                
+                
+                
+                <div class="timeline-node" data-reveal-tl style="transition-delay: 0.3s" title="June 2024: 2 commits">
+                    <div class="node-count">2</div>
+                    <div class="node-dot  pulse"></div>
+                    <div class="node-label">Jun '24</div>
+                    <div class="node-density" style="height: 10.0px; opacity: 0.3333333333333333;"></div>
                 </div>
+                
                 
             </div>
         </div>
     </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════════════════
-     MILESTONES
-     ═══════════════════════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════════════════════════
+     MILESTONES — The turning points
+     ════════════════════════════════════════════════════════════════ -->
 <section class="milestones-section">
-    <div class="container">
+    <div class="canvas">
         
-        <div class="section-header reveal">
-            <div class="section-label">Key Moments</div>
-            <h2 class="section-title">Project Milestones</h2>
-            <p class="section-desc">The turning points that shaped this journey.</p>
+        <div class="section-head" data-reveal>
+            <div class="section-num">02</div>
+            <h2 class="section-name">Turning Points</h2>
         </div>
         
         <div class="milestones-grid">
             
-            <div class="milestone-card first_commit first reveal" style="animation-delay: 0.0s">
-                <div class="milestone-icon">🚀</div>
-                <div class="milestone-type">first commit</div>
+            <div class="milestone-card wide" data-reveal-card style="transition-delay: 0.0s">
+                <div class="milestone-type">First Commit</div>
                 <div class="milestone-title">The Beginning</div>
-                <div class="milestone-subtitle">"Add core parser module"</div>
-                <div class="milestone-footer">
-                    <span class="milestone-date">Jan 16, 2024</span>
+                <div class="milestone-desc">Initial commit — project bootstrap</div>
+                <div class="milestone-foot">
+                    <span class="milestone-date">Jan 15, 2024</span>
                     
-                    <span class="milestone-hash">d43530f</span>
+                    <span class="milestone-hash">1e1d464</span>
                     
                 </div>
             </div>
             
-            <div class="milestone-card recent reveal" style="animation-delay: 0.08s">
-                <div class="milestone-icon">✨</div>
-                <div class="milestone-type">recent</div>
+            <div class="milestone-card" data-reveal-card style="transition-delay: 0.07s">
+                <div class="milestone-type">Latest Work</div>
                 <div class="milestone-title">Latest Work</div>
-                <div class="milestone-subtitle">"Final polish before open source"</div>
-                <div class="milestone-footer">
+                <div class="milestone-desc">Finalize v1.0.0 release</div>
+                <div class="milestone-foot">
                     <span class="milestone-date">Jun 11, 2024</span>
                     
-                    <span class="milestone-hash">f628aae</span>
+                    <span class="milestone-hash">31d6a87</span>
                     
                 </div>
             </div>
             
-            <div class="milestone-card version reveal" style="animation-delay: 0.16s">
-                <div class="milestone-icon">🏷️</div>
-                <div class="milestone-type">version</div>
+            <div class="milestone-card" data-reveal-card style="transition-delay: 0.14s">
+                <div class="milestone-type">Release</div>
+                <div class="milestone-title">v1.0.0</div>
+                <div class="milestone-desc">Released v1.0.0</div>
+                <div class="milestone-foot">
+                    <span class="milestone-date">Jun 11, 2026</span>
+                    
+                </div>
+            </div>
+            
+            <div class="milestone-card" data-reveal-card style="transition-delay: 0.21000000000000002s">
+                <div class="milestone-type">Release</div>
+                <div class="milestone-title">v0.5.0</div>
+                <div class="milestone-desc">Released v0.5.0</div>
+                <div class="milestone-foot">
+                    <span class="milestone-date">Jun 11, 2026</span>
+                    
+                </div>
+            </div>
+            
+            <div class="milestone-card" data-reveal-card style="transition-delay: 0.28s">
+                <div class="milestone-type">Release</div>
                 <div class="milestone-title">v0.1.0</div>
-                <div class="milestone-subtitle">"Released v0.1.0"</div>
-                <div class="milestone-footer">
+                <div class="milestone-desc">Released v0.1.0</div>
+                <div class="milestone-foot">
                     <span class="milestone-date">Jun 11, 2026</span>
                     
                 </div>
@@ -1447,1759 +1280,67 @@
     </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════════════════
-     HEATMAP
-     ═══════════════════════════════════════════════════════════════════════ -->
-<section class="heatmap-section">
-    <div class="container">
+<!-- ════════════════════════════════════════════════════════════════
+     ACTIVITY — The ring view
+     ════════════════════════════════════════════════════════════════ -->
+<section class="activity-section">
+    <div class="canvas">
         
-        <div class="section-header reveal">
-            <div class="section-label">Consistency</div>
-            <h2 class="section-title">Activity Heatmap</h2>
-            <p class="section-desc">Every day of work. Dark squares are rest days. Bright squares are work days.</p>
+        <div class="section-head" data-reveal>
+            <div class="section-num">03</div>
+            <h2 class="section-name">Activity Pattern</h2>
         </div>
         
-        <div class="heatmap-container reveal reveal-delay-1">
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
+        <div class="activity-layout">
+            <div class="activity-text" data-reveal>
+                <h3>18 days of work.</h3>
+                <p>Every streak started with a first commit. This one has 18 of them.</p>
             </div>
             
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
+            <div class="ring-wrap" data-reveal>
+                <svg class="ring-svg" viewBox="0 0 260 260">
+                    <!-- Background ring -->
+                    <circle cx="130" cy="130" r="110" fill="none" stroke="#1a1f32" stroke-width="20"/>
+                    <!-- Active days ring -->
+                    <circle cx="130" cy="130" r="110" fill="none" stroke="#e2ff3a" stroke-width="20"
+                        stroke-dasharray="84 691.15"
+                        stroke-linecap="round"
+                        transform="rotate(-90 130 130)"
+                        style="transition: stroke-dasharray 1.5s ease-out 0.5s; opacity: 0.3; filter: drop-shadow(0 0 8px rgba(226,255,58,0.4));"/>
+                    <!-- Inner text -->
+                    <text x="130" y="120" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="700" font-size="40" fill="#d4d8e8">18</text>
+                    <text x="130" y="145" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="11" fill="#7a8199" letter-spacing="0.15em" text-transform="uppercase">ACTIVE DAYS</text>
+                    <text x="130" y="165" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#454b62">1-day best</text>
+                </svg>
             </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-            <div class="heatmap-row">
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-                    
-                    <div class="heatmap-cell"></div>
-                    
-                
-            </div>
-            
-        </div>
-        
-        <div class="heatmap-legend reveal reveal-delay-2">
-            <span>Less</span>
-            <div class="heatmap-cell"></div>
-            <div class="heatmap-cell l1"></div>
-            <div class="heatmap-cell l2"></div>
-            <div class="heatmap-cell l3"></div>
-            <div class="heatmap-cell l4"></div>
-            <div class="heatmap-cell l5"></div>
-            <span>More</span>
         </div>
     </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════════════════
-     CONTRIBUTORS
-     ═══════════════════════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════════════════════════
+     CONTRIBUTORS — Ranked
+     ════════════════════════════════════════════════════════════════ -->
 <section class="contributors-section">
-    <div class="container">
+    <div class="canvas">
         
-        <div class="section-header reveal">
-            <div class="section-label">The Team</div>
-            <h2 class="section-title">Top Contributors</h2>
-            <p class="section-desc">The people who made this project real.</p>
+        <div class="section-head" data-reveal>
+            <div class="section-num">04</div>
+            <h2 class="section-name">The Team</h2>
         </div>
         
         <div class="contributors-list">
             
-            <div class="contributor-row reveal" style="animation-delay: 0.0s">
-                
-                    <div class="contributor-rank r1">1</div>
-                
-                
+            
+            <div class="contributor-item" data-reveal-cont style="transition-delay: 0.0s">
+                <div class="rank-badge gold">1</div>
                 <div class="contributor-info">
-                    <div class="contributor-name">RRRTX</div>
-                    <div class="contributor-bar-track">
-                        <div class="contributor-bar-fill" data-width="100.0%"></div>
+                    <div class="contributor-name">Developer</div>
+                    <div class="contributor-bar">
+                        <div class="contributor-fill" style="--target-width: 100.0%"></div>
                     </div>
                 </div>
-                
-                <div class="contributor-stats">
-                    <div class="contributor-commits">18</div>
+                <div class="contributor-count">
+                    <div class="contributor-num">18</div>
                     <div class="contributor-pct">100.0%</div>
                 </div>
             </div>
@@ -3208,211 +1349,185 @@
     </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════════════════
-     CONTRIBUTION CERTIFICATE
-     ═══════════════════════════════════════════════════════════════════════ -->
-<section class="certificate-section">
-    <div class="container">
+<!-- ════════════════════════════════════════════════════════════════
+     CERTIFICATE — The artifact
+     ════════════════════════════════════════════════════════════════ -->
+<section class="cert-section">
+    <div class="canvas">
         
-        <div class="section-header reveal">
-            <div class="section-label">Share Your Story</div>
-            <h2 class="section-title">Contribution Certificate</h2>
-            <p class="section-desc">This is your proof of work. Share it anywhere.</p>
+        <div class="section-head" data-reveal>
+            <div class="section-num">05</div>
+            <h2 class="section-name">Proof of Work</h2>
         </div>
         
-        <div class="certificate-wrapper reveal reveal-delay-1">
-            <div class="certificate">
-                <div class="certificate-inner">
-                    
-                    <div class="cert-eyebrow">
-                        <div class="cert-badge">
-                            <span class="icon">🏆</span>
-                            Certificate of Achievement
-                        </div>
+        <div class="cert-wrap">
+            <div class="cert-card" data-reveal-cert>
+                
+                <div class="cert-header">
+                    <!-- Canvas mark -->
+                    <div class="cert-logo">
+                        <svg class="cert-logo-mark" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" stroke="#e2ff3a" stroke-width="1.5"/>
+                            <path d="M8 12 L12 8 L16 12 L12 16 Z" fill="#e2ff3a" opacity="0.8"/>
+                            <circle cx="12" cy="12" r="2" fill="#e2ff3a"/>
+                        </svg>
+                        <span class="cert-logo-text">Project Story</span>
                     </div>
                     
-                    <h3 class="cert-title">Project Story</h3>
-                    <div class="cert-subtitle">tmpy2kiu54g</div>
-                    <div class="cert-story-summary">"Showed up regularly. This was deliberate, consistent work."</div>
-                    
-                    <div class="cert-grid">
-                        <div class="cert-stat">
-                            <div class="cert-stat-value">18</div>
-                            <div class="cert-stat-label">Commits</div>
-                        </div>
-                        <div class="cert-stat">
-                            <div class="cert-stat-value">18</div>
-                            <div class="cert-stat-label">Active Days</div>
-                        </div>
-                        <div class="cert-stat">
-                            <div class="cert-stat-value">2</div>
-                            <div class="cert-stat-label">Best Streak</div>
-                        </div>
-                        <div class="cert-stat">
-                            <div class="cert-stat-value">1</div>
-                            <div class="cert-stat-label">Contributors</div>
-                        </div>
+                    <h3 class="cert-project-name">Commit Canvas</h3>
+                    <p class="cert-tagline">Showed up for 18 days. That&#39;s not luck — that&#39;s discipline.</p>
+                </div>
+                
+                <div class="cert-grid">
+                    <div class="cert-stat">
+                        <div class="cert-stat-val">18</div>
+                        <div class="cert-stat-lbl">Commits</div>
                     </div>
-                    
-                    <div class="cert-divider"></div>
-                    
-                    <div class="cert-dates">
-                        <div class="cert-date-block">
-                            <div class="cert-date-label">Started</div>
-                            <div class="cert-date-value">January 16, 2024</div>
-                        </div>
-                        <div class="cert-date-block">
-                            <div class="cert-date-label">Last Update</div>
-                            <div class="cert-date-value">June 11, 2024</div>
-                        </div>
+                    <div class="cert-stat">
+                        <div class="cert-stat-val">18</div>
+                        <div class="cert-stat-lbl">Active Days</div>
                     </div>
-                    
-                    <div class="cert-footer">
-                        <div class="cert-footer-left">
-                            Generated by <strong>Commit Canvas</strong> · Open Source · Zero Cost
-                        </div>
-                        <a href="https://github.com/ahmadrrrtx/commit-canvas" target="_blank" class="cert-share-btn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="18" cy="5" r="3"/>
-                                <circle cx="6" cy="12" r="3"/>
-                                <circle cx="18" cy="19" r="3"/>
-                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-                                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-                            </svg>
-                            Share This Story
-                        </a>
+                    <div class="cert-stat">
+                        <div class="cert-stat-val">1</div>
+                        <div class="cert-stat-lbl">Best Streak</div>
                     </div>
-                    
-                    <div class="cert-tagline">"4 months of deliberate work, told in data."</div>
+                    <div class="cert-stat">
+                        <div class="cert-stat-val">1</div>
+                        <div class="cert-stat-lbl">Contributor</div>
+                    </div>
+                </div>
+                
+                <div class="cert-div"></div>
+                
+                <div class="cert-dates">
+                    <div class="cert-date-box">
+                        <div class="cert-date-lbl">First Commit</div>
+                        <div class="cert-date-val">January 15, 2024</div>
+                    </div>
+                    <div class="cert-date-box">
+                        <div class="cert-date-lbl">Last Commit</div>
+                        <div class="cert-date-val">June 11, 2024</div>
+                    </div>
+                </div>
+                
+                <div class="cert-foot">
+                    <div class="cert-foot-l">
+                        Generated by <strong>Commit Canvas</strong> · Open Source · Zero Cost
+                    </div>
+                    <a href="https://github.com/ahmadrrrtx/commit-canvas" target="_blank" class="cert-cta">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="18" cy="5" r="3"/>
+                            <circle cx="6" cy="12" r="3"/>
+                            <circle cx="18" cy="19" r="3"/>
+                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                        </svg>
+                        Generate Your Story
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════════════════
-     FOOTER
-     ═══════════════════════════════════════════════════════════════════════ -->
-<footer class="footer">
-    <div class="container">
-        Built with <strong>Commit Canvas</strong> · 
-        <a href="https://github.com/ahmadrrrtx/commit-canvas" target="_blank">Open Source</a> · 
-        Zero cost · Zero auth · Pure git
+<!-- FOOTER -->
+<footer class="foot">
+    <div class="canvas">
+        Built with <a href="https://github.com/ahmadrrrtx/commit-canvas" target="_blank">Commit Canvas</a> · Open Source · Zero Cost · Pure Git
     </div>
 </footer>
 
 <script>
-// ═══════════════════════════════════════════════════════════════════════════
-// COMMIT CANVAS — ELITE MOTION SYSTEM
-// ═══════════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════
+// CANVAS — Motion System
+// ══════════════════════════════════════════════════════════════════
 
-// ── Particle field ──────────────────────────────────────────────────────────
-(function initParticles() {
-    const container = document.getElementById('particles');
-    const count = Math.min(40, window.innerWidth / 25);
-    
-    for (let i = 0; i < count; i++) {
-        const p = document.createElement('div');
-        p.className = 'particle';
-        p.style.left = Math.random() * 100 + '%';
-        p.style.bottom = '-10px';
-        p.style.animationDuration = (15 + Math.random() * 25) + 's';
-        p.style.animationDelay = (Math.random() * 15) + 's';
-        container.appendChild(p);
-    }
-})();
-
-// ── Intersection Observer for scroll reveals ─────────────────────────────────
-(function initScrollReveal() {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
+(function() {
+    // ── Scroll reveal for sections ────────────────────────────────
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) e.target.classList.add('visible');
         });
-    }, {
-        threshold: 0.08,
-        rootMargin: '0px 0px -40px 0px'
-    });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-})();
-
-// ── Timeline drag scroll ────────────────────────────────────────────────────
-(function initTimelineScroll() {
-    const track = document.getElementById('timeline-track');
-    if (!track) return;
+    document.querySelectorAll('[data-reveal]').forEach(el => revealObserver.observe(el));
+    document.querySelectorAll('[data-reveal-card]').forEach(el => revealObserver.observe(el));
+    document.querySelectorAll('[data-reveal-cert]').forEach(el => revealObserver.observe(el));
     
-    let isDown = false;
-    let startX;
-    let scrollLeft;
+    // ── Timeline draw-on-scroll ────────────────────────────────────
+    const tlCanvas = document.getElementById('tl-canvas');
+    const tlAxis = document.getElementById('tl-axis');
+    const tlHint = document.getElementById('tl-hint');
     
-    track.addEventListener('mousedown', (e) => {
-        isDown = true;
-        track.style.cursor = 'grabbing';
-        startX = e.pageX - track.offsetLeft;
-        scrollLeft = track.scrollLeft;
-    });
+    if (tlAxis) {
+        const tlObserver = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    tlAxis.classList.add('drawn');
+                    tlHint.classList.add('visible');
+                    
+                    // Reveal nodes in sequence
+                    document.querySelectorAll('.timeline-node').forEach((node, i) => {
+                        setTimeout(() => node.classList.add('visible'), i * 80);
+                    });
+                    
+                    tlObserver.disconnect();
+                }
+            });
+        }, { threshold: 0.2 });
+        
+        tlObserver.observe(tlCanvas);
+    }
     
-    track.addEventListener('mouseleave', () => {
-        isDown = false;
-        track.style.cursor = 'grab';
-    });
+    // ── Timeline drag scroll ───────────────────────────────────────
+    if (tlCanvas) {
+        let isDown = false, startX, scrollLeft;
+        
+        tlCanvas.addEventListener('mousedown', e => {
+            isDown = true;
+            tlCanvas.style.cursor = 'grabbing';
+            startX = e.pageX - tlCanvas.offsetLeft;
+            scrollLeft = tlCanvas.scrollLeft;
+        });
+        
+        tlCanvas.addEventListener('mouseleave', () => { isDown = false; tlCanvas.style.cursor = 'grab'; });
+        tlCanvas.addEventListener('mouseup', () => { isDown = false; tlCanvas.style.cursor = 'grab'; });
+        
+        tlCanvas.addEventListener('mousemove', e => {
+            if (!isDown) return;
+            e.preventDefault();
+            tlCanvas.scrollLeft = scrollLeft - (e.pageX - tlCanvas.offsetLeft - startX) * 2;
+        });
+        
+        // Touch
+        tlCanvas.addEventListener('touchstart', e => {
+            startX = e.touches[0].pageX - tlCanvas.offsetLeft;
+            scrollLeft = tlCanvas.scrollLeft;
+        }, { passive: true });
+        
+        tlCanvas.addEventListener('touchmove', e => {
+            tlCanvas.scrollLeft = scrollLeft - (e.touches[0].pageX - tlCanvas.offsetLeft - startX) * 1.5;
+        }, { passive: true });
+    }
     
-    track.addEventListener('mouseup', () => {
-        isDown = false;
-        track.style.cursor = 'grab';
-    });
-    
-    track.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-        e.preventDefault();
-        const x = e.pageX - track.offsetLeft;
-        track.scrollLeft = scrollLeft - (x - startX) * 2;
-    });
-    
-    // Touch support
-    track.addEventListener('touchstart', (e) => {
-        startX = e.touches[0].pageX - track.offsetLeft;
-        scrollLeft = track.scrollLeft;
-    }, { passive: true });
-    
-    track.addEventListener('touchmove', (e) => {
-        const x = e.touches[0].pageX - track.offsetLeft;
-        track.scrollLeft = scrollLeft - (x - startX) * 1.5;
-    }, { passive: true });
-})();
-
-// ── Contributor bars animate on scroll ──────────────────────────────────────
-(function initContributorBars() {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const bar = entry.target.querySelector('.contributor-bar-fill');
-                if (bar && bar.dataset.width) {
-                    bar.style.width = bar.dataset.width;
+    // ── Contributor bars animate on scroll ────────────────────────
+    const contObserver = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                const fill = e.target.querySelector('.contributor-fill');
+                if (fill && fill.style.getPropertyValue('--target-width')) {
+                    fill.style.width = fill.style.getPropertyValue('--target-width');
                 }
             }
         });
     }, { threshold: 0.5 });
     
-    document.querySelectorAll('.contributor-row').forEach(row => {
-        observer.observe(row);
+    document.querySelectorAll('.contributor-item').forEach(row => contObserver.observe(row));
+    
+    // ── Scroll cue → smooth scroll to timeline ─────────────────────
+    document.getElementById('scroll-cue')?.addEventListener('click', () => {
+        document.querySelector('.timeline-section')?.scrollIntoView({ behavior: 'smooth' });
     });
-})();
-
-// ── Scroll indicator smooth scroll ──────────────────────────────────────────
-document.querySelector('.scroll-hint')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    document.querySelector('#timeline')?.scrollIntoView({ behavior: 'smooth' });
-});
-
-// ── Story arc label from data ───────────────────────────────────────────────
-(function updateStoryArc() {
-    const label = document.getElementById('story-arc-label');
-    if (label && window.storySummary) {
-        label.textContent = window.storySummary;
-    }
 })();
 </script>
 

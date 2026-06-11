@@ -70,3 +70,5 @@ story.html
 demo/*.html
 !demo/vite-story.html
 !demo/commit-canvas-story.html
+# Backup files
+index_page_backup.html

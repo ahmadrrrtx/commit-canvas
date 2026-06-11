@@ -22,14 +22,10 @@ def render_story(data: dict, output_path: str, template_dir: str = None) -> str:
     env.globals['max'] = max
     env.globals['min'] = min
     
-    # Prepare data for template — clean structure
     enriched = prepare_data(data)
-    
-    # Render
     template = env.get_template("story.html")
     html = template.render(**enriched)
     
-    # Write output
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write(html)
     
@@ -37,21 +33,11 @@ def render_story(data: dict, output_path: str, template_dir: str = None) -> str:
 
 
 def prepare_data(data: dict) -> dict:
-    """Shape the data for the template — clean, safe, complete."""
-    
-    # Handle missing values with defaults
-    repo_name = data.get('repo_name', 'My Project')
-    
-    # Heatmap structure
-    heatmap_raw = data.get('heatmap', {})
-    heatmap_weeks = heatmap_raw.get('weeks', [[0] * 7 for _ in range(52)])
-    
-    # Story summary from the narrative engine
-    story_summary = data.get('story_summary', _default_summary(data))
+    """Shape data for the template."""
     
     return {
         # Identity
-        'repo_name': repo_name,
+        'repo_name': data.get('repo_name', 'My Project'),
         
         # Core stats
         'total_commits': data.get('total_commits', 0),
@@ -67,24 +53,19 @@ def prepare_data(data: dict) -> dict:
         'project_age_readable': data.get('project_age_readable', 'new project'),
         'avg_commits_per_day': data.get('avg_commits_per_day', 0),
         
-        # Narrative engine
-        'story_arc': data.get('story_arc', 'unknown'),
-        'story_summary': story_summary,
+        # Story engine
+        'story_arc': data.get('story_arc', 'fresh_start'),
+        'story_arc_label': data.get('story_arc_label', 'Fresh Start'),
+        'story_summary': data.get('story_summary', _default_summary(data)),
         'growth_ratio': data.get('growth_ratio', 1.0),
         'phases': data.get('phases', []),
         
-        # Content sections
-        'commits': data.get('commits', []),
+        # Content
         'timeline': data.get('timeline', []),
         'milestones': data.get('milestones', []),
         'contributors': data.get('contributors', []),
+        'heatmap': data.get('heatmap', {}),
         'memorable': data.get('memorable', []),
-        
-        # Heatmap (weeks array)
-        'heatmap': {
-            'weeks': heatmap_weeks,
-            'month_labels': heatmap_raw.get('month_labels', [])
-        },
         
         # Metadata
         'tags': data.get('tags', [])[:20],
@@ -93,14 +74,7 @@ def prepare_data(data: dict) -> dict:
 
 
 def _default_summary(data: dict) -> str:
-    """Generate a summary when the story engine doesn't provide one."""
     commits = data.get('total_commits', 0)
-    days = data.get('total_active_days', 0)
-    contributors = data.get('total_contributors', 0)
-    
     if commits < 5:
         return "Just getting started. Every journey begins with a single commit."
-    elif contributors > 1:
-        return f"{contributors} people, {commits} commits, {days} days of collaboration."
-    else:
-        return f"{commits} commits over {days} days. Solo work, done with intention."
+    return f"{commits} commits of deliberate work, told in data."
