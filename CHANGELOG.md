@@ -6,6 +6,39 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [2.0.0] — 2026-09-01
+
+The "your code has a story" release — a full product rebuild around one renderer, one model, and two entry points (CLI + web).
+
+### 🎉 Added
+
+- **Time Machine** — the flagship: scrub or autoplay through the repository's life; commits, contributors, file counts, net lines, and language mix update per month, with a representative commit for each month.
+- **Story engine v2** — evidence-grounded chapters: The Beginning, The Sprint, The Silence, The Grind, The Launch, The Evolution. Every fact string traces to real timestamps/counts.
+- **Developer fingerprint** — archetype system (Night Builder, Early Riser, Weekend Hacker, Sprinter, Marathoner, Shipper, Cleaner, Lone Wolf, Steady Hand) computed from the dominant author's git behavior, framed as behavior — not psychology.
+- **Roast My Git** — deterministic, evidence-backed quips (vague commit names, giant commits, disappearances, 2–5 AM activity…).
+- **The Moment & Glow Up** — the highest-scoring event in the project's life (biggest day / biggest commit / release) and first-commit → today.
+- **Share cards** — 1200×630 and 1080×1920 PNG cards drawn client-side on canvas, plus a screenshot-ready certificate.
+- **Web version** — paste a public GitHub URL on the landing page; the analysis runs fully in-browser (GitHub REST API), renders the same story, and assembles the same downloadable `story.html`. Mirrors the Python narrative rules in JS.
+- **Landing page v2** — real embedded Flask story as the live demo, animated commit-graph hero, honest privacy section, `tools/build.py --check` keeps generated files honest in CI.
+- **Full-lifetime calendar** + weekday×hour punch card, replacing the old last-52-weeks heatmap.
+- `--json` CLI flag to export the raw analysis model; `--max-commits` cap for huge repos.
+
+### 🔧 Changed / Fixed
+
+- **True zero dependencies** — v1 shipped `run.sh` claiming "needs only git + python3" but the generator imported Jinja2 (and setup.py declared GitPython, unused). v2 renders by injecting JSON into a static shell: stdlib only.
+- **Parser correctness** — v1 split git log fields on `|`, silently dropping/corrupting commits whose messages contained pipes. Now uses `\x1f` separators + `errors="replace"`.
+- **Merge commits preserved** — v1 passed `--no-merges`, losing the branch/merge story. Merges are now counted and shown.
+- **Tags read in one subprocess** — v1 ran one `git log` per tag (O(N) subprocesses). Now a single `for-each-ref`.
+- **O(n) heatmap** — v1's heatmap was O(commits × 365) and anchored to *today* (old repos rendered an empty grid). Now a single-pass lifetime calendar.
+- **File/line evolution** — replayed chronologically with `--summary` create/delete-mode authority (numstat alone cannot distinguish a file deletion from a pure line-shrink).
+- New design system (`web/story.css`): editorial dark, one accent, system type, reduced-motion support, semantic sections, sr-only chart summaries.
+
+### 🗑️ Removed
+
+- Jinja2 template pipeline (`cc/templates/`), `cc/parser.py`, `cc/generator.py`, unused requirements.
+
+---
+
 ## [1.0.0] — 2026-06-11
 
 ### 🎉 Added

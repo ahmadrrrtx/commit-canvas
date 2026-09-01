@@ -65,10 +65,9 @@ venv.bak/
 
 # Project-specific
 story.html
-*.story.html
 .cc-story-temp/
 demo/*.html
-!demo/vite-story.html
+!demo/flask-story.html
 !demo/commit-canvas-story.html
 # Backup files
 index_page_backup.html

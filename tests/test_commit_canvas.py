@@ -1,496 +1,275 @@
 """
 Commit Canvas — Test Suite
-Validates parser and generator correctness across edge cases.
+Engine correctness, edge-case repositories, story assembly, build freshness.
 Run with: python -m pytest tests/ -v
 """
 
+import json
 import os
-import tempfile
 import subprocess
 import sys
-from datetime import datetime
+import tempfile
+import shutil
 
 import pytest
 
-# Add parent to path for imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from cc.parser import (
-    analyze_repo, get_commits, get_tags, calculate_streaks,
-    calculate_contributors, build_timeline, detect_milestones,
-    generate_heatmap, detect_project_story, get_repo_name
-)
-from cc.generator import render_story, prepare_data
+from cc.analyzer import analyze, is_git_repo, read_raw_history, streaks  # noqa: E402
+from cc.story import render_story, safe_json_payload  # noqa: E402
 
 
-# ─── FIXTURES ───────────────────────────────────────────────────────────────
+# ─── helpers ────────────────────────────────────────────────────────────────
 
-@pytest.fixture
-def git_repo():
-    """Create a temporary git repo with known commits for testing."""
-    with tempfile.TemporaryDirectory() as tmpdir:
-        # Init git repo
-        subprocess.run(["git", "init"], cwd=tmpdir, capture_output=True)
-        subprocess.run(
-            ["git", "config", "user.email", "test@example.com"],
-            cwd=tmpdir, capture_output=True
-        )
-        subprocess.run(
-            ["git", "config", "user.name", "Test User"],
-            cwd=tmpdir, capture_output=True
-        )
-        
-        # Create commits spread across 5 different days (using --date to ensure unique days)
-        base = "2024-01-01"
-        dates = [
-            f"{base} 10:00:00",
-            "2024-01-02 10:00:00",
-            "2024-01-03 10:00:00",
-            "2024-01-04 10:00:00",
-            "2024-01-05 10:00:00",
-        ]
-        for i, date in enumerate(dates):
-            filepath = os.path.join(tmpdir, f"file_{i}.txt")
-            with open(filepath, "w") as f:
-                f.write(f"content {i}")
-            
-            subprocess.run(["git", "add", "."], cwd=tmpdir, capture_output=True)
-            subprocess.run(
-                ["git", "commit", "-m", f"Commit {i}: Added file {i}",
-                 "--date", date],
-                cwd=tmpdir, capture_output=True
-            )
-        
-        yield tmpdir
-
-
-@pytest.fixture
-def empty_git_repo():
-    """Create an empty git repo (no commits)."""
-    with tempfile.TemporaryDirectory() as tmpdir:
-        subprocess.run(["git", "init"], cwd=tmpdir, capture_output=True)
-        subprocess.run(
-            ["git", "config", "user.email", "test@example.com"],
-            cwd=tmpdir, capture_output=True
-        )
-        subprocess.run(
-            ["git", "config", "user.name", "Test User"],
-            cwd=tmpdir, capture_output=True
-        )
-        yield tmpdir
+def make_repo(path, commits, merges=None, tags=None):
+    """commits: list of (date, message, filename, content, author)"""
+    commits = list(commits)
+    env = {
+        **os.environ,
+        "GIT_AUTHOR_NAME": "Test Author",
+        "GIT_AUTHOR_EMAIL": "test@example.com",
+        "GIT_COMMITTER_NAME": "Test Author",
+        "GIT_COMMITTER_EMAIL": "test@example.com",
+    }
+    def git(*args, **kw):
+        subprocess.run(["git", "-C", path] + list(args),
+                       check=True, capture_output=True, env=kw.get("env", env))
+    os.makedirs(path, exist_ok=True)
+    git("init", "-q")
+    branches = {}
+    for i, c in enumerate(commits):
+        date, msg, fname, content, *rest = (list(c) + [None, None, None])[:5]
+        author = rest[0] or "Test Author"
+        e = dict(env)
+        e["GIT_AUTHOR_NAME"] = e["GIT_COMMITTER_NAME"] = author
+        e["GIT_AUTHOR_EMAIL"] = e["GIT_COMMITTER_EMAIL"] = (
+            author.replace(" ", ".").lower() + "@example.com")
+        fp = os.path.join(path, fname)
+        os.makedirs(os.path.dirname(fp), exist_ok=True)
+        with open(fp, "w", encoding="utf-8") as f:
+            f.write(content)
+        git("add", "-A", env=e)
+        git("commit", "-q", "--allow-empty", "-m", msg, "--date", date, env=e)
+    if merges:
+        for branch, merge_msg, date in merges:
+            git("checkout", "-q", "-b", branch)
+            fp = os.path.join(path, f"{branch}.txt")
+            with open(fp, "w") as f:
+                f.write("branch work\n")
+            git("add", "-A")
+            git("commit", "-q", "-m", f"work on {branch}", "--date", date)
+            git("checkout", "-q", "master")  # may be main on newer git
+            git("merge", "-q", "--no-ff", "-m", merge_msg, branch,
+                env={**env, "GIT_COMMITTER_DATE": date})
+    if tags:
+        for name, ref in tags:
+            git("tag", name, ref)
+    return path
 
 
 @pytest.fixture
-def single_commit_repo():
-    """Create a repo with exactly one commit."""
-    with tempfile.TemporaryDirectory() as tmpdir:
-        subprocess.run(["git", "init"], cwd=tmpdir, capture_output=True)
-        subprocess.run(
-            ["git", "config", "user.email", "solo@example.com"],
-            cwd=tmpdir, capture_output=True
-        )
-        subprocess.run(
-            ["git", "config", "user.name", "Solo Dev"],
-            cwd=tmpdir, capture_output=True
-        )
-        
-        filepath = os.path.join(tmpdir, "README.md")
-        with open(filepath, "w") as f:
-            f.write("# Hello World")
-        
-        subprocess.run(["git", "add", "."], cwd=tmpdir, capture_output=True)
-        subprocess.run(
-            ["git", "commit", "-m", "Initial commit"],
-            cwd=tmpdir, capture_output=True
-        )
-        
-        yield tmpdir
+def tiny_repo(tmp_path):
+    return make_repo(str(tmp_path / "tiny"), [
+        ("2024-01-01T10:00:00", "first commit", "a.txt", "hello\n"),
+        ("2024-01-02T11:00:00", "add feature", "b.txt", "world\n"),
+        ("2024-01-03T09:00:00", "polish", "a.txt", "hello!\n"),
+    ])
 
 
 @pytest.fixture
-def tagged_repo():
-    """Create a repo with version tags."""
-    with tempfile.TemporaryDirectory() as tmpdir:
-        subprocess.run(["git", "init"], cwd=tmpdir, capture_output=True)
-        subprocess.run(
-            ["git", "config", "user.email", "test@example.com"],
-            cwd=tmpdir, capture_output=True
-        )
-        subprocess.run(
-            ["git", "config", "user.name", "Test User"],
-            cwd=tmpdir, capture_output=True
-        )
-        
-        for i in range(3):
-            with open(os.path.join(tmpdir, f"file_{i}.txt"), "w") as f:
-                f.write(f"content {i}")
-            subprocess.run(["git", "add", "."], cwd=tmpdir, capture_output=True)
-            subprocess.run(
-                ["git", "commit", "-m", f"Commit {i}"],
-                cwd=tmpdir, capture_output=True
-            )
-        
-        # Tag a version
-        subprocess.run(["git", "tag", "v1.0.0"], cwd=tmpdir, capture_output=True)
-        
-        yield tmpdir
+def story_repo(tmp_path):
+    """A repo with a real story: burst, long silence, comeback, release."""
+    repo = tmp_path / "story"
+    commits = [
+        ("2023-01-05T10:00:00", "initial commit", "main.py", "print('hi')\n"),
+        ("2023-01-06T10:00:00", "feat: core", "core.py", "x = 1\n" * 20),
+        ("2023-01-07T10:00:00", "feat: more", "util.py", "y = 2\n"),
+        ("2023-02-02T10:00:00", "feat: build out", "app.py", "z = 3\n" * 30),
+        ("2023-02-03T10:00:00", "fix: crash", "app.py", "z = 4\n" * 30),
+        ("2023-02-04T23:30:00", "feat: more more", "x.py", "a\n" * 10),
+        ("2023-02-05T02:00:00", "feat: sprint day", "y.py", "b\n" * 10),
+        # silence: ~5 months
+        ("2023-07-20T10:00:00", "feat: the comeback", "new.py", "c\n" * 50),
+        ("2023-07-21T10:00:00", "feat: comeback 2", "new2.py", "d\n" * 50),
+        ("2023-07-22T10:00:00", "release prep", "ver.py", "v1\n"),
+    ]
+    make_repo(str(repo), commits)
+    subprocess.run(["git", "-C", str(repo), "tag", "v1.0.0", "HEAD"], check=True,
+                   capture_output=True)
+    return str(repo)
 
 
-@pytest.fixture
-def multi_author_repo():
-    """Create a repo with multiple contributors."""
-    with tempfile.TemporaryDirectory() as tmpdir:
-        subprocess.run(["git", "init"], cwd=tmpdir, capture_output=True)
-        
-        # Author 1
-        subprocess.run(["git", "config", "user.email", "alice@example.com"], cwd=tmpdir)
-        subprocess.run(["git", "config", "user.name", "Alice"], cwd=tmpdir)
-        
-        with open(os.path.join(tmpdir, "a.txt"), "w") as f:
-            f.write("alice")
-        subprocess.run(["git", "add", "."], cwd=tmpdir)
-        subprocess.run(["git", "commit", "-m", "Alice: first"], cwd=tmpdir)
-        
-        # Author 2
-        subprocess.run(["git", "config", "user.email", "bob@example.com"], cwd=tmpdir)
-        subprocess.run(["git", "config", "user.name", "Bob"], cwd=tmpdir)
-        
-        with open(os.path.join(tmpdir, "b.txt"), "w") as f:
-            f.write("bob")
-        subprocess.run(["git", "add", "."], cwd=tmpdir)
-        subprocess.run(["git", "commit", "-m", "Bob: second"], cwd=tmpdir)
-        
-        # Author 1 again
-        subprocess.run(["git", "config", "user.email", "alice@example.com"], cwd=tmpdir)
-        subprocess.run(["git", "config", "user.name", "Alice"], cwd=tmpdir)
-        
-        with open(os.path.join(tmpdir, "c.txt"), "w") as f:
-            f.write("alice again")
-        subprocess.run(["git", "add", "."], cwd=tmpdir)
-        subprocess.run(["git", "commit", "-m", "Alice: third"], cwd=tmpdir)
-        
-        yield tmpdir
+# ─── basics ─────────────────────────────────────────────────────────────────
+
+def test_not_a_repo(tmp_path):
+    assert not is_git_repo(str(tmp_path))
 
 
-# ─── PARSER TESTS ────────────────────────────────────────────────────────────
-
-class TestGetRepoName:
-    def test_basic(self, git_repo):
-        name = get_repo_name(git_repo)
-        assert isinstance(name, str)
-        assert len(name) > 0
-
-
-class TestGetCommits:
-    def test_returns_list(self, git_repo):
-        commits = get_commits(git_repo)
-        assert isinstance(commits, list)
-    
-    def test_has_required_fields(self, git_repo):
-        commits = get_commits(git_repo)
-        assert len(commits) == 5
-        for commit in commits:
-            assert 'hash' in commit
-            assert 'short_hash' in commit
-            assert 'author' in commit
-            assert 'date' in commit
-            assert 'message' in commit
-            assert 'message_short' in commit
-    
-    def test_dates_are_datetime_objects(self, git_repo):
-        commits = get_commits(git_repo)
-        for commit in commits:
-            assert isinstance(commit['date'], datetime)
+def test_empty_repo_raises(tmp_path):
+    repo = tmp_path / "empty"
+    repo.mkdir()
+    subprocess.run(["git", "-C", str(repo), "init", "-q"], check=True,
+                   capture_output=True)
+    with pytest.raises(ValueError):
+        analyze(str(repo))
 
 
-class TestCalculateStreaks:
-    def test_streaks_with_consecutive_commits(self, git_repo):
-        commits = get_commits(git_repo)
-        streaks = calculate_streaks(commits)
-        
-        assert 'longest' in streaks
-        assert 'current' in streaks
-        assert 'total_active_days' in streaks
-        assert streaks['total_active_days'] == 5
-        assert streaks['longest'] >= 1
-    
-    def test_single_day_active(self, single_commit_repo):
-        commits = get_commits(single_commit_repo)
-        streaks = calculate_streaks(commits)
-        
-        assert streaks['total_active_days'] == 1
-        assert streaks['longest'] == 1
+def test_tiny_repo_basics(tiny_repo):
+    d = analyze(tiny_repo)
+    assert d["totals"]["commits"] == 3
+    assert d["totals"]["contributors"] == 1
+    assert d["totals"]["active_days"] == 3
+    assert d["months"][0]["files_end"] == 2
+    assert d["shape"]["label"] == "Fresh Start"
+    assert len(d["chapters"]) >= 1
+    assert len(d["roast"]) >= 1
+    assert d["meta"]["has_code_size"] is True
 
 
-class TestCalculateContributors:
-    def test_single_contributor(self, git_repo):
-        commits = get_commits(git_repo)
-        contributors = calculate_contributors(commits)
-        
-        assert len(contributors) == 1
-        assert contributors[0]['commits'] == 5
-        assert contributors[0]['percentage'] == 100.0
-    
-    def test_multiple_contributors(self, multi_author_repo):
-        commits = get_commits(multi_author_repo)
-        contributors = calculate_contributors(commits)
-        
-        assert len(contributors) == 2
-        # Sorted by commits desc
-        assert contributors[0]['commits'] >= contributors[1]['commits']
-        # Percentages add to ~100
-        total_pct = sum(c['percentage'] for c in contributors)
-        assert 99 <= total_pct <= 101
+def test_pipe_in_commit_message(tmp_path):
+    """Regression: v1 split fields on '|' and corrupted/dropped commits."""
+    repo = make_repo(str(tmp_path / "pipes"), [
+        ("2024-01-01T10:00:00", "fix | broken | thing", "a.txt", "1\n"),
+        ("2024-01-02T10:00:00", "normal message", "b.txt", "2\n"),
+    ])
+    commits = read_raw_history(repo)
+    assert len(commits) == 2
+    assert commits[0]["subject"] == "fix | broken | thing"
 
 
-class TestBuildTimeline:
-    def test_months_grouped(self, git_repo):
-        commits = get_commits(git_repo)
-        timeline = build_timeline(commits)
-        
-        assert isinstance(timeline, list)
-        assert len(timeline) >= 1
-        
-        for month in timeline:
-            assert 'month' in month
-            assert 'commit_count' in month
-            assert 'active_days' in month
-            assert 'density' in month
-            assert 'contributors' in month
-            assert month['commit_count'] > 0
+def test_unicode_message_and_file(tmp_path):
+    repo = make_repo(str(tmp_path / "uni"), [
+        ("2024-01-01T10:00:00", "¡Añadido — módulo ñoño! 🎉", "día/árbol.txt", "hola\n"),
+        ("2024-01-02T10:00:00", "обычный коммит", "файл.txt", "привет\n"),
+    ])
+    commits = read_raw_history(repo)
+    assert commits[0]["subject"].startswith("¡Añadido")
+    d = analyze(repo)
+    assert d["totals"]["commits"] == 2
 
 
-class TestDetectMilestones:
-    def test_first_commit_detected(self, git_repo):
-        commits = get_commits(git_repo)
-        milestones = detect_milestones(commits, [])
-        
-        first_types = [m for m in milestones if m['type'] == 'first_commit']
-        assert len(first_types) == 1
-    
-    def test_tags_as_milestones(self, tagged_repo):
-        commits = get_commits(tagged_repo)
-        tags = get_tags(tagged_repo)
-        milestones = detect_milestones(commits, tags)
-        
-        version_milestones = [m for m in milestones if m['type'] == 'version']
-        assert len(version_milestones) >= 1
-    
-    def test_recent_commit_detected(self, git_repo):
-        commits = get_commits(git_repo)
-        milestones = detect_milestones(commits, [])
-        
-        recent_types = [m for m in milestones if m['type'] == 'recent']
-        assert len(recent_types) == 1
+def test_merges_are_counted_and_kept(tmp_path):
+    repo = tmp_path / "merges"
+    commits = [
+        ("2024-01-01T10:00:00", "base", "a.txt", "1\n"),
+        ("2024-01-02T10:00:00", "main work", "b.txt", "2\n"),
+        ("2024-01-03T10:00:00", "more main", "c.txt", "3\n"),
+    ]
+    make_repo(str(repo), commits,
+              merges=[("feature", "Merge branch 'feature'", "2024-01-04T10:00:00")])
+    d = analyze(str(repo))
+    assert d["totals"]["commits"] == 5          # 3 + branch + merge
+    assert d["totals"]["merges"] == 1
 
 
-class TestGenerateHeatmap:
-    def test_returns_52_weeks(self, git_repo):
-        commits = get_commits(git_repo)
-        heatmap = generate_heatmap(commits)
-        
-        assert 'weeks' in heatmap
-        assert len(heatmap['weeks']) > 0
-        
-        for week in heatmap['weeks']:
-            assert len(week) == 7
-    
-    def test_weeks_are_int_lists(self, git_repo):
-        commits = get_commits(git_repo)
-        heatmap = generate_heatmap(commits)
-        
-        for week in heatmap['weeks']:
-            for day in week:
-                assert isinstance(day, int)
-                assert day >= 0
+def test_tags_and_launch_chapter(story_repo):
+    d = analyze(story_repo)
+    assert d["totals"]["tags"] == 1
+    assert any(c["kind"] == "launch" for c in d["chapters"])
+    assert any(m["kind"] == "release" for m in d["milestones"])
 
 
-class TestDetectProjectStory:
-    def test_returns_arc_and_summary(self, git_repo):
-        commits = get_commits(git_repo)
-        timeline = build_timeline(commits)
-        story = detect_project_story(timeline, commits)
-        
-        assert 'arc' in story
-        assert 'summary' in story
-        assert 'phases' in story
-        assert story['arc'] in ['fresh_start', 'growth', 'mature', 'burst', 'consistent', 'unknown']
+def test_silence_and_comeback(story_repo):
+    d = analyze(story_repo)
+    kinds = [c["kind"] for c in d["chapters"]]
+    assert "silence" in kinds
+    silence = [c for c in d["chapters"] if c["kind"] == "silence"][0]
+    assert any("No commits for" in f for f in silence["facts"])
+    assert d["shape"]["arc"] == "return"
 
 
-class TestAnalyzeRepo:
-    def test_full_analysis(self, git_repo):
-        data = analyze_repo(git_repo)
-        
-        assert 'repo_name' in data
-        assert 'total_commits' in data
-        assert 'total_contributors' in data
-        assert 'timeline' in data
-        assert 'milestones' in data
-        assert 'heatmap' in data
-        assert 'story_arc' in data
-        assert 'story_summary' in data
-        
-        assert data['total_commits'] == 5
-    
-    def test_error_on_no_commits(self, empty_git_repo):
-        result = analyze_repo(empty_git_repo)
-        assert 'error' in result
-    
-    def test_error_on_non_git_repo(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            with open(os.path.join(tmpdir, "file.txt"), "w") as f:
-                f.write("not git")
-            
-            with pytest.raises(ValueError, match="[Nn]ot a git repository"):
-                analyze_repo(tmpdir)
+def test_file_deletion_tracking(tmp_path):
+    repo = tmp_path / "dels"
+    commits = [
+        ("2024-01-01T10:00:00", "add two files", "keep.txt", "k\n", "A"),
+        ("2024-01-01T10:05:00", "add temp", "tmp.txt", "t\n" * 10, "A"),
+        ("2024-02-01T10:00:00", "remove temp", "keep.txt", "k\n", "A"),
+    ]
+    make_repo(str(repo), commits)
+    subprocess.run(["git", "-C", str(repo), "rm", "-q", "tmp.txt"],
+                   check=True, capture_output=True)
+    env = {**os.environ,
+           "GIT_AUTHOR_NAME": "A", "GIT_AUTHOR_EMAIL": "a@x.com",
+           "GIT_COMMITTER_NAME": "A", "GIT_COMMITTER_EMAIL": "a@x.com",
+           "GIT_COMMITTER_DATE": "2024-02-01T10:00:00"}
+    subprocess.run(["git", "-C", str(repo), "commit", "-q", "-m", "delete tmp",
+                    "--date", "2024-02-01T10:00:00"],
+                   check=True, capture_output=True, env=env)
+    d = analyze(str(repo))
+    assert d["totals"]["files"] == 1
+    assert d["months"][-1]["files_end"] == 1
+    assert d["months"][0]["files_end"] == 2
 
 
-# ─── GENERATOR TESTS ────────────────────────────────────────────────────────
-
-class TestPrepareData:
-    def test_heatmap_shape(self, git_repo):
-        raw_data = analyze_repo(git_repo)
-        prepared = prepare_data(raw_data)
-        
-        assert 'heatmap' in prepared
-        assert 'weeks' in prepared['heatmap']
-        assert 'month_labels' in prepared['heatmap']
-    
-    def test_story_summary_always_present(self, single_commit_repo):
-        raw_data = analyze_repo(single_commit_repo)
-        prepared = prepare_data(raw_data)
-        
-        assert 'story_summary' in prepared
-        assert isinstance(prepared['story_summary'], str)
-        assert len(prepared['story_summary']) > 0
-    
-    def test_default_values_for_missing_fields(self):
-        """Test that prepare_data handles minimal data gracefully."""
-        minimal = {
-            'repo_name': 'test-repo',
-            'total_commits': 1,
-            'total_contributors': 1,
-        }
-        prepared = prepare_data(minimal)
-        
-        assert prepared['repo_name'] == 'test-repo'
-        assert prepared['total_commits'] == 1
+def test_streaks():
+    from datetime import date
+    days = [date(2024, 1, 1), date(2024, 1, 2), date(2024, 1, 3),
+            date(2024, 1, 10), date(2024, 1, 11)]
+    assert streaks(days)["longest"] == 3
+    assert streaks([])["longest"] == 0
 
 
-class TestRenderStory:
-    def test_generates_html_file(self, git_repo):
-        data = analyze_repo(git_repo)
-        
-        with tempfile.NamedTemporaryFile(suffix='.html', delete=False) as f:
-            output_path = f.name
-        
-        try:
-            result = render_story(data, output_path)
-            
-            assert os.path.exists(output_path)
-            assert os.path.getsize(output_path) > 1000
-            
-            with open(output_path, 'r') as f:
-                content = f.read()
-            
-            assert '<!DOCTYPE html>' in content
-            assert 'Commit Canvas' in content
-            assert data['repo_name'] in content
-            assert '</html>' in content
-            
-            # No Jinja2 artifacts
-            assert '{%' not in content
-            assert '{{' not in content
-            
-        finally:
-            if os.path.exists(output_path):
-                os.unlink(output_path)
-    
-    def test_html_is_self_contained(self, git_repo):
-        """Output HTML must not require any external resources."""
-        data = analyze_repo(git_repo)
-        
-        with tempfile.NamedTemporaryFile(suffix='.html', delete=False) as f:
-            output_path = f.name
-        
-        try:
-            render_story(data, output_path)
-            
-            with open(output_path, 'r') as f:
-                content = f.read()
-            
-            # Self-contained: all CSS inline, no external CSS links (fonts are OK via CDN)
-            assert '<style>' in content
-            
-        finally:
-            if os.path.exists(output_path):
-                os.unlink(output_path)
-    
-    def test_large_repo_handling(self):
-        """Test that the parser can handle repos with thousands of commits."""
-        # This test would require a real large repo, so we just verify
-        # the parser doesn't crash on reasonable data sizes
-        pass  # Integration test with real data
+def test_calendar_covers_lifetime(story_repo):
+    d = analyze(story_repo)
+    cal = d["calendar"]
+    first = d["months"][0]["key"] + "-01"
+    assert cal["start"] == first
+    # Jan 5 2023 → Jul 22 2023 ≈ 199 days span (calendar starts at month start)
+    assert 190 <= len(cal["days"]) <= 210
+    assert sum(cal["days"]) == d["totals"]["commits"]
 
 
-# ─── EDGE CASE TESTS ────────────────────────────────────────────────────────
-
-class TestEdgeCases:
-    def test_empty_repo_message(self, empty_git_repo):
-        data = analyze_repo(empty_git_repo)
-        assert 'error' in data
-        assert 'No commits' in data['error']
-    
-    def test_special_characters_in_commit_messages(self):
-        """Commits with emoji, unicode, special chars should not break parsing."""
-        with tempfile.TemporaryDirectory() as tmpdir:
-            subprocess.run(["git", "init"], cwd=tmpdir)
-            subprocess.run(["git", "config", "user.email", "test@example.com"], cwd=tmpdir)
-            subprocess.run(["git", "config", "user.name", "Test"], cwd=tmpdir)
-            
-            messages = [
-                "Fix: 🚀 Launch bug",
-                "Update: Über cache",
-                "Refactor: <script>alert('xss')</script>",
-                "WIP: #12345 working on it",
-                "中文 commit message",
-            ]
-            
-            for msg in messages:
-                with open(os.path.join(tmpdir, "f.txt"), "w") as f:
-                    f.write(msg)
-                subprocess.run(["git", "add", "."], cwd=tmpdir)
-                subprocess.run(["git", "commit", "-m", msg], cwd=tmpdir)
-            
-            commits = get_commits(tmpdir)
-            assert len(commits) == 5
-    
-    def test_very_long_commit_message(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            subprocess.run(["git", "init"], cwd=tmpdir)
-            subprocess.run(["git", "config", "user.email", "test@example.com"], cwd=tmpdir)
-            subprocess.run(["git", "config", "user.name", "Test"], cwd=tmpdir)
-            
-            long_msg = "A" * 500
-            with open(os.path.join(tmpdir, "f.txt"), "w") as f:
-                f.write("content")
-            subprocess.run(["git", "add", "."], cwd=tmpdir)
-            subprocess.run(["git", "commit", "-m", long_msg], cwd=tmpdir)
-            
-            commits = get_commits(tmpdir)
-            # message_short should truncate to 80 chars + "..."
-            assert len(commits[0]['message_short']) <= 83
-    
-    def test_git_repo_with_no_tags(self, git_repo):
-        commits = get_commits(git_repo)
-        tags = get_tags(git_repo)
-        milestones = detect_milestones(commits, tags)
-        
-        version_milestones = [m for m in milestones if m['type'] == 'version']
-        assert len(version_milestones) == 0
+def test_fingerprint_fields(story_repo):
+    d = analyze(story_repo)
+    fp = d["fingerprint"]
+    assert fp["author"] == "Test Author"
+    assert fp["archetype"]["label"]
+    assert len(fp["hours"]) == 24
+    assert isinstance(fp["traits"], list)
 
 
-# ─── RUN ───────────────────────────────────────────────────────────────────
+def test_night_commits_counted(story_repo):
+    d = analyze(story_repo)
+    assert d["totals"]["night_pct"] > 0   # 23:30 + 02:00 commits exist
 
-if __name__ == "__main__":
-    pytest.main([__file__, "-v", "--tb=short"])
+
+# ─── story assembly ─────────────────────────────────────────────────────────
+
+def test_render_story_writes_file(tiny_repo, tmp_path):
+    out = str(tmp_path / "story.html")
+    d = analyze(tiny_repo)
+    render_story(d, out)
+    html = open(out, encoding="utf-8").read()
+    assert "window.__CC_DATA__" in html
+    assert "__CC_DATA__ = null" not in html
+    assert "CommitCanvas" in html
+    assert "http" not in html.split("<style>")[1].split("</style>")[0].replace("http://www.w3.org", "")  # no external css
+    assert len(html) > 20000
+
+
+def test_render_escapes_script_breakin(tmp_path):
+    """A commit message must never be able to close the data tag."""
+    repo = make_repo(str(tmp_path / "evil"), [
+        ("2024-01-01T10:00:00", "</script><script>alert(1)</script>", "a.txt", "1\n"),
+    ])
+    d = analyze(repo)
+    payload = safe_json_payload(d)
+    assert "</script>" not in payload
+    out = str(tmp_path / "s.html")
+    render_story(d, out)
+    html = open(out, encoding="utf-8").read()
+    assert "alert(1)</script>" not in html
+
+
+def test_model_is_json_serializable(story_repo):
+    d = analyze(story_repo)
+    json.dumps(d)  # must not raise
+
+
+# ─── build freshness ────────────────────────────────────────────────────────
+
+def test_build_outputs_fresh():
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    proc = subprocess.run([sys.executable, os.path.join(root, "tools", "build.py"), "--check"],
+                          capture_output=True, text=True, cwd=root)
+    assert proc.returncode == 0, "canvas.html/index.html are stale — run: python tools/build.py"

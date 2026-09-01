@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commit Canvas — Your code has a story</title>
+<meta name="description" content="Turn any git repository into a cinematic, shareable story — chapters, a time machine, and a developer fingerprint. One command, one file, zero cloud.">
+<meta property="og:title" content="Commit Canvas — Your code has a story">
+<meta property="og:description" content="Chapters. A time machine. A developer fingerprint. All from real git history — locally, offline, in one HTML file.">
+<meta property="og:image" content="assets/og-preview.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Commit Canvas — Your code has a story">
+<meta name="twitter:description" content="Your repository, told like a film. Generated locally from real git data.">
+<meta name="twitter:image" content="assets/og-preview.png">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<style>
+/*__LANDING_CSS__*/
+</style>
+<style>
+/*__STORY_CSS__*/
+</style>
+</head>
+<body class="lp">
+
+<header class="lp-nav">
+  <div class="lp-nav-in">
+    <a class="lp-brand" href="#">
+      <svg class="lp-mark" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+        <rect x="1" y="1" width="24" height="24" rx="6" stroke="#2E3344" stroke-width="1.5"/>
+        <path d="M6 19h6M9 19v-6h6V7" stroke="#2E3344" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="6" cy="19" r="2.4" fill="#E2FF3A"/>
+        <circle cx="12" cy="19" r="2" fill="#687089"/>
+        <circle cx="15" cy="13" r="2" fill="#687089"/>
+        <circle cx="21" cy="7" r="2.4" fill="#E2FF3A"/>
+      </svg>
+      commit canvas
+    </a>
+    <nav class="lp-nav-links" aria-label="Main">
+      <a href="#example">Live example</a>
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#privacy">Privacy</a>
+      <a class="cta" href="#try">Make yours</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="lp-hero" id="try">
+  <div class="lp-hero-grid" aria-hidden="true"></div>
+  <div class="lp-hero-in">
+    <span class="lp-eyebrow"><span class="pulse" aria-hidden="true"></span> git history → cinematic story</span>
+    <h1>Your code has<br>a <span class="accent">story</span>.</h1>
+    <p class="lp-sub">Commit Canvas turns any repository into chapters, a time machine, and a developer fingerprint — generated from real git data. No cloud. No account. One shareable file.</p>
+
+    <form class="lp-try" id="try-form" autocomplete="off">
+      <div class="lp-try-row">
+        <label class="sr-only" for="repo-input">Public GitHub repository URL</label>
+        <input id="repo-input" type="text" inputmode="url" spellcheck="false"
+               placeholder="https://github.com/owner/repo" />
+        <button class="btn-go" id="go-btn" type="submit">Analyze →</button>
+      </div>
+      <p class="lp-try-note">Try <code>pallets/flask</code> · <code>expressjs/express</code> · or your own repo. Private repos work via the <a href="#privacy" style="color:var(--ink-2)">local CLI</a>.</p>
+      <div class="lp-error" id="lp-error" role="alert"></div>
+      <div class="lp-loading" id="lp-loading" aria-live="polite">
+        <ol>
+          <li data-step="repo"><span class="ind"></span> Reading repository…</li>
+          <li data-step="commits"><span class="ind"></span> Fetching commit history…</li>
+          <li data-step="analysis"><span class="ind"></span> Finding chapters, silences & turning points…</li>
+          <li data-step="render"><span class="ind"></span> Painting the canvas…</li>
+        </ol>
+      </div>
+    </form>
+
+    <svg class="lp-hero-svg" viewBox="0 0 760 180" fill="none" aria-hidden="true">
+      <path class="lp-branch hot"    d="M40 130 H700"/>
+      <path class="lp-branch hot d2" d="M180 130 C 260 130 260 60 340 60 H700"/>
+      <path class="lp-branch hot d3" d="M420 130 C 480 130 480 100 540 100 H700"/>
+      <circle class="lp-node hot"    cx="40"  cy="130" r="7"/>
+      <circle class="lp-node"        cx="120" cy="130" r="5"/>
+      <circle class="lp-node hot"    cx="180" cy="130" r="6" style="animation-delay:.4s"/>
+      <circle class="lp-node"        cx="260" cy="130" r="5"/>
+      <circle class="lp-node hot"    cx="340" cy="60"  r="6" style="animation-delay:.9s"/>
+      <circle class="lp-node"        cx="420" cy="130" r="5"/>
+      <circle class="lp-node hot"    cx="420" cy="60"  r="5" style="animation-delay:1.1s"/>
+      <circle class="lp-node hot"    cx="540" cy="100" r="6" style="animation-delay:1.5s"/>
+      <circle class="lp-node"        cx="580" cy="60"  r="5"/>
+      <circle class="lp-node"        cx="600" cy="100" r="5"/>
+      <circle class="lp-node hot"    cx="700" cy="130" r="7" style="animation-delay:2s"/>
+      <circle class="lp-node hot"    cx="700" cy="60"  r="6" style="animation-delay:2.1s"/>
+      <circle class="lp-node hot"    cx="700" cy="100" r="6" style="animation-delay:2.2s"/>
+    </svg>
+  </div>
+</section>
+
+<div class="lp-proof">
+  <div class="lp-proof-in">
+    <span><b>zero</b> network requests in the output</span>
+    <span><b>zero</b> dependencies — python 3.8+ &amp; git</span>
+    <span><b>one</b> self-contained HTML file</span>
+    <span><b>100%</b> deterministic — real data only</span>
+  </div>
+</div>
+
+<!-- ═══════════════ LIVE EXAMPLE ═══════════════ -->
+<section class="lp-sec" id="example">
+  <div class="lp-wrap">
+    <div class="lp-sec-head lp-rv">
+      <span class="lp-kicker">Not a mockup — the real product</span>
+      <h2>A real repository, told properly.</h2>
+      <p>This is a complete Commit Canvas story for <b>Flask</b> — 4,000+ commits, ~15 years of history — embedded below. Scroll inside it. Everything is derived from actual git data.</p>
+    </div>
+    <div class="lp-demo lp-rv">
+      <div class="lp-demo-bar">
+        <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span id="demo-title">flask-story.html · real data</span>
+        <span id="demo-meta"></span>
+      </div>
+      <div class="lp-demo-view" id="demo-mount"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ HOW IT WORKS ═══════════════ -->
+<section class="lp-sec" id="how">
+  <div class="lp-wrap">
+    <div class="lp-sec-head lp-rv">
+      <span class="lp-kicker">Sixty seconds, start to story</span>
+      <h2>Point it at a repository. That's the setup.</h2>
+    </div>
+    <div class="lp-steps">
+      <div class="lp-step lp-rv">
+        <span class="n">1</span>
+        <h3>Point</h3>
+        <p>Any local git repository — yours, private, offline. Or paste a public GitHub URL above and skip the terminal entirely.</p>
+        <code>./run.sh /path/to/your-project</code>
+      </div>
+      <div class="lp-step lp-rv">
+        <span class="n">2</span>
+        <h3>Read</h3>
+        <p>One pass over real history: commits, merges, tags, authors, files, lines, languages. Every claim in the story is grounded in a timestamp.</p>
+        <code><span style="color:var(--ink-3)">→</span> reading history
+<span style="color:var(--ink-3)">→</span> finding turning points</code>
+      </div>
+      <div class="lp-step lp-rv">
+        <span class="n">3</span>
+        <h3>Share</h3>
+        <p>A single HTML file that works offline forever — plus downloadable share cards sized for X, LinkedIn and stories. Screenshot the certificate if that's your thing.</p>
+        <code><span style="color:var(--ink-3)">→</span> story.html  ✓</code>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FEATURES ═══════════════ -->
+<section class="lp-sec" id="features">
+  <div class="lp-wrap">
+    <div class="lp-sec-head lp-rv">
+      <span class="lp-kicker">What's inside a story</span>
+      <h2>Statistics tell you what.<br>Stories tell you why.</h2>
+      <p>GitHub gives you bar charts. Commit Canvas gives you <b>“The project went quiet for 43 days”</b> — and proves it with the commit that ended the silence.</p>
+    </div>
+    <div class="lp-feats">
+      <div class="lp-feat lp-rv">
+        <div class="ic" aria-hidden="true">📖</div>
+        <div>
+          <h3>The story engine</h3>
+          <p>Your history becomes chapters — The Beginning, The Sprint, The Silence, The Comeback, The Launch. Every line is derived from real timestamps and counts, never invented.</p>
+          <span class="tag">deterministic</span>
+        </div>
+      </div>
+      <div class="lp-feat lp-rv">
+        <div class="ic" aria-hidden="true">⏱️</div>
+        <div>
+          <h3>Repository time machine</h3>
+          <p>Scrub or press play and watch the project assemble itself: commits appearing, contributors joining, files and languages growing, month by month.</p>
+          <span class="tag">the flagship</span>
+        </div>
+      </div>
+      <div class="lp-feat lp-rv">
+        <div class="ic" aria-hidden="true">🌙</div>
+        <div>
+          <h3>Developer fingerprint</h3>
+          <p>The Night Builder. The Sprinter. The Shipper. Your git behavior — favorite hours, streaks, bursts, message style — distilled into one honest archetype.</p>
+          <span class="tag">git behavior, not psychology</span>
+        </div>
+      </div>
+      <div class="lp-feat lp-rv">
+        <div class="ic" aria-hidden="true">🔥</div>
+        <div>
+          <h3>Roast my git &amp; share cards</h3>
+          <p>Affectionately brutal observations backed by real numbers — plus downloadable cards built for feeds. The certificate is designed to be screenshotted.</p>
+          <span class="tag">viral by design</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ PRIVACY ═══════════════ -->
+<section class="lp-sec" id="privacy">
+  <div class="lp-wrap">
+    <div class="lp-priv">
+      <div class="lp-rv">
+        <span class="lp-kicker">Privacy is the architecture, not a policy</span>
+        <h2 style="font-size:clamp(26px,4vw,38px);letter-spacing:-.03em;line-height:1.15">Your repository never leaves your machine.</h2>
+        <p style="color:var(--ink-2);margin-top:16px;font-size:16.5px">The CLI reads your local <code style="font-family:var(--mono);font-size:.9em;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:1px 6px">.git</code> folder and writes one HTML file. No account, no API key, no telemetry, no server. The output file makes zero network requests — open it on a plane.</p>
+        <p style="color:var(--ink-3);margin-top:14px;font-size:14px">The instant web version above reads public repositories through GitHub's API in your browser — nothing is stored, because there is no backend to store it.</p>
+      </div>
+      <pre class="lp-rv" aria-label="Terminal example"><span class="c"># clone once, use forever</span>
+git clone https://github.com/ahmadrrrtx/commit-canvas
+cd commit-canvas
+
+<span class="c"># any repo, private or public</span>
+<span class="a">./run.sh /path/to/your-project</span>
+
+<span class="c"># → story.html — open it. scroll slowly.</span></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ RESULT (populated after analysis) ═══════════════ -->
+<section class="lp-sec" id="result-sec" hidden>
+  <div class="lp-wrap">
+    <div class="lp-result-bar">
+      <span class="t" id="result-title">Your story</span>
+      <div class="acts">
+        <button class="btn btn-primary" id="download-story" type="button">Download story.html</button>
+        <button class="btn" id="new-analysis" type="button">Analyze another</button>
+      </div>
+    </div>
+    <div class="lp-demo">
+      <div class="lp-demo-view" id="result-mount"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FINAL CTA ═══════════════ -->
+<section class="lp-sec lp-final" id="get-started">
+  <div class="lp-wrap lp-rv">
+    <h2>Your next README<br>is already in your <span style="color:var(--accent)">.git</span> folder.</h2>
+    <p>One command. One file. A story you didn't know you had.</p>
+    <div class="lp-cmd">git clone https://github.com/ahmadrrrtx/commit-canvas<br>cd commit-canvas &amp;&amp; <span class="a">./run.sh /path/to/repo</span></div>
+  </div>
+</section>
+</main>
+
+<footer class="lp-foot">
+  <div class="lp-foot-in">
+    <span>Commit Canvas — built by <a href="https://github.com/ahmadrrrtx">Muhammad Ahmad</a> · MIT</span>
+    <span><a href="https://github.com/ahmadrrrtx/commit-canvas">GitHub</a> · <a href="demo/flask-story.html">Flask story</a> · <a href="demo/commit-canvas-story.html">Commit Canvas story</a></span>
+  </div>
+</footer>
+
+<script>
+/*__FLASK_DATA__*/null
+</script>
+<script>
+/*__APP_JS__*/
+</script>
+<script>
+/*__LANDING_JS__*/
+</script>
+</body>
+</html>

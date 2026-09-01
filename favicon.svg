@@ -1,12 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <!-- Outer ring -->
-  <circle cx="16" cy="16" r="15" stroke="#e2ff3a" stroke-width="1.5" opacity="0.3"/>
-  <!-- Inner filled circle -->
-  <circle cx="16" cy="16" r="10" fill="#e2ff3a" opacity="0.15"/>
-  <!-- Diamond mark -->
-  <path d="M9 16 L16 9 L23 16 L16 23 Z" fill="#e2ff3a" opacity="0.9"/>
-  <!-- Center dot -->
-  <circle cx="16" cy="16" r="2.5" fill="#04050a"/>
-  <!-- Orbit dot -->
-  <circle cx="16" cy="1" r="2" fill="#e2ff3a"/>
+  <rect x="1.5" y="1.5" width="29" height="29" rx="7" stroke="#2E3344" stroke-width="2"/>
+  <path d="M8 23h7M11.5 23v-7h7V9.5" stroke="#2E3344" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="8" cy="23" r="2.8" fill="#E2FF3A"/>
+  <circle cx="15" cy="23" r="2.2" fill="#687089"/>
+  <circle cx="18.5" cy="16" r="2.2" fill="#687089"/>
+  <circle cx="25.5" cy="9.5" r="2.8" fill="#E2FF3A"/>
 </svg>

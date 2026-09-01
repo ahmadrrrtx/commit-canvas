@@ -46,7 +46,7 @@ python -m pytest tests/ -v
 ```python
 # Use fixtures for repo setup
 def test_new_feature(git_repo):
-    from cc.parser import new_function
+    from cc.analyzer import new_function
     result = new_function(git_repo)
     assert result == expected
 ```

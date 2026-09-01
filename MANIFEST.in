@@ -1,0 +1,10 @@
+include README.md
+include LICENSE
+include canvas.html
+include cc/canvas.html
+include web/*.html
+include web/*.css
+include web/*.js
+include web/demo-data/*.json
+recursive-include tools *.py
+recursive-include tests *.py
