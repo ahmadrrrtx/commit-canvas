@@ -108,7 +108,10 @@
       <p>Public repositories only — fetched from the GitHub API right now, in your browser. If the API is unreachable, nothing is invented.</p>
     </div>
     <div class="proj-wall rv" id="proj-wall" aria-live="polite">
-      <p class="proj-note" id="proj-note">Loading public repositories…</p>
+      <p class="proj-note" id="proj-note" hidden>Loading public repositories…</p>
+      <div class="skel-card skel" aria-hidden="true"></div>
+      <div class="skel-card skel" aria-hidden="true"></div>
+      <div class="skel-card skel" aria-hidden="true"></div>
     </div>
   </section>
 </div>
@@ -126,7 +129,8 @@
     .then(function (repos) {
       var real = repos.filter(function (r) { return !r.fork; }).slice(0, 6);
       if (!real.length) throw new Error("empty");
-      note.remove();
+      note.hidden = true;
+      wall.querySelectorAll(".skel-card").forEach(function (s) { s.remove(); });
       var LANG_COLORS = { Python: "#3572A5", JavaScript: "#f1e05a", TypeScript: "#3178c6", HTML: "#e34c26", CSS: "#563d7c", Shell: "#89e051", Jupyter: "#DA5B0B" };
       real.forEach(function (r) {
         var a = document.createElement("a");
@@ -144,6 +148,8 @@
       });
     })
     .catch(function () {
+      wall.querySelectorAll(".skel-card").forEach(function (s) { s.remove(); });
+      note.hidden = false;
       note.textContent = "Couldn't reach the GitHub API right now — see the full list on github.com/ahmadrrrtx.";
       var a = document.createElement("a");
       a.className = "btn";
