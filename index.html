@@ -2503,8 +2503,25 @@ window.__CC_DEMO__ = {"meta":{"v":2,"generated":"2026-09-01T12:53:12","source":"
     });
     range.addEventListener("input", function () { setIndex(+range.value, true); });
 
-    /* keyboard scrubbing already native on the range; add ← → on tm */
+    /* keyboard: ← → step months, space toggles play, home/end jump —
+       active whenever the time machine is on screen and nothing else wants the keys */
     tm.setAttribute("tabindex", "-1");
+    document.addEventListener("keydown", function onKey(e) {
+      if (document.querySelector(".xs-overlay")) return;
+      var tag = (document.activeElement && document.activeElement.tagName) || "";
+      if (/^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(tag) && document.activeElement !== tm) return;
+      var inView = false;
+      try {
+        var r = tm.getBoundingClientRect();
+        inView = (r.height === 0 && r.top === 0) /* no layout (tests) */ || (r.top < innerHeight && r.bottom > 0);
+      } catch (err) { inView = true; }
+      if (!inView) return;
+      if (e.key === "ArrowLeft") { e.preventDefault(); setIndex(cur - 1, true); }
+      else if (e.key === "ArrowRight") { e.preventDefault(); setIndex(cur + 1, true); }
+      else if (e.key === " ") { e.preventDefault(); play.click(); }
+      else if (e.key === "Home") { e.preventDefault(); setIndex(0, true); }
+      else if (e.key === "End") { e.preventDefault(); setIndex(months.length - 1, true); }
+    });
 
     /* export hook */
     var exBtn = el("button", "btn tm-export");
