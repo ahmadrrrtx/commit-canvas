@@ -1,0 +1,58 @@
+<div class="page">
+  <div class="page-hero">
+    <span class="kicker">Changelog</span>
+    <h1>Commit Canvas<br>has a story too.</h1>
+    <p class="sub">Product evolution, kept honest. Full technical detail lives in <a href="https://github.com/ahmadrrrtx/commit-canvas/blob/main/CHANGELOG.md" style="color:var(--accent)">CHANGELOG.md</a>; this is the human version.</p>
+  </div>
+
+  <section class="pad">
+    <div class="cl">
+      <div class="cl-ver rv">
+        <div class="v-head"><h2>v2.1</h2><time>September 2026</time></div>
+        <h3>Added</h3>
+        <ul>
+          <li><b>Export studio</b> — one dialog for every artifact: PNG cards (X/LinkedIn, square, 9:16, README banner), <b>animated GIF</b> of the time machine (custom pure-JS GIF89a encoder — no libraries, no fake buttons), <b>WebM video</b>, SVG timelines, README markdown, and the full story.html.</li>
+          <li><b>Time machine v2</b> — milestone ticks on the timeline (releases, the moment, comebacks), jump-to-start/end, month stepping, playback speed (0.5×–2×), cinematic event cards, and a data-derived insight line.</li>
+          <li><b>Light &amp; dark card themes</b> for all exports.</li>
+          <li><b>A real website</b> — journal (four essays), creator page with a live GitHub project wall, how-it-works, features, examples, changelog, privacy &amp; terms, custom 404.</li>
+          <li><b>SEO/AEO</b> — sitemap, robots, canonical URLs, per-page metadata, JSON-LD (WebApplication, Person, Article, FAQ), FAQ with straight answers in HTML.</li>
+        </ul>
+      </div>
+      <div class="cl-ver rv">
+        <div class="v-head"><h2>v2.0</h2><time>September 2026</time></div>
+        <h3>Added</h3>
+        <ul>
+          <li><b>Story engine v2</b> — evidence-grounded chapters: The Beginning, The Sprint, The Silence, The Grind, The Launch, The Evolution.</li>
+          <li><b>Time machine</b> (v1), <b>developer fingerprint</b>, <b>Roast my git</b>, <b>The Moment &amp; Glow Up</b>, share cards, certificate.</li>
+          <li><b>Web version</b> — analyze any public GitHub repo in the browser; same renderer as the CLI.</li>
+          <li>Landing page with a real embedded Flask story; full-lifetime calendar + punch card.</li>
+          <li><code>--json</code> model export and <code>--max-commits</code> cap.</li>
+        </ul>
+        <h3>Fixed</h3>
+        <ul>
+          <li><b>True zero dependencies</b> — v1 claimed "only git + python3" but imported a template engine. v2 is stdlib-only, provably.</li>
+          <li>Parser corrupted commit messages containing <code>|</code> (field separator collision). Now uses <code>\x1f</code>.</li>
+          <li>Merge commits were discarded (<code>--no-merges</code>). Now kept and counted.</li>
+          <li>One subprocess per tag → single <code>for-each-ref</code>.</li>
+          <li>Heatmap anchored to <em>today</em> (old repos rendered empty) → full-lifetime calendar.</li>
+          <li>File deletions misdetected from numstat → authoritative <code>--summary</code> create/delete tracking.</li>
+        </ul>
+      </div>
+      <div class="cl-ver rv">
+        <div class="v-head"><h2>v1.0</h2><time>June 2026</time></div>
+        <h3>Added</h3>
+        <ul>
+          <li>The original idea: one command, one cinematic HTML file — title reveal, monthly film strip, turning points, activity ring, contributor medals, proof-of-work certificate.</li>
+          <li>Story arcs (Marathon, Climb, Sprint, Return), zero-account offline CLI, pip-installable.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="cta-final">
+  <h2>The next chapter is yours.</h2>
+  <p class="see">Write it.</p>
+  <p>One command. One file. Zero cloud.</p>
+  <a class="btn btn-primary" href="{{ROOT}}#try">Create your story</a>
+</div>

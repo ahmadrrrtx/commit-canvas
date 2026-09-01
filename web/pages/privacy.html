@@ -1,0 +1,56 @@
+<div class="page">
+  <div class="page-hero">
+    <span class="kicker">Privacy</span>
+    <h1>Your repository<br>stays yours.</h1>
+    <p class="sub">This page describes what the software actually does — not what a policy wishes it did. Where a claim appears here, you can verify it in the <a href="https://github.com/ahmadrrrtx/commit-canvas" style="color:var(--accent)">source code</a>.</p>
+  </div>
+
+  <section class="pad">
+    <div class="legal">
+      <p class="upd">Last updated: September 2026 · Commit Canvas v2.1</p>
+
+      <h2>The short version</h2>
+      <p>There is no Commit Canvas server, database, or account system. The CLI reads your repository locally and writes one HTML file to your disk. The website's analyzer runs in your browser and talks only to GitHub's public API. Generated story files contain your commit metadata — sharing them is your choice.</p>
+
+      <h2>What is processed locally</h2>
+      <ul>
+        <li>The CLI (<code>./run.sh</code> / <code>python -m cc</code>) runs <code>git log</code> against a repository on your machine. Author names, commit dates, commit messages, file paths and line-change counts are read into memory, analyzed, and written into a single HTML file in your working directory.</li>
+        <li>Nothing is transmitted. The Python package makes no network calls — it imports no networking library at all.</li>
+        <li>The generated <code>story.html</code> also makes zero network requests: all styles, scripts and data are inline. You can verify this by opening it with your network tab visible, or on a plane.</li>
+      </ul>
+
+      <h2>What is sent remotely (web version only)</h2>
+      <ul>
+        <li>When you paste a public GitHub URL on the home page, your browser calls <code>api.github.com</code> to fetch that repository's public commits, tags and releases. This uses GitHub's anonymous rate limit (60 requests/hour per IP).</li>
+        <li>That traffic goes from your browser to GitHub — never to us, because there is no "us" endpoint. This site is static hosting (GitHub Pages) with no backend, no logs of its own, and no analytics.</li>
+        <li>Private repositories cannot be analyzed in the browser version. Use the CLI — it works offline for any repository you have on disk.</li>
+      </ul>
+
+      <h2>What is stored</h2>
+      <ul>
+        <li><strong>By the tool:</strong> nothing. There is no database. The CLI writes one file where you tell it to; the web version keeps everything in the page's memory until you download or close it.</li>
+        <li><strong>In a generated story file:</strong> commit metadata — author names, dates, commit messages, file counts, and language totals. No file contents, no email addresses, no remote URLs. If you publish a story file, you are publishing that metadata; review it first, the same way you'd review any post.</li>
+      </ul>
+
+      <h2>Cookies and tracking</h2>
+      <p>None. No cookies, no analytics scripts, no fingerprinting, no third-party embeds. The site loads no external fonts, CDNs, or trackers.</p>
+
+      <h2>Third-party services</h2>
+      <ul>
+        <li><strong>GitHub REST API</strong> (web version only) — called directly by your browser for public repository data, subject to GitHub's own policies.</li>
+        <li><strong>GitHub Pages</strong> — static hosting for this website.</li>
+        <li>That's the entire list.</li>
+      </ul>
+
+      <h2>Security notes</h2>
+      <ul>
+        <li>The CLI runs <code>git</code> in read-only modes (<code>log</code>, <code>for-each-ref</code>); it does not create, push, or delete anything.</li>
+        <li>Story files embed repository data as JSON inside a script tag. Commit messages are escaped so they cannot break out of the data context — this is covered by automated tests.</li>
+        <li>If you find a security issue, please see <a href="https://github.com/ahmadrrrtx/commit-canvas/blob/main/SECURITY.md" style="color:var(--accent)">SECURITY.md</a>.</li>
+      </ul>
+
+      <h2>Questions</h2>
+      <p>Open an issue on <a href="https://github.com/ahmadrrrtx/commit-canvas/issues" style="color:var(--accent)">GitHub</a>. Privacy questions about GitHub's API belong to GitHub; questions about what Commit Canvas does with your data can always be answered from the source.</p>
+    </div>
+  </section>
+</div>

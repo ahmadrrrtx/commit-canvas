@@ -5,10 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Commit Canvas — Your code has a story</title>
 <meta name="description" content="Turn any git repository into a cinematic, shareable story — chapters, a time machine, and a developer fingerprint. One command, one file, zero cloud.">
+<link rel="canonical" href="https://ahmadrrrtx.github.io/commit-canvas/">
 <meta property="og:title" content="Commit Canvas — Your code has a story">
 <meta property="og:description" content="Chapters. A time machine. A developer fingerprint. All from real git history — locally, offline, in one HTML file.">
 <meta property="og:image" content="assets/og-preview.png">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://ahmadrrrtx.github.io/commit-canvas/">
+<meta property="og:site_name" content="Commit Canvas">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Commit Canvas — Your code has a story">
 <meta name="twitter:description" content="Your repository, told like a film. Generated locally from real git data.">
@@ -18,33 +21,29 @@
 /*__LANDING_CSS__*/
 </style>
 <style>
+/*__SITE_CSS__*/
+</style>
+<style>
 /*__STORY_CSS__*/
 </style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Commit Canvas","url":"https://ahmadrrrtx.github.io/commit-canvas/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Turn any git repository into a cinematic, shareable story — chapters, a time machine, and a developer fingerprint. Generated from real commit data, locally.","featureList":["Story engine with evidence-grounded chapters","Repository time machine","Developer fingerprint","Roast my git","PNG/GIF/WebM/SVG/HTML exports","Offline, zero-dependency CLI"],"author":{"@type":"Person","name":"Muhammad Ahmad","url":"https://ahmadrrrtx.github.io/commit-canvas/creator/"},"license":"https://github.com/ahmadrrrtx/commit-canvas/blob/main/LICENSE","isAccessibleForFree":true}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"Commit Canvas","url":"https://ahmadrrrtx.github.io/commit-canvas/"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"What is Commit Canvas?","acceptedAnswer":{"@type":"Answer","text":"An open-source tool that turns a git repository into a cinematic, interactive story generated from real commit data, output as a single self-contained HTML file."}},
+{"@type":"Question","name":"Does Commit Canvas require an account?","acceptedAnswer":{"@type":"Answer","text":"No. No sign-up, no login, no API key. The CLI works fully offline."}},
+{"@type":"Question","name":"Does Commit Canvas store repository data?","acceptedAnswer":{"@type":"Answer","text":"No. There is no backend or database. The CLI writes one HTML file locally; the web version runs entirely in the browser using GitHub's public API."}},
+{"@type":"Question","name":"Is Commit Canvas open source?","acceptedAnswer":{"@type":"Answer","text":"Yes, MIT licensed on GitHub."}}
+]}
+</script>
 </head>
-<body class="lp">
+<body class="site lp">
 
-<header class="lp-nav">
-  <div class="lp-nav-in">
-    <a class="lp-brand" href="#">
-      <svg class="lp-mark" viewBox="0 0 26 26" fill="none" aria-hidden="true">
-        <rect x="1" y="1" width="24" height="24" rx="6" stroke="#2E3344" stroke-width="1.5"/>
-        <path d="M6 19h6M9 19v-6h6V7" stroke="#2E3344" stroke-width="1.8" stroke-linecap="round"/>
-        <circle cx="6" cy="19" r="2.4" fill="#E2FF3A"/>
-        <circle cx="12" cy="19" r="2" fill="#687089"/>
-        <circle cx="15" cy="13" r="2" fill="#687089"/>
-        <circle cx="21" cy="7" r="2.4" fill="#E2FF3A"/>
-      </svg>
-      commit canvas
-    </a>
-    <nav class="lp-nav-links" aria-label="Main">
-      <a href="#example">Live example</a>
-      <a href="#how">How it works</a>
-      <a href="#features">Features</a>
-      <a href="#privacy">Privacy</a>
-      <a class="cta" href="#try">Make yours</a>
-    </nav>
-  </div>
-</header>
+<!--__NAV__-->
 
 <main>
 <!-- ═══════════════ HERO ═══════════════ -->
@@ -237,6 +236,55 @@ cd commit-canvas
   </div>
 </section>
 
+
+<!-- ═══════════════ FAQ / AEO ═══════════════ -->
+<section class="lp-sec" id="faq">
+  <div class="lp-wrap">
+    <div class="lp-sec-head lp-rv">
+      <span class="lp-kicker">Straight answers</span>
+      <h2>What is Commit Canvas, exactly?</h2>
+    </div>
+    <div class="faq lp-rv">
+      <details>
+        <summary>What is Commit Canvas?</summary>
+        <p>Commit Canvas is an open-source tool that turns a git repository into a cinematic, interactive story — chapters, a time machine, a developer fingerprint and share cards — generated from real commit data. The output is a single self-contained HTML file.</p>
+      </details>
+      <details>
+        <summary>Who is it for?</summary>
+        <p>Developers who want to see — and show — how a project actually evolved: maintainers, portfolio builders, teams writing retrospectives, and anyone who has ever wondered what their commit history says about how they work.</p>
+      </details>
+      <details>
+        <summary>How does it work?</summary>
+        <p>The CLI reads your local <code>.git</code> folder in a single pass (commits, merges, tags, authors, per-file line changes) and a deterministic engine derives the story — no AI, no guessing. The web version does the same analysis in your browser through the GitHub API for public repositories.</p>
+      </details>
+      <details>
+        <summary>Does it require an account?</summary>
+        <p>No. There is no sign-up, no login, and no API key. The CLI works fully offline.</p>
+      </details>
+      <details>
+        <summary>Does Commit Canvas store my repository data?</summary>
+        <p>No. There is no backend and no database. The CLI writes one HTML file to your disk. The web version runs entirely in your browser — the only network calls are to GitHub's public API while analyzing a public repo. Generated story files contain commit metadata (authors, dates, messages) — what you choose to share is up to you.</p>
+      </details>
+      <details>
+        <summary>Can it analyze private repositories?</summary>
+        <p>Yes — with the local CLI, which reads the repository on your machine and never sends anything anywhere. The browser version only works with public GitHub repositories.</p>
+      </details>
+      <details>
+        <summary>What can I export?</summary>
+        <p>PNG share cards (X/LinkedIn, square, 9:16 story, README banner), an animated GIF of the time machine, a WebM video, an SVG timeline, a README markdown block, and the full self-contained story.html.</p>
+      </details>
+      <details>
+        <summary>Is it open source?</summary>
+        <p>Yes — MIT licensed. The whole product is <a href="https://github.com/ahmadrrrtx/commit-canvas">on GitHub</a>.</p>
+      </details>
+      <details>
+        <summary>Who created Commit Canvas?</summary>
+        <p><a href="creator/">Muhammad Ahmad</a> — a developer building tools at the intersection of developer experience, data storytelling and open source.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════════ FINAL CTA ═══════════════ -->
 <section class="lp-sec lp-final" id="get-started">
   <div class="lp-wrap lp-rv">
@@ -247,21 +295,22 @@ cd commit-canvas
 </section>
 </main>
 
-<footer class="lp-foot">
-  <div class="lp-foot-in">
-    <span>Commit Canvas — built by <a href="https://github.com/ahmadrrrtx">Muhammad Ahmad</a> · MIT</span>
-    <span><a href="https://github.com/ahmadrrrtx/commit-canvas">GitHub</a> · <a href="demo/flask-story.html">Flask story</a> · <a href="demo/commit-canvas-story.html">Commit Canvas story</a></span>
-  </div>
-</footer>
+<!--__FOOTER__-->
 
 <script>
 /*__FLASK_DATA__*/null
+</script>
+<script>
+/*__GIF_JS__*/
 </script>
 <script>
 /*__APP_JS__*/
 </script>
 <script>
 /*__LANDING_JS__*/
+</script>
+<script>
+/*__SITE_JS__*/
 </script>
 </body>
 </html>

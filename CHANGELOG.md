@@ -6,6 +6,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [2.1.0] — 2026-09-01
+
+The "say it anywhere" release — a full export studio, a sharper time machine, and a project website.
+
+### Added
+- **Export studio** (in every story): share-card PNGs (Open Graph, terminal, certificate, quote card), animated GIF export (fully client-side — no server ever sees your data), Markdown summary, and JSON data export.
+- **Time machine v2**: milestone ticks on the scrubber, keyboard support (arrow keys, space, home/end), a speed control (0.5× / 1× / 1.5×), transport buttons, and a live insight line that narrates what changed each month.
+- **Project website** (this site): landing page with a live embedded Flask story, feature pages, journal, examples, changelog, privacy & terms — all static, zero trackers.
+- `--json` output now includes the exact analysis the renderer consumes (handy for tests and CI).
+- GitHub Pages deployment with custom 404, sitemap.xml and robots.txt.
+
+### Changed
+- Sharing now renders cards locally to canvas — no external image service, no data leaves the page.
+- Refreshed hero and section typography across the story.
+
+### Fixed
+- Calendar heatmap no longer stretches wide repos beyond the viewport on small screens (grid `min-width` bug).
+- Transport controls now fit 320 px phones.
+
+---
+
 ## [2.0.0] — 2026-09-01
 
 The "your code has a story" release — a full product rebuild around one renderer, one model, and two entry points (CLI + web).

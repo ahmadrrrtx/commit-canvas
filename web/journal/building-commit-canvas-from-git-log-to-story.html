@@ -1,0 +1,63 @@
+<article class="prose">
+  <p class="art-meta"><span>Build log</span><span>{{DATE}}</span><span>{{READING_TIME}} min read</span><span>Muhammad Ahmad</span></p>
+  <h1>Building Commit Canvas: from git log to story</h1>
+  <p class="standfirst">The idea was simple. The audit was not. This is the story of v1, the bugs it was quietly hiding, and the rebuild that turned a neat script into a real product.</p>
+
+  <div class="art-toc" id="art-toc"><b>Contents</b><ul id="toc-list"></ul></div>
+
+  <h2 id="the-idea">The idea</h2>
+  <p>Commit Canvas started the way most tools do: I ran <code>git log</code> on a project I'd spent years on, scrolled the wall of subjects, and thought — <em>this is a story, rendered in the worst possible format.</em> Timestamps, gaps, bursts, the 2am fixes, the release weeks: all there, all invisible.</p>
+  <p>v1 was a weekend-shaped idea: a Python CLI that turns a repository into one cinematic HTML page. A title reveal, a timeline, an activity ring, contributor medals, a certificate at the bottom. Self-contained output, no server, no account. It worked, and it made people smile at their own history — which is the whole product, honestly.</p>
+
+  <h2 id="the-audit">The audit that hurt</h2>
+  <p>Before building v2, I audited v1 the way I'd audit someone else's code. Findings, in the order they stung:</p>
+  <ul>
+    <li><strong>The "zero dependencies" claim was false.</strong> The launcher script said "needs only git + python3" — while the generator imported a template engine. Anyone who cloned and ran it without that package installed got a stack trace for their trouble.</li>
+    <li><strong>The parser corrupted commits containing <code>|</code>.</strong> Fields were split on a pipe separator. A commit message like <code>fix | broken | login</code> — a perfectly legal message — silently broke the parse.</li>
+    <li><strong>Merge commits were discarded.</strong> The log ran with <code>--no-merges</code> for cleanliness. Clean, yes — and it threw away the entire branch-and-merge story.</li>
+    <li><strong>Tags were read one subprocess per tag.</strong> On a repo with 69 tags, that's 69 extra process spawns to learn what one <code>for-each-ref</code> could say.</li>
+    <li><strong>The heatmap anchored to <em>today</em>.</strong> For any repository older than a year, the interesting history rendered outside the grid. On a 15-year project, the first decade was blank.</li>
+    <li><strong>The narrative oversold.</strong> v1's story arcs triggered on thin evidence and said confident things about repos with four commits.</li>
+  </ul>
+  <p>None of these were exotic. They were the difference between "demo" and "tool" — and every one of them was fixable.</p>
+
+  <h2 id="the-rebuild">The rebuild</h2>
+  <p>v2's architecture came from one constraint: <strong>every claim in the story must be traceable to a measurement.</strong> Everything else followed.</p>
+  <h3>One pass, not many</h3>
+  <p>The whole history is read in a single <code>git log --all --numstat --summary</code> call, with fields separated by an ASCII unit separator (<code>\x1f</code>) that will never appear in a message. Merges are kept and counted. File creation and deletion come from summary-mode lines — the authoritative source — instead of guessing from numstat, which can't distinguish "file deleted" from "file emptied." A 30,000-commit synthetic repository analyzes in about two seconds.</p>
+  <h3>Deterministic story engines</h3>
+  <p>Chapters (Beginning, Sprint, Silence, Grind, Launch, Evolution), the shape (Marathon, Climb, Return…), the fingerprint archetypes, and the roast are all plain rules over plain numbers. No AI anywhere in the core path — not because language models can't write, but because a story about <em>your data</em> shouldn't have an imagination in the loop. If the evidence is thin, the tool says the story is just starting.</p>
+  <h3>One renderer, two doors</h3>
+  <p>The output is a static shell — inline CSS, inline JS, a JSON model baked in — that renders entirely client-side. The CLI injects data into that shell; the web version fetches the same shell in the browser and analyzes public repos through the GitHub API with the same narrative rules ported to JavaScript. Same story from either door.</p>
+  <h3>Exports that aren't buttons</h3>
+  <p>Every export is real: PNG cards for socials, an animated GIF of the timeline (a GIF89a encoder written in vanilla JS, because I refused to ship a fake download button), WebM video via the browser's own recorder, SVG timelines, a README block, and the full self-contained HTML. If a browser can't do something, the button says so instead of pretending.</p>
+
+  <h2 id="lessons">What I learned</h2>
+  <ol>
+    <li><strong>Audit your own claims first.</strong> The most embarrassing bug wasn't in the code — it was in the README.</li>
+    <li><strong>Deterministic is a feature.</strong> The same repository must produce the same story, forever. That's what makes it evidence rather than content.</li>
+    <li><strong>The emotion is in the recognition.</strong> People don't share Commit Canvas because the charts are pretty. They share it because it says something true about them that they'd never articulated.</li>
+    <li><strong>Offline-first is a product decision.</strong> "Your code never leaves your machine" isn't a policy page — it's an architecture. No backend, no database, nothing to leak.</li>
+  </ol>
+
+  <h2 id="run-it-yourself">Run it yourself</h2>
+  <pre><code>git clone https://github.com/ahmadrrrtx/commit-canvas
+cd commit-canvas
+./run.sh /path/to/your-project
+# → story.html — open it. scroll slowly.</code></pre>
+  <p>And if you find a repository whose story comes out wrong — <a href="https://github.com/ahmadrrrtx/commit-canvas/issues" target="_blank" rel="noopener">tell me</a>. The history doesn't lie, but the parser might.</p>
+
+  <div class="art-foot">
+    <div class="art-share">
+      <a href="https://twitter.com/intent/tweet?url={{URL}}&text=Building%20Commit%20Canvas%3A%20from%20git%20log%20to%20story" target="_blank" rel="noopener">Share on X</a>
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url={{URL}}" target="_blank" rel="noopener">Share on LinkedIn</a>
+    </div>
+    <a class="btn" href="{{ROOT}}journal/">&larr; Back to journal</a>
+  </div>
+
+  <div class="rel">
+    <h3>Keep reading</h3>
+    <a href="{{ROOT}}journal/your-git-history-is-a-story">Your git history is a story — you just can't see it yet<span>Where the idea started.</span></a>
+    <a href="{{ROOT}}journal/how-to-read-the-evolution-of-a-codebase">How to read the evolution of a codebase<span>The checklist version of everything in here.</span></a>
+  </div>
+</article>

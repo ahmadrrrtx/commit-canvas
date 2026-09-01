@@ -1,0 +1,56 @@
+<article class="prose">
+  <p class="art-meta"><span>Guide</span><span>{{DATE}}</span><span>{{READING_TIME}} min read</span><span>Muhammad Ahmad</span></p>
+  <h1>How to read the evolution of a codebase</h1>
+  <p class="standfirst">Joining a project? Inheriting a legacy repo? Reviewing one for adoption? The history tells you how it actually grew. Here's a practical checklist — with real findings from Flask and Requests.</p>
+
+  <div class="art-toc" id="art-toc"><b>Contents</b><ul id="toc-list"></ul></div>
+
+  <h2 id="why-history-beats-readme">Why history beats the README</h2>
+  <p>A README is marketing written by the maintainers. The git history is a log written by time itself. When you want to know whether a project is alive, how it grows under pressure, and who actually carries it — the history is the primary source.</p>
+  <p>You don't need fancy tooling to start. But you do need to know what to look for. This is the checklist I use; it's also exactly what <a href="{{ROOT}}">Commit Canvas</a> computes automatically.</p>
+
+  <h2 id="the-checklist">The checklist</h2>
+  <h3>1. Find the real starting line</h3>
+  <p><code>git log --reverse --format="%ad %an %s" --date=short | head -3</code> — the first commits tell you whether the project began as an extract, a rewrite, or a scratch file. Flask's first commit message is a candid <em>"Initial checkin of stuff that exists so far"</em> — the project started mid-thought, not from a blank page. That's normal. Most real software does.</p>
+  <h3>2. Compute the velocity shape, not the velocity</h3>
+  <p>Total commits mean nothing across projects of different ages. What matters is the <em>shape</em>: commits per month over time. Rising tail = accelerating. Flat = healthy maintenance. Long flat-zero tail = possibly done, possibly dead — check the next signal.</p>
+  <h3>3. Look for silences and what ended them</h3>
+  <p>Gaps between active months are the most underrated signal in any repository. <strong>Requests</strong> — one of the most-downloaded Python packages in the world — shows a multi-year quiet period followed by a genuine revival under new stewardship. A silence followed by sustained commits is one of the best health signals a project can show: it means someone came back <em>and stayed</em>. A silence followed by one commit and another silence is a different story.</p>
+  <h3>4. Separate authors from maintainers</h3>
+  <p>Sort contributors by commit share and you usually find drive-by contributors at the tail. The signal that matters is <strong>longevity per person</strong>: first-to-last commit span. Someone with 5 years of span and 8% of commits often matters more to stability than a 6-week contributor with 15%.</p>
+  <h3>5. Read the release cadence against the activity</h3>
+  <p>Tags are promises; commits are work. Regular tags over irregular commits = disciplined release management. Massive commits immediately before tags = releases as afterthoughts. Flask's history reads like the first kind: small, steady, tagged, and boring in the best possible way.</p>
+  <h3>6. Watch what the codebase is made of over time</h3>
+  <p>Per-language line totals at month boundaries show architecture drift: the moment a Python project grows a large TypeScript directory, or docs overtake code, or a mono-repo forms. One <code>git log --numstat</code> pass replayed chronologically gives you the whole curve — that's the "time machine" view.</p>
+  <h3>7. Find the biggest day, then ask why</h3>
+  <p>Every mature repo has one day with an absurd commit count — a migration, a license change, a vendored dependency, or a hackathon. It's usually the most story-dense 24 hours in the project's life.</p>
+
+  <h2 id="flask-and-requests">Case study: Flask and Requests</h2>
+  <p>Running both through the analyzer makes the checklist concrete:</p>
+  <ul>
+    <li><strong>Flask</strong> — 5,600+ commits, 16 years, 800+ contributors. Story shape: <em>The Sprint</em> — the median month is quiet, but a handful of months (and one 45-commit day in May 2017) carry outsized weight. The release cadence is metronomic. It reads like a project run by release engineers.</li>
+    <li><strong>Requests</strong> — 6,700+ commits, 15+ years. Story shape: <em>The Return</em> — an era of intense early creation, a long quiet stretch, then revival commits under new stewardship. It reads like a beloved public utility being carefully handed to the next crew.</li>
+  </ul>
+  <p>Same language, similar era, radically different stories. That's the point: the counts converge, the <em>shapes</em> diverge.</p>
+
+  <h2 id="do-it-yourself">Do it yourself</h2>
+  <p>By hand, the checklist above takes an afternoon per repository. With Commit Canvas it takes one command — and you get the whole story (chapters, silences, time machine, fingerprint) as a single file you can keep:</p>
+  <pre><code>git clone https://github.com/ahmadrrrtx/commit-canvas
+cd commit-canvas
+./run.sh /path/to/the-repo-youre-evaluating</code></pre>
+  <p>Whether you adopt a dependency, join a team, or just want to understand your own project better: read the history. It's the only version of events that can't be edited after the fact — well, mostly.</p>
+
+  <div class="art-foot">
+    <div class="art-share">
+      <a href="https://twitter.com/intent/tweet?url={{URL}}&text=How%20to%20read%20the%20evolution%20of%20a%20codebase" target="_blank" rel="noopener">Share on X</a>
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url={{URL}}" target="_blank" rel="noopener">Share on LinkedIn</a>
+    </div>
+    <a class="btn" href="{{ROOT}}journal/">&larr; Back to journal</a>
+  </div>
+
+  <div class="rel">
+    <h3>Keep reading</h3>
+    <a href="{{ROOT}}journal/your-git-history-is-a-story">Your git history is a story — you just can't see it yet<span>The narrative structure hiding in every .git folder.</span></a>
+    <a href="{{ROOT}}journal/what-your-commit-timestamps-say-about-how-you-build">What your commit timestamps say about how you build<span>Five signals, and their honest limits.</span></a>
+  </div>
+</article>

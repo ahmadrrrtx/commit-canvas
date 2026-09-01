@@ -1,0 +1,60 @@
+<article class="prose">
+  <p class="art-meta"><span>Essay</span><span>{{DATE}}</span><span>{{READING_TIME}} min read</span><span>Muhammad Ahmad</span></p>
+  <h1>What your commit timestamps say about how you build</h1>
+  <p class="standfirst">Favorite hour, weekend share, longest streak, burst pattern — commit metadata quietly measures how you actually work. Here's what's real, what's noise, and where the honest limits are.</p>
+
+  <div class="art-toc" id="art-toc"><b>Contents</b><ul id="toc-list"></ul></div>
+
+  <h2 id="the-data-you-leak">The data you quietly produce</h2>
+  <p>Every commit carries an author timestamp. You almost never think about it — it's just there, in the plumbing. But aggregate a few hundred of them and patterns appear that you'd recognize instantly, even unsigned:</p>
+  <pre><code>hour histogram   → when your brain writes code
+weekday share    → whether the week or weekend is yours
+streak lengths   → how you sustain momentum
+burst ratios     → inspiration-driven vs. schedule-driven
+message style    → how you explain work to your future self</code></pre>
+  <p>This is the data behind Commit Canvas's <a href="{{ROOT}}features/">developer fingerprint</a> — archetypes like <em>The Night Builder</em>, <em>The Sprinter</em>, <em>The Shipper</em>. They're fun. They're also, importantly, <strong>measurements</strong> — and it's worth understanding exactly what they do and don't measure.</p>
+
+  <h2 id="five-signals">Five signals worth reading</h2>
+  <h3>1. Peak hour</h3>
+  <p>The hour-of-day histogram is the most personal signal in the dataset. A 10pm–5am share above 30% is a night builder by any reasonable definition. Morning peaks (5am–noon) are rarer and tend to belong to people who protect a fixed block before the day starts. Neither is better; they're just different operating systems.</p>
+  <h3>2. Weekend share</h3>
+  <p>Above ~30% weekend commits usually means one of three things: side project, startup, or on-call. Context matters — the number can't tell you which, but <em>you</em> can.</p>
+  <h3>3. Streaks</h3>
+  <p>The longest run of consecutive active days measures consistency, not intensity. A 30-day streak of one commit a day and a 3-day burst of 200 commits look identical in commit count — and completely different in streak.</p>
+  <h3>4. Burst ratio</h3>
+  <p>Divide the busiest month by the median month. Around 1–2×: steady builder. Above 4×: sprint-driven. The highest burst ratios I've seen belong to projects with long silences — the comeback is the burst.</p>
+  <h3>5. Message discipline</h3>
+  <p>Average message length and the ratio of <code>fix</code>/vague messages says something about how a team (or a person) treats their future self. It's the difference between a history that reads like documentation and one that reads like a lottery of regrets.</p>
+
+  <h2 id="honest-limits">The honest limits</h2>
+  <p>Any tool in this space should say this out loud, so here it is: <strong>git behavior is not personality.</strong></p>
+  <ul>
+    <li><strong>Timestamps are local.</strong> Git records author-time in the author's timezone — move cities, and your "night commits" were somebody else's afternoon. (Mostly this averages out over years, but edge cases exist.)</li>
+    <li><strong>History gets rewritten.</strong> Rebases, squashes, and imports distort timestamps. Long-lived projects with strict merge discipline look different from squash-merge shops.</li>
+    <li><strong>Bots commit too.</strong> Dependabot doesn't have a favorite hour. Well-maintained repos can have a significant share of automated commits, which is why naive "who works nights" claims on big projects are often about scheduled CI.</li>
+    <li><strong>Correlation is small.</strong> When you commit says something about <em>when you work</em>, full stop. It doesn't say why, and it definitely doesn't predict anything about you as an engineer.</li>
+  </ul>
+  <p>That's why the fingerprint is framed as <em>"your git behavior"</em>, not "your developer personality." The claims stop where the data stops.</p>
+
+  <h2 id="patterns-in-the-wild">Patterns in the wild</h2>
+  <p>Run the analysis over famous repositories and the archetypes are instantly legible. On <strong>Flask</strong>, the dominant contributor's fingerprint lands on <em>The Shipper</em> — years of tagged releases, disciplined cadence, a long history of versions shipped. On quieter solo projects you'll see <em>The Lone Wolf</em>: one name on every commit, weekends and nights, bursts and silences. Open-source maintainer repos tend toward <em>The Marathoner</em> — moderate peaks, very long streaks, few dramatic spikes. The pattern matches the job description.</p>
+
+  <h2 id="use-it-as-a-mirror">Use it as a mirror, not a verdict</h2>
+  <p>The useful question isn't "am I a Night Builder?" It's "is <em>how</em> I'm working how I <em>want</em> to be working?" If your 2–5am share surprises you, that's information about your schedule, not your identity. If your longest streak was the month before burnout, the graph knows.</p>
+  <p>Your history is the most complete record of your working life that exists. Reading it takes one command:</p>
+  <pre><code>./run.sh /path/to/your-project</code></pre>
+
+  <div class="art-foot">
+    <div class="art-share">
+      <a href="https://twitter.com/intent/tweet?url={{URL}}&text=What%20your%20commit%20timestamps%20say%20about%20how%20you%20build" target="_blank" rel="noopener">Share on X</a>
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url={{URL}}" target="_blank" rel="noopener">Share on LinkedIn</a>
+    </div>
+    <a class="btn" href="{{ROOT}}journal/">&larr; Back to journal</a>
+  </div>
+
+  <div class="rel">
+    <h3>Keep reading</h3>
+    <a href="{{ROOT}}journal/your-git-history-is-a-story">Your git history is a story — you just can't see it yet<span>Why contribution graphs flatten exactly the interesting parts.</span></a>
+    <a href="{{ROOT}}journal/building-commit-canvas-from-git-log-to-story">Building Commit Canvas: from git log to story<span>The audit that found my own bugs, and the rebuild that fixed them.</span></a>
+  </div>
+</article>

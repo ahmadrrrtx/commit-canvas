@@ -1,0 +1,81 @@
+<div class="page">
+  <div class="page-hero">
+    <span class="kicker">How it works</span>
+    <h1>Five steps from<br><code style="font-family:var(--mono);font-size:.55em;color:var(--accent)">.git</code> to story.</h1>
+    <p class="sub">No account, no cloud, no AI in the core path. Just one careful pass over real history — and a deterministic engine that only claims what the timestamps prove.</p>
+  </div>
+
+  <section class="pad">
+    <div class="steps">
+      <div class="step rv">
+        <div class="sn">01</div>
+        <div>
+          <h2 class="step-h">Read</h2>
+          <p>Commit Canvas reads your repository history locally — commits, parents, merges, tags, authors, timestamps, and per-file line changes — in a <strong>single pass</strong> through one <code style="font-family:var(--mono);font-size:.88em">git log</code> call. Field separators can't collide with your commit messages. Unicode is safe. Binary files don't break anything.</p>
+          <span class="fact">one subprocess · works offline</span>
+        </div>
+      </div>
+      <div class="step rv">
+        <div class="sn">02</div>
+        <div>
+          <h2 class="step-h">Understand</h2>
+          <p>It maps the shape of the project: month-by-month activity, contributors joining over time, merge structure, releases, file and line evolution replayed chronologically with authoritative create/delete tracking, and language mix at every month boundary.</p>
+          <span class="fact">merges kept · real snapshots, not guesses</span>
+        </div>
+      </div>
+      <div class="step rv">
+        <div class="sn">03</div>
+        <div>
+          <h2 class="step-h">Discover</h2>
+          <p>Deterministic rules find the meaningful patterns: velocity shifts, development bursts, long silences and comebacks, the busiest day, the biggest commit, the most significant moment. Thin evidence produces a modest story — never an invented one.</p>
+          <span class="fact">every claim traces to a measurement</span>
+        </div>
+      </div>
+      <div class="step rv">
+        <div class="sn">04</div>
+        <div>
+          <h2 class="step-h">Visualize</h2>
+          <p>The model is injected into a self-contained shell that renders client-side: chapters, a scrubbable time machine, punch card, full-lifetime calendar, fingerprint, roast, and a certificate. All SVG and canvas, zero requests, works from a local file forever.</p>
+          <span class="fact">one renderer · CLI and web share it</span>
+        </div>
+      </div>
+      <div class="step rv">
+        <div class="sn">05</div>
+        <div>
+          <h2 class="step-h">Share</h2>
+          <p>The export studio builds your artifacts locally: PNG cards for every social format, an animated GIF of the timeline, WebM video, SVG, a README block, or the whole story as a single HTML file. Nothing is uploaded, because there's no server.</p>
+          <span class="fact">PNG · GIF · WebM · SVG · MD · HTML</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pad" style="border-top:1px solid var(--line)" id="cli">
+    <div class="sec-head rv">
+      <span class="kicker">The command line</span>
+      <h2 class="sec-title">Sixty seconds, start to story.</h2>
+    </div>
+    <pre class="term rv"><span class="c"># clone once, use forever — works on private repos, fully offline</span>
+git clone https://github.com/ahmadrrrtx/commit-canvas
+cd commit-canvas
+
+<span class="c"># any repository on your machine</span>
+<span class="a">./run.sh /path/to/your-project</span>
+
+<span class="c"># options</span>
+./run.sh . --title "My Project"     <span class="c"># custom title</span>
+./run.sh . --open                   <span class="c"># open in browser after</span>
+./run.sh . --max-commits 5000       <span class="c"># cap huge histories</span>
+python -m cc . --json model.json    <span class="c"># export the raw analysis model</span>
+
+<span class="c"># → story.html — one file, zero requests, yours</span></pre>
+    <p style="color:var(--ink-2);margin-top:20px;max-width:640px">Or skip the terminal entirely: paste any <strong>public</strong> GitHub URL into the <a href="{{ROOT}}#try" style="color:var(--accent)">form on the home page</a> — the same analysis runs in your browser through the GitHub API.</p>
+  </section>
+</div>
+
+<div class="cta-final">
+  <h2>Your repository already has a story.</h2>
+  <p class="see">See it.</p>
+  <p>One command. One file. Zero cloud.</p>
+  <a class="btn btn-primary" href="{{ROOT}}#try">Create your story</a>
+</div>

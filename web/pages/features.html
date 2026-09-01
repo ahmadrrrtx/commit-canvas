@@ -1,0 +1,76 @@
+<div class="page">
+  <div class="page-hero">
+    <span class="kicker">Features</span>
+    <h1>Statistics tell you <em style="color:var(--accent);font-style:normal">what</em>.<br>Stories tell you <em style="color:var(--accent);font-style:normal">why</em>.</h1>
+    <p class="sub">Every section of a Commit Canvas story answers a question — and every answer comes from real git data.</p>
+  </div>
+
+  <section class="pad">
+    <div class="grid-2">
+      <div class="card rv" id="story-engine">
+        <span class="num">S</span>
+        <h2 class="card-h">The story engine</h2>
+        <p><strong>Question it answers:</strong> what kind of project is this? Chapters — The Beginning, The Sprint, The Silence, The Grind, The Launch, The Evolution — derived from velocity, gaps and releases. "The project went quiet for 43 days" corresponds to 43 actual days between commits.</p>
+        <span class="tag">deterministic · grounded in timestamps</span>
+      </div>
+      <div class="card rv" id="time-machine">
+        <span class="num">T</span>
+        <h2 class="card-h">Repository time machine</h2>
+        <p><strong>Question it answers:</strong> how did this become what it is? Scrub or autoplay the project's life — commits, contributors, merges, file counts, lines of code and language mix updating month by month, with milestone ticks and cinematic event cards at the moments that mattered.</p>
+        <span class="tag">the flagship</span>
+      </div>
+      <div class="card rv" id="fingerprint">
+        <span class="num">F</span>
+        <h2 class="card-h">Developer fingerprint</h2>
+        <p><strong>Question it answers:</strong> how does the dominant author actually work? Favorite hours, weekend share, streaks, burst ratio and message style become one honest archetype — The Night Builder, The Sprinter, The Shipper. Git behavior, explicitly not psychology.</p>
+        <span class="tag">behavior · not a personality test</span>
+      </div>
+      <div class="card rv" id="rhythm">
+        <span class="num">R</span>
+        <h2 class="card-h">The rhythm</h2>
+        <p><strong>Question it answers:</strong> when did the work happen? A weekday × hour punch card, a calendar covering the project's entire life (not just the last 52 weeks), streaks, and night/weekend shares.</p>
+        <span class="tag">full lifetime · accessible summaries</span>
+      </div>
+      <div class="card rv" id="roast">
+        <span class="num">R</span>
+        <h2 class="card-h">Roast my git</h2>
+        <p><strong>Question it answers:</strong> what would a kind but honest reviewer say? Vague commit names, monster commits, disappearances, 2–5am activity — every burn ships with its evidence attached.</p>
+        <span class="tag">affectionately brutal</span>
+      </div>
+      <div class="card rv" id="exports">
+        <span class="num">E</span>
+        <h2 class="card-h">Export studio</h2>
+        <p><strong>Question it answers:</strong> how do I show this to anyone? PNG cards sized for X/LinkedIn, square and 9:16; an animated GIF of the timeline; WebM video; SVG timelines; a README markdown block; and the entire story as one self-contained HTML file. All generated locally.</p>
+        <span class="tag">PNG · GIF · WebM · SVG · MD · HTML</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="pad" style="border-top:1px solid var(--line)">
+    <div class="sec-head rv">
+      <span class="kicker">Under the hood</span>
+      <h2 class="sec-title">Engineering choices you can check.</h2>
+    </div>
+    <div class="grid-3">
+      <div class="card rv"><h3>Single-pass analyzer</h3><p>One <code style="font-family:var(--mono);font-size:.88em">git log</code> subprocess for the whole history — roughly two seconds for a 30,000-commit repository, merge commits kept, no O(N) subprocess spawns.</p></div>
+      <div class="card rv"><h3>Zero dependencies</h3><p>Python 3.8+ standard library and git. That's the entire runtime. The claim is testable: the launcher has no package to install.</p></div>
+      <div class="card rv"><h3>Privacy by architecture</h3><p>The CLI never makes a network request. The output file never makes a network request. There is no backend, no database, and no telemetry — nothing to breach.</p></div>
+    </div>
+    <p style="margin-top:24px"><a class="btn" href="{{ROOT}}how-it-works/">See the full pipeline →</a></p>
+  </section>
+
+  <section class="pad" style="border-top:1px solid var(--line)">
+    <div class="sec-head rv">
+      <span class="kicker">See it on a real repository</span>
+      <h2 class="sec-title">Flask has 16 years of history.<br>Here's its story.</h2>
+    </div>
+    <p style="margin-top:0"><a class="btn btn-primary" href="{{ROOT}}examples/">Open the examples →</a></p>
+  </section>
+</div>
+
+<div class="cta-final">
+  <h2>Your repository already has a story.</h2>
+  <p class="see">See it.</p>
+  <p>One command. One file. Zero cloud.</p>
+  <a class="btn btn-primary" href="{{ROOT}}#try">Create your story</a>
+</div>

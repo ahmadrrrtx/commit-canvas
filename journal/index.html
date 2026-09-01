@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Journal — Commit Canvas</title>
+<meta name="description" content="Essays on code, time and stories: what git history contains, how to read it, and the building of Commit Canvas.">
+<link rel="canonical" href="https://ahmadrrrtx.github.io/commit-canvas/journal/">
+<meta property="og:title" content="Journal — Commit Canvas">
+<meta property="og:description" content="Essays on code, time and stories: what git history contains, how to read it, and the building of Commit Canvas.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ahmadrrrtx.github.io/commit-canvas/journal/">
+<meta property="og:image" content="https://ahmadrrrtx.github.io/commit-canvas/assets/og-preview.png">
+<meta property="og:site_name" content="Commit Canvas">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Journal — Commit Canvas">
+<meta name="twitter:description" content="Essays on code, time and stories: what git history contains, how to read it, and the building of Commit Canvas.">
+<meta name="twitter:image" content="https://ahmadrrrtx.github.io/commit-canvas/assets/og-preview.png">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+<style>
+/* ══════════════════════════════════════════════════════════════════
+   COMMIT CANVAS — Shared Site Styles
+   Used by every marketing/content page (features, journal, creator…).
+   Tokens match story.css so site + story feel like one product.
+   ══════════════════════════════════════════════════════════════════ */
+
+.site *, .site *::before, .site *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+.site {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+}
+.site main { flex: 1; }
+.site ::selection { background: var(--accent); color: var(--accent-ink); }
+.site :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+.site .sr-only {
+  position: absolute; width: 1px; height: 1px;
+  clip: rect(0 0 0 0); overflow: hidden; white-space: nowrap;
+}
+
+/* ── top navigation (shared) ── */
+.site .nav {
+  position: sticky; top: 0; z-index: 60;
+  background: rgba(11,12,16,.86);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+.site .nav-in {
+  max-width: 1120px; margin: 0 auto; padding: 0 24px;
+  height: 62px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.site .brand {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 700; letter-spacing: -0.02em; font-size: 16.5px; color: var(--ink); text-decoration: none;
+}
+.site .brand svg { width: 24px; height: 24px; display: block; }
+.site .nav-links { display: flex; gap: 4px; align-items: center; }
+.site .nav-links a {
+  color: var(--ink-2); text-decoration: none; font-size: 14.5px;
+  padding: 8px 12px; border-radius: 8px;
+}
+.site .nav-links a:hover { color: var(--ink); background: var(--surface); }
+.site .nav-links a[aria-current="page"] { color: var(--ink); background: var(--surface); }
+.site .nav-cta {
+  color: var(--accent-ink) !important; background: var(--accent) !important;
+  font-weight: 600; margin-left: 8px; padding: 9px 16px !important;
+}
+.site .nav-cta:hover { background: #edff6b !important; }
+.site .nav-burger {
+  display: none; background: none; border: 1px solid var(--line-2); border-radius: 8px;
+  width: 40px; height: 40px; cursor: pointer; color: var(--ink); align-items: center; justify-content: center;
+}
+.site .nav-burger svg { width: 18px; height: 18px; }
+@media (max-width: 860px) {
+  .site .nav-burger { display: flex; }
+  .site .nav-links {
+    display: none; position: absolute; top: 62px; left: 0; right: 0;
+    flex-direction: column; align-items: stretch; padding: 12px 24px 18px; gap: 2px;
+    background: rgba(11,12,16,.97); border-bottom: 1px solid var(--line);
+  }
+  .site .nav-links.open { display: flex; }
+  .site .nav-cta { margin-left: 0; margin-top: 8px; text-align: center; }
+}
+
+/* ── page scaffolding ── */
+.site .page { max-width: 1120px; margin: 0 auto; padding: 0 24px; width: 100%; }
+.site .pad { padding: clamp(64px, 9vh, 110px) 0; }
+
+.site .page-hero { padding: clamp(56px, 8vh, 96px) 0 8px; }
+.site .kicker {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 16px;
+}
+.site .page-hero h1 {
+  font-size: clamp(34px, 6vw, 60px); letter-spacing: -0.035em;
+  line-height: 1.05; font-weight: 800; max-width: 780px;
+}
+.site .page-hero .sub { color: var(--ink-2); font-size: clamp(16px, 2vw, 19px); max-width: 640px; margin-top: 20px; }
+.site h2.sec-title {
+  font-size: clamp(24px, 3.6vw, 34px); letter-spacing: -0.025em; line-height: 1.15; font-weight: 750;
+}
+.site .sec-head { max-width: 640px; margin-bottom: 44px; }
+.site .sec-head p { color: var(--ink-2); margin-top: 14px; font-size: 16.5px; }
+
+/* ── buttons ── */
+.site .btn {
+  appearance: none; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+  font: 600 14.5px var(--font); border-radius: 10px; padding: 13px 22px;
+  border: 1px solid var(--line-2); background: var(--surface-2); color: var(--ink);
+  transition: transform .15s var(--ease), background .15s, border-color .15s;
+}
+.site .btn:hover { background: #1d2130; border-color: #3a4157; transform: translateY(-1px); }
+.site .btn-primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.site .btn-primary:hover { background: #edff6b; border-color: #edff6b; }
+
+/* ── cards ── */
+.site .card {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 16px; padding: 26px;
+  transition: border-color .2s, transform .2s var(--ease);
+}
+.site .card:hover { border-color: var(--line-2); transform: translateY(-2px); }
+.site .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.site .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+@media (max-width: 900px) { .site .grid-3 { grid-template-columns: 1fr; } }
+@media (max-width: 720px) { .site .grid-2 { grid-template-columns: 1fr; } }
+
+.site .num {
+  font-family: var(--mono); font-weight: 700; font-size: 12px;
+  color: var(--accent-ink); background: var(--accent);
+  width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; margin-bottom: 16px;
+}
+.site .card h3, .site h2.card-h { font-size: 18.5px; letter-spacing: -0.015em; margin-bottom: 8px; }
+.site h2.card-h, .site h2.step-h { font-weight: 650; }
+.site .card p { color: var(--ink-2); font-size: 15px; }
+.site .card .tag {
+  display: inline-block; margin-top: 14px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink-3); border: 1px solid var(--line-2); border-radius: 999px; padding: 3px 10px;
+}
+
+/* ── terminal block ── */
+.site .term {
+  font-family: var(--mono); font-size: 13.5px; line-height: 1.8;
+  background: var(--surface); border: 1px solid var(--line-2);
+  border-radius: 14px; padding: 22px 24px; color: var(--ink-2); overflow-x: auto;
+}
+.site .term .c { color: var(--ink-3); }
+.site .term .a { color: var(--accent); }
+
+/* ══ HOW IT WORKS steps ══ */
+.site .steps { display: flex; flex-direction: column; gap: 0; counter-reset: step; }
+.site .step {
+  display: grid; grid-template-columns: 120px 1fr; gap: 28px;
+  padding: 34px 0; border-top: 1px solid var(--line);
+}
+.site .step:last-child { border-bottom: 1px solid var(--line); }
+.site .step .sn {
+  font-family: var(--mono); font-size: clamp(34px, 5vw, 52px); font-weight: 700;
+  color: transparent; -webkit-text-stroke: 1.5px var(--ink-3); letter-spacing: -0.02em;
+}
+.site .step h3, .site h2.step-h { font-size: clamp(20px, 3vw, 27px); letter-spacing: -0.02em; margin-bottom: 10px; }
+.site .step p { color: var(--ink-2); max-width: 620px; font-size: 16px; }
+.site .step .fact {
+  margin-top: 14px; display: inline-flex; gap: 8px; align-items: center;
+  font-family: var(--mono); font-size: 12px; color: var(--ink-3);
+  border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px;
+}
+@media (max-width: 640px) { .site .step { grid-template-columns: 1fr; gap: 8px; } }
+
+/* ══ JOURNAL ══ */
+.site .j-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+@media (max-width: 720px) { .site .j-grid { grid-template-columns: 1fr; } }
+.site .j-card {
+  display: flex; flex-direction: column; text-decoration: none;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+  padding: 26px; color: var(--ink); position: relative; overflow: hidden;
+  transition: border-color .2s, transform .2s var(--ease);
+}
+.site .j-card:hover { border-color: var(--line-2); transform: translateY(-2px); }
+.site .j-card .j-meta {
+  font-family: var(--mono); font-size: 11.5px; color: var(--ink-3);
+  display: flex; gap: 10px; margin-bottom: 14px; letter-spacing: .04em;
+}
+.site .j-card h3, .site .j-card h2.card-h { font-size: 20px; letter-spacing: -0.02em; line-height: 1.3; margin-bottom: 10px; }
+.site .j-card p { color: var(--ink-2); font-size: 15px; flex: 1; }
+.site .j-card .j-read { margin-top: 18px; color: var(--accent); font-weight: 600; font-size: 14px; }
+.site .j-card .j-dot {
+  position: absolute; top: 24px; right: 24px; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent); opacity: 0; transition: opacity .2s;
+}
+.site .j-card:hover .j-dot { opacity: 1; }
+
+/* article page */
+.site article.prose { max-width: 720px; margin: 0 auto; }
+.site .art-meta {
+  font-family: var(--mono); font-size: 12.5px; color: var(--ink-3);
+  display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 22px; letter-spacing: .03em;
+}
+.site .prose h1 {
+  font-size: clamp(30px, 5vw, 46px); letter-spacing: -0.03em; line-height: 1.1; font-weight: 800; margin-bottom: 14px;
+}
+.site .prose .standfirst { font-size: clamp(17px, 2.2vw, 20px); color: var(--ink-2); line-height: 1.5; margin-bottom: 8px; }
+.site .prose h2 {
+  font-size: clamp(22px, 3.2vw, 28px); letter-spacing: -0.02em; margin: 52px 0 16px; line-height: 1.2;
+  scroll-margin-top: 80px;
+}
+.site .prose h3 { font-size: 18.5px; margin: 34px 0 10px; letter-spacing: -0.01em; }
+.site .prose p { margin: 0 0 18px; font-size: 17px; color: #c6cbd9; max-width: 68ch; }
+.site .prose ul, .site .prose ol { margin: 0 0 18px 22px; color: #c6cbd9; font-size: 17px; }
+.site .prose li { margin-bottom: 8px; }
+.site .prose strong { color: var(--ink); }
+.site .prose a { color: var(--accent); text-decoration-color: rgba(226,255,58,.35); text-underline-offset: 3px; }
+.site .prose blockquote {
+  border-left: 3px solid var(--accent); padding: 4px 0 4px 22px; margin: 28px 0;
+  font-size: 19px; color: var(--ink); line-height: 1.55; font-weight: 500;
+}
+.site .prose pre {
+  font-family: var(--mono); font-size: 13.5px; line-height: 1.7;
+  background: var(--surface); border: 1px solid var(--line-2);
+  border-radius: 12px; padding: 18px 20px; overflow-x: auto; margin: 0 0 18px; color: var(--ink-2);
+}
+.site .prose code {
+  font-family: var(--mono); font-size: .86em;
+  background: var(--surface-2); border: 1px solid var(--line);
+  border-radius: 5px; padding: 1px 6px; color: var(--ink);
+}
+.site .prose pre code { background: none; border: none; padding: 0; }
+.site .art-toc {
+  border: 1px solid var(--line); border-radius: 12px; background: var(--surface);
+  padding: 16px 20px; margin: 30px 0 8px;
+}
+.site .art-toc b { font-family: var(--mono); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-3); display: block; margin-bottom: 10px; }
+.site .art-toc ul { list-style: none; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.site .art-toc a { color: var(--ink-2); text-decoration: none; font-size: 14.5px; }
+.site .art-toc a:hover { color: var(--accent); }
+.site .art-foot {
+  max-width: 720px; margin: 56px auto 0; padding-top: 28px; border-top: 1px solid var(--line);
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center;
+}
+.site .art-share { display: flex; gap: 10px; flex-wrap: wrap; }
+.site .art-share a {
+  font-family: var(--mono); font-size: 12.5px; color: var(--ink-2); text-decoration: none;
+  border: 1px solid var(--line-2); border-radius: 999px; padding: 7px 14px;
+}
+.site .art-share a:hover { color: var(--ink); border-color: var(--ink-3); }
+.site .rel { max-width: 720px; margin: 40px auto 0; }
+.site .rel h3 { font-size: 14px; font-family: var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 16px; }
+.site .rel a {
+  display: block; color: var(--ink); text-decoration: none; font-size: 17px; font-weight: 600;
+  padding: 14px 18px; border: 1px solid var(--line); border-radius: 12px; margin-bottom: 10px;
+}
+.site .rel a:hover { border-color: var(--line-2); }
+.site .rel a span { display: block; font-weight: 400; font-size: 14px; color: var(--ink-3); margin-top: 3px; }
+
+/* ══ CREATOR ══ */
+.site .maker-quote {
+  font-size: clamp(22px, 3.6vw, 34px); letter-spacing: -0.02em; line-height: 1.35; font-weight: 600;
+  max-width: 760px; margin: 8px 0 0;
+}
+.site .maker-quote em { color: var(--accent); font-style: normal; }
+.site .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+@media (max-width: 900px) { .site .social-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .site .social-grid { grid-template-columns: 1fr; } }
+.site .social-card {
+  display: flex; gap: 14px; align-items: flex-start; text-decoration: none;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; color: var(--ink);
+  transition: border-color .2s, transform .2s var(--ease);
+}
+.site .social-card:hover { border-color: var(--line-2); transform: translateY(-2px); }
+.site .social-card .sic {
+  width: 40px; height: 40px; flex: none; border-radius: 11px;
+  display: grid; place-items: center;
+  background: var(--surface-2); border: 1px solid var(--line-2);
+}
+.site .social-card .sic svg { width: 19px; height: 19px; }
+.site .social-card b { font-size: 15px; display: block; margin-bottom: 3px; }
+.site .social-card span { font-size: 13px; color: var(--ink-3); line-height: 1.45; display: block; }
+.site .proj-wall { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+@media (max-width: 720px) { .site .proj-wall { grid-template-columns: 1fr; } }
+.site .proj {
+  border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px;
+  text-decoration: none; color: var(--ink); display: block; background: var(--surface);
+  border-left: 3px solid var(--line-2); transition: border-color .2s, transform .2s var(--ease);
+}
+.site .proj:hover { transform: translateY(-2px); border-left-color: var(--accent); }
+.site .proj .p-head { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+.site .proj b { font-size: 16px; font-family: var(--mono); }
+.site .proj .lang { font-family: var(--mono); font-size: 11.5px; color: var(--ink-3); }
+.site .proj p { color: var(--ink-2); font-size: 14px; margin-top: 8px; }
+.site .proj .stars { font-family: var(--mono); font-size: 12px; color: var(--ink-3); margin-top: 10px; display: inline-block; }
+.site .proj-note { font-family: var(--mono); font-size: 12px; color: var(--ink-3); margin-top: 16px; }
+
+/* ══ FAQ ══ */
+.site .faq { max-width: 760px; }
+.site .faq details {
+  border: 1px solid var(--line); border-radius: 12px; background: var(--surface);
+  padding: 0 22px; margin-bottom: 10px;
+}
+.site .faq summary {
+  cursor: pointer; list-style: none; padding: 17px 0;
+  font-weight: 600; font-size: 16px; display: flex; justify-content: space-between; gap: 16px; align-items: center;
+}
+.site .faq summary::-webkit-details-marker { display: none; }
+.site .faq summary::after { content: '+'; font-family: var(--mono); color: var(--ink-3); font-size: 18px; }
+.site .faq details[open] summary::after { content: '–'; }
+.site .faq details p { color: var(--ink-2); font-size: 15px; padding: 0 0 18px; max-width: 64ch; }
+.site .faq details p a { color: var(--accent); }
+
+/* ══ CHANGELOG ══ */
+.site .cl { max-width: 760px; }
+.site .cl-ver { padding: 30px 0; border-top: 1px solid var(--line); }
+.site .cl-ver:first-child { border-top: none; padding-top: 8px; }
+.site .cl-ver .v-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
+.site .cl-ver .v-head h2 { font-family: var(--mono); font-size: 24px; letter-spacing: -0.01em; }
+.site .cl-ver .v-head time { font-family: var(--mono); font-size: 13px; color: var(--ink-3); }
+.site .cl-ver h3 {
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink-3); margin: 20px 0 10px;
+}
+.site .cl-ver ul { margin-left: 20px; color: var(--ink-2); font-size: 15.5px; }
+.site .cl-ver li { margin-bottom: 8px; }
+.site .cl-ver li b { color: var(--ink); }
+.site .cl-ver li code { font-family: var(--mono); font-size: .86em; background: var(--surface-2); border: 1px solid var(--line); padding: 1px 6px; border-radius: 5px; }
+
+/* ══ LEGAL ══ */
+.site .legal { max-width: 720px; }
+.site .legal h2 { font-size: 21px; margin: 36px 0 12px; letter-spacing: -0.01em; }
+.site .legal p, .site .legal li { color: var(--ink-2); font-size: 16px; margin-bottom: 12px; }
+.site .legal ul { margin-left: 22px; }
+.site .legal code { font-family: var(--mono); font-size: .86em; background: var(--surface-2); border: 1px solid var(--line); padding: 1px 6px; border-radius: 5px; }
+.site .legal .upd { font-family: var(--mono); font-size: 12.5px; color: var(--ink-3); }
+
+/* ══ 404 ══ */
+.site .nf { text-align: center; padding: clamp(80px, 14vh, 160px) 24px; }
+.site .nf .term { max-width: 560px; margin: 0 auto 36px; text-align: left; }
+.site .nf h1 { font-size: clamp(34px, 6vw, 62px); letter-spacing: -0.035em; line-height: 1.05; }
+.site .nf p { color: var(--ink-2); max-width: 460px; margin: 18px auto 32px; }
+.site .nf .acts { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+/* ══ final CTA ══ */
+.site .cta-final {
+  border-top: 1px solid var(--line); text-align: center; padding: clamp(72px, 10vh, 120px) 24px;
+  position: relative; overflow: hidden;
+}
+.site .cta-final::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(50% 60% at 50% 110%, rgba(226,255,58,.07), transparent 60%);
+}
+.site .cta-final h2 { font-size: clamp(28px, 4.6vw, 48px); letter-spacing: -0.03em; line-height: 1.1; font-weight: 800; }
+.site .cta-final .see { color: var(--accent); font-size: clamp(20px, 3vw, 30px); font-weight: 700; margin-top: 6px; letter-spacing: -0.02em; }
+.site .cta-final p { color: var(--ink-2); margin: 18px auto 34px; max-width: 480px; }
+
+/* ══ FOOTER (shared) ── */
+.site .foot { border-top: 1px solid var(--line); padding: 56px 0 40px; margin-top: 0; }
+.site .foot-grid {
+  max-width: 1120px; margin: 0 auto; padding: 0 24px;
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 32px;
+}
+@media (max-width: 980px) { .site .foot-grid { grid-template-columns: 1fr 1fr 1fr; } }
+@media (max-width: 620px) { .site .foot-grid { grid-template-columns: 1fr 1fr; } }
+.site .foot-brand p { color: var(--ink-3); font-size: 14px; margin-top: 12px; max-width: 300px; }
+.site .foot-col b {
+  display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--ink-3); margin-bottom: 14px;
+}
+.site .foot-col a { display: block; color: var(--ink-2); text-decoration: none; font-size: 14.5px; padding: 4.5px 0; }
+.site .foot-col a:hover { color: var(--ink); }
+.site .foot-base {
+  max-width: 1120px; margin: 40px auto 0; padding: 20px 24px 0; border-top: 1px solid var(--line);
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  color: var(--ink-3); font-size: 13px; font-family: var(--mono);
+}
+.site .foot-base a { color: var(--ink-3); }
+
+/* reveal */
+.site .rv { opacity: 0; transform: translateY(16px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+.site .rv.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .site .rv { opacity: 1; transform: none; transition: none; }
+}
+
+</style>
+</head>
+<body class="site">
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="../"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true" style="width:24px;height:24px;display:block"><rect x="1" y="1" width="24" height="24" rx="6" stroke="#2E3344" stroke-width="1.5"/><path d="M6 19h6M9 19v-6h6V7" stroke="#2E3344" stroke-width="1.8" stroke-linecap="round"/><circle cx="6" cy="19" r="2.4" fill="#E2FF3A"/><circle cx="12" cy="19" r="2" fill="#687089"/><circle cx="15" cy="13" r="2" fill="#687089"/><circle cx="21" cy="7" r="2.4" fill="#E2FF3A"/></svg><span>commit canvas</span></a>
+    <button class="nav-burger" type="button" aria-expanded="false" aria-label="Toggle navigation">
+      <svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M2 4.5h14M2 9h14M2 13.5h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <nav class="nav-links" aria-label="Main">
+      <a href="../features/">Features</a>
+      <a href="../how-it-works/">How it works</a>
+      <a href="../journal/">Journal</a>
+      <a href="../creator/">Creator</a>
+      <a href="https://github.com/ahmadrrrtx/commit-canvas" target="_blank" rel="noopener">GitHub</a>
+      <a class="nav-cta" href="../#try">Create yours</a>
+    </nav>
+  </div>
+</header>
+<main>
+<div class="page">
+  <div class="page-hero">
+    <span class="kicker">Journal</span>
+    <h1>Notes on code,<br>time, and stories.</h1>
+    <p class="sub">Essays on what git history actually contains, how to read it, and the building of Commit Canvas. No SEO filler — everything here is written to be useful.</p>
+  </div>
+  <section class="pad">
+    <div class="j-grid">
+      <a class="j-card rv" href="../journal/your-git-history-is-a-story/">
+  <span class="j-meta"><span>Essay</span><span>2026-09-01</span><span>4 min</span></span>
+  <h2 class="card-h">Your git history is a story — you just can't see it yet</h2>
+  <p>Why contribution graphs flatten exactly the interesting parts of your repository's history.</p>
+  <span class="j-read">Read →</span><span class="j-dot" aria-hidden="true"></span>
+</a><a class="j-card rv" href="../journal/what-your-commit-timestamps-say-about-how-you-build/">
+  <span class="j-meta"><span>Essay</span><span>2026-09-01</span><span>4 min</span></span>
+  <h2 class="card-h">What your commit timestamps say about how you build</h2>
+  <p>Hours, streaks, bursts — and the difference between behavior and personality.</p>
+  <span class="j-read">Read →</span><span class="j-dot" aria-hidden="true"></span>
+</a><a class="j-card rv" href="../journal/how-to-read-the-evolution-of-a-codebase/">
+  <span class="j-meta"><span>Guide</span><span>2026-09-01</span><span>4 min</span></span>
+  <h2 class="card-h">How to read the evolution of a codebase</h2>
+  <p>A practical checklist, with real findings from Flask and Requests.</p>
+  <span class="j-read">Read →</span><span class="j-dot" aria-hidden="true"></span>
+</a><a class="j-card rv" href="../journal/building-commit-canvas-from-git-log-to-story/">
+  <span class="j-meta"><span>Build log</span><span>2026-09-01</span><span>4 min</span></span>
+  <h2 class="card-h">Building Commit Canvas: from git log to story</h2>
+  <p>The audit that found my own bugs, and the rebuild that fixed them.</p>
+  <span class="j-read">Read →</span><span class="j-dot" aria-hidden="true"></span>
+</a>
+    </div>
+  </section>
+</div>
+
+<div class="cta-final">
+  <h2>Your repository already has a story.</h2>
+  <p class="see">See it.</p>
+  <p>One command. One file. Zero cloud.</p>
+  <a class="btn btn-primary" href="../#try">Create your story</a>
+</div>
+
+</main>
+<footer class="foot">
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="brand" href="../" style="text-decoration:none"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true" style="width:24px;height:24px;display:block"><rect x="1" y="1" width="24" height="24" rx="6" stroke="#2E3344" stroke-width="1.5"/><path d="M6 19h6M9 19v-6h6V7" stroke="#2E3344" stroke-width="1.8" stroke-linecap="round"/><circle cx="6" cy="19" r="2.4" fill="#E2FF3A"/><circle cx="12" cy="19" r="2" fill="#687089"/><circle cx="15" cy="13" r="2" fill="#687089"/><circle cx="21" cy="7" r="2.4" fill="#E2FF3A"/></svg><span>commit canvas</span></a>
+      <p>Your code has a story. Free, open source (MIT), and private by architecture — no cloud, no accounts, zero requests in the output.</p>
+    </div>
+    <div class="foot-col"><b>Product</b><ul style="list-style:none;margin:0;padding:0"><li><a href="../#try">Create a story</a></li><li><a href="../features/#time-machine">Time machine</a></li><li><a href="../examples/">Examples</a></li><li><a href="../features/#exports">Exports</a></li><li><a href="../changelog/">Changelog</a></li></ul></div><div class="foot-col"><b>Explore</b><ul style="list-style:none;margin:0;padding:0"><li><a href="../how-it-works/">How it works</a></li><li><a href="../journal/">Journal</a></li><li><a href="../creator/">Creator</a></li><li><a href="../privacy/">Privacy</a></li><li><a href="../terms/">Terms</a></li></ul></div><div class="foot-col"><b>Developers</b><ul style="list-style:none;margin:0;padding:0"><li><a href="https://github.com/ahmadrrrtx/commit-canvas" target="_blank" rel="noopener">GitHub</a></li><li><a href="../how-it-works/#cli">CLI usage</a></li><li><a href="https://github.com/ahmadrrrtx/commit-canvas/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contributing</a></li><li><a href="https://github.com/ahmadrrrtx/commit-canvas#build--development" target="_blank" rel="noopener">Build & tests</a></li><li><a href="https://github.com/ahmadrrrtx/commit-canvas/issues" target="_blank" rel="noopener">Report an issue</a></li></ul></div><div class="foot-col"><b>Connect</b><ul style="list-style:none;margin:0;padding:0"><li><a href="https://github.com/ahmadrrrtx" target="_blank" rel="noopener">GitHub</a></li><li><a href="https://www.linkedin.com/in/ahmadrrrtx" target="_blank" rel="noopener">LinkedIn</a></li><li><a href="https://medium.com/@ahmadrrrtx333" target="_blank" rel="noopener">Medium</a></li><li><a href="https://hashnode.com/@ahmadrrrtx" target="_blank" rel="noopener">Hashnode</a></li><li><a href="https://dev.to/ahmad_rrrtx" target="_blank" rel="noopener">DEV</a></li><li><a href="https://www.indiehackers.com/ahmad_rrrtx" target="_blank" rel="noopener">Indie Hackers</a></li><li><a href="https://daily.dev/ahmadrrtx" target="_blank" rel="noopener">daily.dev</a></li></ul></div>
+  </div>
+  <div class="foot-base">
+    <span>© <span data-year="">2026</span> Muhammad Ahmad · MIT · v2.1.0</span>
+    <span>made with git · <a href="https://github.com/ahmadrrrtx/commit-canvas">ahmadrrrtx/commit-canvas</a></span>
+  </div>
+</footer>
+<script>
+/* Commit Canvas — shared site behavior: nav, reveals, active link. */
+(function () {
+  "use strict";
+  var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* mobile nav */
+  var burger = document.querySelector(".nav-burger");
+  var links = document.querySelector(".nav-links");
+  if (burger && links) {
+    burger.addEventListener("click", function () {
+      var open = links.classList.toggle("open");
+      burger.setAttribute("aria-expanded", open ? "true" : "false");
+      burger.innerHTML = open
+        ? '<svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 3l12 12M15 3L3 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
+        : '<svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M2 4.5h14M2 9h14M2 13.5h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+    });
+  }
+
+  /* active nav link */
+  var path = location.pathname.replace(/\/index\.html$/, "/");
+  document.querySelectorAll(".nav-links a").forEach(function (a) {
+    var href = a.getAttribute("href") || "";
+    var target = href.replace(/(\.\.\/)+/, "/");
+    if (target !== "/" && target.length > 1 && path.indexOf(target.replace(/\/$/, "")) === 0) {
+      a.setAttribute("aria-current", "page");
+    } else if (target === "/" && (path === "/" || path === "")) {
+      a.setAttribute("aria-current", "page");
+    }
+  });
+
+  /* reveals */
+  if ("IntersectionObserver" in window && !REDUCED) {
+    var obs = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); obs.unobserve(e.target); } });
+    }, { threshold: 0.08 });
+    document.querySelectorAll(".rv").forEach(function (n) { obs.observe(n); });
+  } else {
+    document.querySelectorAll(".rv").forEach(function (n) { n.classList.add("in"); });
+  }
+
+  /* article TOC (if present) */
+  var prose = document.querySelector("article.prose");
+  var tocList = document.getElementById("toc-list");
+  if (prose && tocList) {
+    var hs = prose.querySelectorAll("h2[id]");
+    hs.forEach(function (h) {
+      var li = document.createElement("li");
+      var a = document.createElement("a");
+      a.href = "#" + h.id;
+      a.textContent = h.textContent;
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+    var wrap = document.getElementById("art-toc");
+    if (wrap && !hs.length) wrap.style.display = "none";
+  }
+
+  /* footer year */
+  document.querySelectorAll("[data-year]").forEach(function (n) {
+    n.textContent = new Date().getFullYear();
+  });
+})();
+
+</script>
+</body>
+</html>

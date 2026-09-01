@@ -55,6 +55,20 @@ python -m cc . --json model.json   # also export the raw analysis model
 
 Paste any public GitHub URL on [the landing page](https://ahmadrrrtx.github.io/commit-canvas/) — the analysis runs in your browser via the GitHub API, renders the full story, and can download the same self-contained `story.html`. Private repos: use the CLI.
 
+## Export studio
+
+Every story (CLI or web) ships with a built-in export studio — no external service, nothing leaves the page:
+
+- **Share cards** — Open Graph, terminal, certificate and quote-card PNGs, rendered locally to `<canvas>`
+- **Animated GIF** — a client-side real-time export of the time machine (browser only; there is no MP4 support — for offline video, screen-record the page or use the JSON export)
+- **Markdown summary** — drop the whole story into a `README` or post
+- **JSON** — the exact analysis model, for your own tooling
+
+## The website
+
+The project site ([ahmadrrrtx.github.io/commit-canvas](https://ahmadrrrtx.github.io/commit-canvas/)) is itself part of this repo: landing page with a live embedded Flask story, [features](https://ahmadrrrtx.github.io/commit-canvas/features/), [examples](https://ahmadrrrtx.github.io/commit-canvas/examples/), a [journal](https://ahmadrrrtx.github.io/commit-canvas/journal/), [how it works](https://ahmadrrrtx.github.io/commit-canvas/how-it-works/), [changelog](https://ahmadrrrtx.github.io/commit-canvas/changelog/), [privacy](https://ahmadrrrtx.github.io/commit-canvas/privacy/) and [terms](https://ahmadrrrtx.github.io/commit-canvas/terms/). Rebuild locally with `python tools/build.py` (`--check` verifies freshness in CI; `--assets` regenerates OG images).
+
+
 ## How it works
 
 ```

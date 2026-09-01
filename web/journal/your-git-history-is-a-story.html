@@ -1,0 +1,64 @@
+<article class="prose">
+  <p class="art-meta"><span>Essay</span><span>{{DATE}}</span><span>{{READING_TIME}} min read</span><span>Muhammad Ahmad</span></p>
+  <h1>Your git history is a story — you just can't see it yet</h1>
+  <p class="standfirst">Every repository quietly records a narrative: beginnings, sprints, silences, comebacks, and the people who showed up. The problem was never the data. It's that nobody renders it.</p>
+
+  <div class="art-toc" id="art-toc"><b>Contents</b><ul id="toc-list"></ul></div>
+
+  <h2 id="the-flattening">The flattening</h2>
+  <p>Open any GitHub profile and you'll see the same thing: a grid of green squares. It's a lovely artifact — compact, scannable, faintly gamified. But notice what it does to a year of your life: it compresses everything into <em>how much</em>. A day is a shade of green. A year is a rectangle.</p>
+  <p>The contribution graph answers exactly one question — "was I active?" — and ignores every question that actually matters:</p>
+  <ul>
+    <li>When did the project really start, and what did the first version look like?</li>
+    <li>Which month did the hard work happen, and what triggered it?</li>
+    <li>How long did it go quiet, and what ended the silence?</li>
+    <li>Who joined, when, and how much of the codebase is theirs now?</li>
+    <li>What was the single most consequential day in the project's life?</li>
+  </ul>
+  <p>All of that is in your <code>.git</code> folder right now. It has been accumulating since the first commit.</p>
+
+  <h2 id="what-the-log-actually-contains">What the log actually contains</h2>
+  <p>A git repository is one of the most honest datasets a developer will ever produce. Not honest in the sense of accurate — people forget things, rebase, squash — but honest in the sense of <em>unguarded</em>. Nobody writes commit timestamps for an audience. The metadata records behavior as it happened:</p>
+  <blockquote>Timestamps are the diary you didn't know you were keeping.</blockquote>
+  <p>Read as a sequence rather than a sum, the history has <strong>structure</strong>:</p>
+  <ul>
+    <li><strong>Sequences.</strong> First commit → "it works" → "actually works" → release. A narrative arc with causality.</li>
+    <li><strong>Gaps.</strong> Months with zero commits are as meaningful as busy ones. A 90-day silence followed by 80 commits is a comeback story — and it's just… invisible in a contribution grid.</li>
+    <li><strong>Bursts.</strong> When a month has 4× the median activity, something happened: a deadline, a hackathon, an idea that finally clicked.</li>
+    <li><strong>Authorship over time.</strong> The first contributor is not always the one who shaped the project. Join dates and share-by-window tell a richer story than a contributor list.</li>
+    <li><strong>Artifacts.</strong> Tags and releases punctuate the timeline — moments the project deliberately shipped itself to the world.</li>
+  </ul>
+
+  <h2 id="reading-it-properly">Reading it properly</h2>
+  <p>When I started building <a href="{{ROOT}}">Commit Canvas</a>, the first thing I did was read raw git logs from well-known repositories. Two things jumped out.</p>
+  <p>First: famous projects have dramatic histories. <strong>Flask</strong> — the Python micro-framework — has 5,600+ commits across sixteen years, and its log contains an early sprint so intense that a single May day in 2017 holds 45 commits. <strong>Requests</strong> went effectively quiet for years before the PSF-era revival; its own timeline is a story of abandonment and return that its contribution graph never shows at a glance.</p>
+  <p>Second: the tools we have flatten exactly the interesting parts. <code>git log --oneline</code> is a stream with no shape. Insights tabs show counts. Video tools like Gource render something beautiful but ephemeral — you watch it once, you can't share it, and it says nothing specific.</p>
+  <p>Reading a repository properly means computing over the <em>sequence</em>: month-boundary snapshots, velocity ratios, longest silences, streaks, per-author windows, tag alignment. None of that is hard — it's arithmetic on timestamps. It's just that almost nobody does it, because git gives you plumbing, not narrative.</p>
+
+  <h2 id="stories-need-honesty">Stories need honesty</h2>
+  <p>There's a trap in this genre, and it's worth naming: the moment you tell stories about data, you're tempted to invent. A tool that says <em>"you're a Night Owl developer!"</em> based on three commits is astrology with extra steps.</p>
+  <p>The rule I settled on when building the story engine: <strong>every narrative claim must trace to a measurement.</strong> "The project went quiet for 43 days" has to correspond to 43 actual days between commits. "Development accelerated" needs a velocity ratio behind it. If the data is thin, the tool should say the story is just starting — not make something up.</p>
+  <p>Deterministic beats generative here. You don't need a language model to find the biggest day in a repository; you need a max() and a timestamp. Save the flair for the presentation, not the facts.</p>
+
+  <h2 id="seeing-your-own">Seeing your own</h2>
+  <p>There's a specific moment I keep watching people hit when they open a Commit Canvas story for a repository they know well. It's not "cool visualization." It's recognition: <em>"I had no idea my project looked like this — and that is actually my story."</em></p>
+  <p>The years of work already happened. The dataset already exists, sitting quietly in a hidden folder on your machine. The only missing piece was rendering.</p>
+  <p>If you want to see yours: it takes one command.</p>
+  <pre><code>git clone https://github.com/ahmadrrrtx/commit-canvas
+cd commit-canvas
+./run.sh /path/to/your-project</code></pre>
+
+  <div class="art-foot">
+    <div class="art-share">
+      <a href="https://twitter.com/intent/tweet?url={{URL}}&text=Your%20git%20history%20is%20a%20story%20%E2%80%94%20you%20just%20can%27t%20see%20it%20yet" target="_blank" rel="noopener">Share on X</a>
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url={{URL}}" target="_blank" rel="noopener">Share on LinkedIn</a>
+    </div>
+    <a class="btn" href="{{ROOT}}journal/">&larr; Back to journal</a>
+  </div>
+
+  <div class="rel">
+    <h3>Keep reading</h3>
+    <a href="{{ROOT}}journal/what-your-commit-timestamps-say-about-how-you-build">What your commit timestamps say about how you build<span>Hours, streaks, bursts — and the difference between behavior and personality.</span></a>
+    <a href="{{ROOT}}journal/how-to-read-the-evolution-of-a-codebase">How to read the evolution of a codebase<span>A practical checklist, with real findings from Flask and Requests.</span></a>
+  </div>
+</article>
