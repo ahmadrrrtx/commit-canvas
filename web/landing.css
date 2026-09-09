@@ -340,3 +340,8 @@
   .lp .lp-term .lp-try-row { flex-direction: column; padding: 10px; }
   .lp .lp-term input { font-size: 15px; }
 }
+
+/* very narrow phones: keep the headline on its two designed lines */
+@media (max-width: 350px) {
+  .lp h1 { font-size: 33px; }
+}

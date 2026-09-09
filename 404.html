@@ -1225,20 +1225,11 @@ $ git log --oneline -1
   });
 
 
-  /* ── live GitHub star count (graceful: plain label if unreachable) ── */
-  $$("a[data-star]").forEach(function (a) {
-    if (typeof fetch !== "function") return;   /* keep plain label */
-    fetch("https://api.github.com/repos/ahmadrrrtx/commit-canvas")
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (j) {
-        if (!j || typeof j.stargazers_count !== "number") return;
-        var n = j.stargazers_count >= 1000
-          ? (j.stargazers_count / 1000).toFixed(1).replace(/\.0$/, "") + "k" : String(j.stargazers_count);
-        a.textContent = "★ " + n + " on GitHub";
-        a.setAttribute("aria-label", "Star commit-canvas on GitHub — " + j.stargazers_count + " stars");
-      })
-      .catch(function () { /* keep plain label */ });
-  });
+  /* ── star CTA ─────────────────────────────────────────────────────
+     Deliberately no live count: the site promises "no cloud", and a
+     page-load fetch would eat the user's anonymous GitHub API quota
+     (60/hr) before they can analyze their first repository. Static,
+     honest label instead. */
 
   /* ── footer year ──────────────────────────────────────────────── */
   $$("[data-year]").forEach(function (n) { n.textContent = new Date().getFullYear(); });
