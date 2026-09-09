@@ -69,5 +69,7 @@ story.html
 demo/*.html
 !demo/flask-story.html
 !demo/commit-canvas-story.html
+!demo/requests-story.html
+!demo/express-story.html
 # Backup files
 index_page_backup.html
