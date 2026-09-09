@@ -1,0 +1,16 @@
+{
+  "name": "Commit Canvas",
+  "short_name": "Commit Canvas",
+  "description": "Turn any git repository into a cinematic, shareable story.",
+  "start_url": ".",
+  "display": "browser",
+  "background_color": "#0B0C10",
+  "theme_color": "#0B0C10",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

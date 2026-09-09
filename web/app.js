@@ -267,9 +267,9 @@
       return b;
     }
     var bFirst = tbtn('<svg viewBox="0 0 14 14" fill="currentColor"><path d="M2 1.5v11M12 1.5L5 7l7 5.5z"/></svg>', "Jump to first month");
-    var bPrev = tbtn('<svg viewBox="0 0 14 14" fill="currentColor"><path d="M10 1.5L3 7l7 5.5z"/></svg>', "Previous month");
+    var bPrev = tbtn('<svg viewBox="0 0 14 14" fill="currentColor"><path d="M10 1.5L3 7l7 5.5z"/></svg>', "Previous milestone");
     var play = tbtn('<svg viewBox="0 0 16 16" fill="currentColor"><path d="M4 2.5v11l9-5.5z"/></svg>', "Play the project timeline", "tm-play");
-    var bNext = tbtn('<svg viewBox="0 0 14 14" fill="currentColor"><path d="M4 1.5L11 7l-7 5.5z"/></svg>', "Next month");
+    var bNext = tbtn('<svg viewBox="0 0 14 14" fill="currentColor"><path d="M4 1.5L11 7l-7 5.5z"/></svg>', "Next milestone");
     var bLast = tbtn('<svg viewBox="0 0 14 14" fill="currentColor"><path d="M12 1.5v11M2 1.5L9 7l-7 5.5z"/></svg>', "Jump to latest month");
     var speed = tbtn("1×", "Playback speed", "tm-speed");
     transport.appendChild(bFirst); transport.appendChild(bPrev); transport.appendChild(play);
@@ -297,15 +297,20 @@
       controls.appendChild(young);
     }
 
-    /* milestone ticks */
+    /* milestone ticks — positionally clustered so near-simultaneous
+       milestones (rapid releases) never stack into an unclickable blob */
     var tickShown = {};
+    var lastPct = -10;
     events.forEach(function (e) {
       if (e.idx <= 0 || e.idx >= months.length - 1) return;
       if (tickShown[e.idx]) return;
       tickShown[e.idx] = 1;
+      var pct = months.length < 2 ? 50 : (e.idx / (months.length - 1)) * 100;
+      if (pct - lastPct < 1.4) return;   /* too close to the previous tick */
+      lastPct = pct;
       var t = el("button", "tm-tick tick-" + e.kind);
       t.type = "button";
-      t.style.left = (months.length < 2 ? 50 : (e.idx / (months.length - 1)) * 100) + "%";
+      t.style.left = pct + "%";
       t.title = e.title + " · " + fmtDate(e.date);
       t.setAttribute("aria-label", "Jump to " + e.title + ", " + fmtDate(e.date));
       t.addEventListener("click", function () { setIndex(e.idx, true); });
@@ -378,6 +383,15 @@
 
     /* events by index */
     var evtByIndex = {};
+    var eventIdxList = events.map(function (e) { return e.idx; }).filter(function (ix, i, a) { return a.indexOf(ix) === i; }).sort(function (a, b) { return a - b; });
+    function prevEventIx(from) {
+      for (var i = eventIdxList.length - 1; i >= 0; i--) if (eventIdxList[i] < from - 0.5) return eventIdxList[i];
+      return 0;
+    }
+    function nextEventIx(from) {
+      for (var i = 0; i < eventIdxList.length; i++) if (eventIdxList[i] > from + 0.5) return eventIdxList[i];
+      return months.length - 1;
+    }
     events.forEach(function (e) {
       if (!evtByIndex[e.idx]) evtByIndex[e.idx] = e;
     });
@@ -390,10 +404,19 @@
     function updateEvent(i) {
       var e = evtByIndex[i];
       if (e) {
+        /* derived, honest metrics: what this month actually added */
+        var m1 = months[e.idx] || months[months.length - 1];
+        var m0 = months[Math.max(0, e.idx - 1)] || m1;
+        var chips = [];
+        if (m1.commits) chips.push("+" + fN(m1.commits) + " commits");
+        if (m1.new_contributors) chips.push("+" + fN(m1.new_contributors) + " contributors");
+        if (m1.files_end && m0.files_end && m1.files_end - m0.files_end) chips.push((m1.files_end - m0.files_end > 0 ? "+" : "") + fN(m1.files_end - m0.files_end) + " files");
+        if (m1.net_end !== undefined && m0.net_end !== undefined && m1.net_end - m0.net_end) chips.push((m1.net_end - m0.net_end > 0 ? "+" : "") + fK(Math.abs(m1.net_end - m0.net_end)) + " lines");
         evtOverlay.innerHTML =
           '<span class="te-kind">' + esc(e.kind) + "</span>" +
           '<b class="te-title">' + esc(e.title) + "</b>" +
           '<span class="te-sub">' + esc(e.sub) + "</span>" +
+          (chips.length ? '<span class="te-metrics">' + chips.slice(0, 3).map(esc).join("</span><span class='te-metrics'>") + "</span>" : "") +
           '<span class="te-date">' + esc(fmtDate(e.date)) + "</span>";
         evtOverlay.classList.add("show");
       } else {
@@ -401,17 +424,39 @@
       }
     }
 
+    var lastFloor = -1;
+    function lerpN(a, b, t) { return a + (b - a) * t; }
+    function smoothCounters(fl, t) {
+      var nx = Math.min(fl + 1, months.length - 1);
+      counterNodes[0].textContent = fN(lerpN(cumCommits[fl], cumCommits[nx], t));
+      counterNodes[1].textContent = fN(lerpN(months[fl].commits, months[nx].commits, t));
+      counterNodes[2].textContent = fN(lerpN(cumPeople[fl], cumPeople[nx], t));
+      counterNodes[3].textContent = fN(lerpN(cumMerges[fl], cumMerges[nx], t));
+      if (hasCode) {
+        counterNodes[4].textContent = fN(lerpN(months[fl].files_end || 0, months[nx].files_end || 0, t));
+        counterNodes[5].textContent = fK(lerpN(months[fl].net_end || 0, months[nx].net_end || 0, t));
+      } else {
+        counterNodes[4].textContent = fN(lerpN(months[fl].active_days || 0, months[nx].active_days || 0, t));
+      }
+    }
     function setIndex(i, fromUser) {
-      cur = Math.max(0, Math.min(months.length - 1, i | 0));
-      range.value = cur;
+      cur = Math.max(0, Math.min(months.length - 1, i));
+      var fl = cur | 0, t = cur - fl;
+      range.value = fl;
       range.style.setProperty("--fill", (months.length < 2 ? 100 : (cur / (months.length - 1)) * 100) + "%");
-      var m = months[cur];
-      dateline.innerHTML = "<b>" + esc(m.label) + "</b><span>" + fN(cumCommits[cur]) + " commits total</span>";
-      defs.forEach(function (def, ix) { counterNodes[ix].textContent = def.get(cur); });
-      msg.querySelector(".msgtxt").textContent = m.msg ? "“" + m.msg + "”" : "—";
-      renderLangs(langZone, m.langs, hasCode);
+      /* counters + chart pointer animate every frame — smooth, no snapping */
+      smoothCounters(fl, t);
       chart.update(cur);
-      updateEvent(cur);
+      /* month-anchored content swaps only when the month actually changes */
+      if (fl !== lastFloor) {
+        lastFloor = fl;
+        var m = months[fl];
+        var yr = Math.floor(fl / 12) + 1, yrs = Math.max(1, Math.ceil(months.length / 12));
+        dateline.innerHTML = "<b>" + esc(m.label) + "</b><span>year " + yr + " of " + yrs + " · " + fN(cumCommits[fl]) + " commits total</span>";
+        msg.querySelector(".msgtxt").textContent = m.msg ? "“" + m.msg + "”" : "—";
+        renderLangs(langZone, m.langs, hasCode);
+        updateEvent(fl);
+      }
       if (fromUser) stop();
     }
     function stop() {
@@ -428,7 +473,9 @@
       play.setAttribute("aria-label", "Pause the project timeline");
       play.title = "Pause";
       var base = Math.max(months.length / 14, 1.6);   /* 1× ≈ 14s journey */
-      var rate = base * speeds[speedIx];
+      /* smart pacing: slow down near meaningful events, cruise between them */
+      var near = eventIdxList.some(function (ix) { return Math.abs(cur - ix) < 0.8; });
+      var rate = base * speeds[speedIx] * (near ? 0.32 : 1);
       var last = null;
       function frame(t) {
         if (!playing) return;
@@ -448,8 +495,8 @@
     });
     bFirst.addEventListener("click", function () { setIndex(0, true); });
     bLast.addEventListener("click", function () { setIndex(months.length - 1, true); });
-    bPrev.addEventListener("click", function () { setIndex(cur - 1, true); });
-    bNext.addEventListener("click", function () { setIndex(cur + 1, true); });
+    bPrev.addEventListener("click", function () { setIndex(prevEventIx(cur), true); });
+    bNext.addEventListener("click", function () { setIndex(nextEventIx(cur), true); });
     speed.addEventListener("click", function () {
       speedIx = (speedIx + 1) % speeds.length;
       speed.textContent = speeds[speedIx] + "×";
@@ -573,9 +620,11 @@
     function update(i) {
       var x = PADL + (n < 2 ? iw / 2 : (i / (n - 1)) * iw);
       pointer.setAttribute("x1", x); pointer.setAttribute("x2", x);
-      dot.setAttribute("cx", x); dot.setAttribute("cy", pts[Math.max(0, Math.min(i, n - 1))][1]);
-      for (var k = 0; k < bars.length; k++) bars[k].setAttribute("fill", k <= i ? "#7b9a1d" : "#2E3344");
-      if (onChange) onChange(i);
+      dot.setAttribute("cx", x);
+      dot.setAttribute("cy", pts[Math.round(Math.max(0, Math.min(i, n - 1)))][1]);
+      var lit = Math.floor(i + 1e-4);
+      for (var k = 0; k < bars.length; k++) bars[k].setAttribute("fill", k <= lit ? "#7b9a1d" : "#2E3344");
+      if (onChange) onChange(lit);
     }
     container.update = update;
     return update;

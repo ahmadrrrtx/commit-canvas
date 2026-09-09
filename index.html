@@ -17,6 +17,8 @@
 <meta name="twitter:description" content="Your repository, told like a film. Generated locally from real git data.">
 <meta name="twitter:image" content="assets/og-preview.png">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#0B0C10">
 <style>
 /* ══════════════════════════════════════════════════════════════════
    COMMIT CANVAS — Landing Page Styles
@@ -308,6 +310,48 @@
    Tokens match story.css so site + story feel like one product.
    ══════════════════════════════════════════════════════════════════ */
 
+/* ═══ COMMIT CANVAS — Global Design Tokens ════════════════════════
+   Single source of truth for site + landing + story.
+   Values mirror web/story.css :root — keep the two in sync.        */
+
+:root {
+  /* surfaces */
+  --bg:        #0B0C10;
+  --bg-2:      #0E1016;
+  --surface:   #12141C;
+  --surface-2: #171A24;
+  --line:      #232735;
+  --line-2:    #2E3344;
+
+  /* ink */
+  --ink:       #E9EBF3;
+  --ink-2:     #9BA1B5;
+  --ink-3:     #687089;
+
+  /* accents — neon used sparingly: CTAs, active states, key metrics */
+  --accent:    #E2FF3A;
+  --accent-ink:#151803;
+  --amber:     #FFB454;
+  --coral:     #FF7A6B;
+  --mint:      #6BE7C7;
+  --blue:      #6CA6FF;
+  --violet:    #B48CFF;
+
+  /* scale + motion */
+  --r-s: 8px; --r-m: 12px; --r-l: 18px;
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px; --sp-16: 64px; --sp-24: 96px;
+
+  --font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+          "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono",
+          Menlo, Consolas, monospace;
+
+  --shadow-1: 0 1px 0 rgba(255,255,255,.03) inset, 0 8px 30px rgba(0,0,0,.35);
+  --ease: cubic-bezier(.16,1,.3,1);
+  --glow: 0 0 24px rgba(226,255,58,.16);
+}
+
 .site *, .site *::before, .site *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 .site {
@@ -322,6 +366,7 @@
 }
 .site main { flex: 1; }
 .site ::selection { background: var(--accent); color: var(--accent-ink); }
+.site :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
 .site :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
 
 .site .sr-only {
@@ -1039,6 +1084,141 @@ html { scroll-behavior: smooth; }
   .site .rv { opacity: 1 !important; transform: none !important; }
   .site .proj { opacity: 1 !important; transform: none !important; }
 }
+
+/* ═══ SIGNATURE FOOTER — the brand ending ═════════════════════════ */
+.site .foot-cta {
+  text-align: center;
+  padding: clamp(44px, 7vw, 84px) 24px 8px;
+  border-top: 1px solid var(--line);
+  margin-top: clamp(28px, 5vw, 56px);
+}
+.site .foot-cta h2 {
+  font-size: clamp(24px, 3.6vw, 40px); font-weight: 700;
+  letter-spacing: -0.025em; line-height: 1.12;
+}
+.site .foot-cta p {
+  color: var(--ink-3); font-family: var(--mono);
+  font-size: 13px; margin: 10px 0 22px; letter-spacing: .06em;
+}
+.site .foot-sign {
+  position: relative; overflow: hidden;
+  padding: clamp(30px, 6vw, 68px) 24px clamp(34px, 6vw, 72px);
+  text-align: center; user-select: none;
+}
+/* faint blueprint grid */
+.site .foot-sign::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(rgba(46,51,68,.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(46,51,68,.14) 1px, transparent 1px);
+  background-size: 44px 44px;
+  -webkit-mask-image: radial-gradient(58% 80% at 50% 50%, #000 30%, transparent 78%);
+  mask-image: radial-gradient(58% 80% at 50% 50%, #000 30%, transparent 78%);
+}
+/* soft glow pooling behind the wordmark */
+.site .foot-sign::after {
+  content: ''; position: absolute; left: 50%; bottom: -46%;
+  width: min(760px, 92vw); height: 60%; transform: translateX(-50%);
+  background: radial-gradient(50% 60% at 50% 100%, rgba(226,255,58,.10), transparent 70%);
+  pointer-events: none;
+}
+.site .fs-word {
+  display: block; position: relative;
+  font-size: clamp(44px, 11vw, 148px);
+  font-weight: 800; line-height: .94; letter-spacing: -.035em;
+  color: var(--ink);
+  text-shadow: 0 0 34px rgba(226,255,58,.10);
+}
+.site .fs-word em {
+  font-style: normal; color: transparent;
+  -webkit-text-stroke: 1.5px rgba(226,255,58,.75);
+  text-shadow: 0 0 26px rgba(226,255,58,.12);
+}
+.site .fs-tag {
+  position: relative; display: block; margin-top: 14px;
+  font-family: var(--mono); font-size: clamp(11px, 1.6vw, 14px);
+  letter-spacing: .34em; text-transform: uppercase; color: var(--ink-3);
+}
+@media (prefers-reduced-motion: reduce) {
+  .site .foot-sign::after { animation: none; }
+}
+
+/* ═══ FEATURE DEMO VISUALS (features page) ════════════════════════ */
+.site .fd-pill {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 18px;
+  padding: 7px 14px; border-radius: 999px;
+  background: rgba(226,255,58,.05); border: 1px solid rgba(226,255,58,.18);
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em;
+  color: var(--ink-2); text-transform: lowercase;
+}
+.site .fd-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulseDot 2.4s ease-out infinite; }
+.site .fd-demo { margin: 18px 0 4px; }
+.site .fd-cap {
+  display: flex; justify-content: space-between; gap: 8px; margin-top: 8px;
+  font-family: var(--mono); font-size: 11.5px; color: var(--ink-3);
+}
+.site .fd-chapters { display: flex; gap: 3px; height: 30px; }
+.site .fd-chapters i { border-radius: 4px; min-width: 6px; opacity: .92; transition: opacity .2s ease, transform .2s ease; }
+.site .fd-chapters i:hover { opacity: 1; transform: scaleY(1.12); }
+.site .fc-beginning  { background: #6CA6FF; }
+.site .fc-sprint     { background: #E2FF3A; }
+.site .fc-silence    { background: #2E3344; }
+.site .fc-grind      { background: #687089; }
+.site .fc-launch     { background: #6BE7C7; }
+.site .fc-evolution  { background: #B48CFF; }
+.site .fd-timeline { padding: 12px 0 6px; }
+.site .fd-track {
+  position: relative; height: 8px; border-radius: 4px;
+  background: var(--surface-2); border: 1px solid var(--line);
+}
+.site .fd-fill {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 34%;
+  border-radius: 4px 0 0 4px;
+  background: linear-gradient(90deg, rgba(226,255,58,.7), rgba(226,255,58,.25));
+}
+.site .fd-track b {
+  position: absolute; top: -3px; width: 3px; height: 12px; border-radius: 2px;
+  background: #6CA6FF; opacity: .85; cursor: default;
+}
+.site .fd-head {
+  position: absolute; top: -4px; left: 34%; width: 14px; height: 14px;
+  border-radius: 50%; background: var(--accent); border: 2.5px solid var(--bg);
+  box-shadow: 0 0 12px rgba(226,255,58,.55);
+  animation: fdHead 3.2s ease-in-out infinite alternate;
+}
+@keyframes fdHead { from { left: 30%; } to { left: 72%; } }
+.site .fd-fp {
+  padding: 14px 16px; border-radius: 12px;
+  background: var(--surface); border: 1px solid var(--line);
+}
+.site .fd-arch { font-weight: 700; font-size: 16.5px; letter-spacing: -.01em; }
+.site .fd-arch-tag { color: var(--ink-2); font-size: 13px; margin: 4px 0 10px; line-height: 1.45; }
+.site .fd-fp-meta { display: flex; flex-wrap: wrap; gap: 6px 16px; font-family: var(--mono); font-size: 11.5px; color: var(--ink-3); }
+.site .fd-fp-meta b { color: var(--ink); font-weight: 600; }
+.site .fd-hours {
+  display: flex; align-items: flex-end; gap: 3px; height: 64px;
+  padding: 10px 12px 6px; border-radius: 12px;
+  background: var(--surface); border: 1px solid var(--line);
+}
+.site .fd-hours i { flex: 1; border-radius: 2px 2px 0 0; background: var(--line-2); min-height: 3px; }
+.site .fd-hours i.hot { background: var(--accent); box-shadow: 0 0 10px rgba(226,255,58,.35); }
+.site .fd-roast {
+  padding: 14px 16px; border-radius: 12px;
+  background: var(--surface); border: 1px solid var(--line);
+  border-left: 3px solid var(--amber);
+}
+.site .fd-roast p { font-size: 14.5px; line-height: 1.5; color: var(--ink); }
+.site .fd-roast code { display: inline-block; margin-top: 8px; font-size: 11.5px; color: var(--ink-3); }
+.site .fd-formats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.site .fd-formats .fmt {
+  display: flex; flex-direction: column; gap: 2px; padding: 10px 12px;
+  border-radius: 10px; background: var(--surface); border: 1px solid var(--line);
+  font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--ink);
+  transition: border-color .2s ease, transform .2s ease;
+}
+.site .fd-formats .fmt:hover { border-color: #3a4157; transform: translateY(-2px); }
+.site .fd-formats .fmt span { font-weight: 400; font-size: 11px; color: var(--ink-3); }
+@media (max-width: 560px) { .site .fd-formats { grid-template-columns: repeat(2, 1fr); } }
 
 </style>
 <style>
@@ -1947,6 +2127,14 @@ body {
   .tm-event { transition: none; }
 }
 
+/* ── TM event metric chips ── */
+.tm-event .te-metrics {
+  display: inline-block; margin: 4px 6px 0 0; padding: 3px 9px;
+  border-radius: 999px; background: rgba(226,255,58,.07);
+  border: 1px solid rgba(226,255,58,.18);
+  font-family: var(--mono); font-size: 11.5px; color: var(--accent);
+}
+
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"Commit Canvas","url":"https://ahmadrrrtx.github.io/commit-canvas/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Turn any git repository into a cinematic, shareable story — chapters, a time machine, and a developer fingerprint. Generated from real commit data, locally.","featureList":["Story engine with evidence-grounded chapters","Repository time machine","Developer fingerprint","Roast my git","PNG/GIF/WebM/SVG/HTML exports","Offline, zero-dependency CLI"],"author":{"@type":"Person","name":"Muhammad Ahmad","url":"https://ahmadrrrtx.github.io/commit-canvas/creator/"},"license":"https://github.com/ahmadrrrtx/commit-canvas/blob/main/LICENSE","isAccessibleForFree":true}
@@ -1955,12 +2143,100 @@ body {
 {"@context":"https://schema.org","@type":"WebSite","name":"Commit Canvas","url":"https://ahmadrrrtx.github.io/commit-canvas/"}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"What is Commit Canvas?","acceptedAnswer":{"@type":"Answer","text":"An open-source tool that turns a git repository into a cinematic, interactive story generated from real commit data, output as a single self-contained HTML file."}},
-{"@type":"Question","name":"Does Commit Canvas require an account?","acceptedAnswer":{"@type":"Answer","text":"No. No sign-up, no login, no API key. The CLI works fully offline."}},
-{"@type":"Question","name":"Does Commit Canvas store repository data?","acceptedAnswer":{"@type":"Answer","text":"No. There is no backend or database. The CLI writes one HTML file locally; the web version runs entirely in the browser using GitHub's public API."}},
-{"@type":"Question","name":"Is Commit Canvas open source?","acceptedAnswer":{"@type":"Answer","text":"Yes, MIT licensed on GitHub."}}
-]}
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is Commit Canvas?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Commit Canvas is an open-source tool that turns a git repository into a cinematic, interactive story — chapters, a time machine, a developer fingerprint and share cards — generated from real commit data. The output is a single self-contained HTML file."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Who is it for?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Developers who want to see — and show — how a project actually evolved: maintainers, portfolio builders, teams writing retrospectives, and anyone who has ever wondered what their commit history says about how they work."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does it work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The CLI reads your local .git folder in a single pass (commits, merges, tags, authors, per-file line changes) and a deterministic engine derives the story — no AI, no guessing. The web version does the same analysis in your browser through the GitHub API for public repositories."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it require an account?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. There is no sign-up, no login, and no API key. The CLI works fully offline."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Commit Canvas store my repository data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. There is no backend and no database. The CLI writes one HTML file to your disk. The web version runs entirely in your browser — the only network calls are to GitHub's public API while analyzing a public repo. Generated story files contain commit metadata (authors, dates, messages) — what you choose to share is up to you."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can it analyze private repositories?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — with the local CLI, which reads the repository on your machine and never sends anything anywhere. The browser version only works with public GitHub repositories."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What can I export?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "PNG share cards (X/LinkedIn, square, 9:16 story, README banner), an animated GIF of the time machine, a WebM video, an SVG timeline, a README markdown block, and the full self-contained story.html."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it open source?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — MIT licensed. The whole product is on GitHub."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it need an API key or an account?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No key, no sign-in. The web version uses GitHub's public anonymous API. The CLI reads the local .git directory and works fully offline."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which git providers are supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Any of them. The CLI works on any local git repository — GitHub, GitLab, Bitbucket, Gitea, or a folder no server has ever seen. The web version accepts public GitHub URLs."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Who created Commit Canvas?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Muhammad Ahmad — a developer building tools at the intersection of developer experience, data storytelling and open source."
+      }
+    }
+  ]
+}
 </script>
 </head>
 <body class="site lp">
@@ -2214,6 +2490,14 @@ cd commit-canvas
         <summary>Is it open source?</summary>
         <p>Yes — MIT licensed. The whole product is <a href="https://github.com/ahmadrrrtx/commit-canvas">on GitHub</a>.</p>
       </details>
+        <details>
+          <summary>Does it need an API key or an account?</summary>
+          <p>No key, no sign-in. The web version uses GitHub's public anonymous API. The CLI reads the local .git directory and works fully offline.</p>
+        </details>
+        <details>
+          <summary>Which git providers are supported?</summary>
+          <p>Any of them. The CLI works on any local git repository — GitHub, GitLab, Bitbucket, Gitea, or a folder no server has ever seen. The web version accepts public GitHub URLs.</p>
+        </details>
       <details>
         <summary>Who created Commit Canvas?</summary>
         <p><a href="creator/">Muhammad Ahmad</a> — a developer building tools at the intersection of developer experience, data storytelling and open source.</p>
@@ -2239,6 +2523,15 @@ cd commit-canvas
       <p>Your code has a story. Free, open source (MIT), and private by architecture — no cloud, no accounts, zero requests in the output.</p>
     </div>
     <div class="foot-col"><b>Product</b><ul style="list-style:none;margin:0;padding:0"><li><a href="./#try">Create a story</a></li><li><a href="./features/#time-machine">Time machine</a></li><li><a href="./examples/">Examples</a></li><li><a href="./features/#exports">Exports</a></li><li><a href="./changelog/">Changelog</a></li></ul></div><div class="foot-col"><b>Explore</b><ul style="list-style:none;margin:0;padding:0"><li><a href="./how-it-works/">How it works</a></li><li><a href="./journal/">Journal</a></li><li><a href="./creator/">Creator</a></li><li><a href="./privacy/">Privacy</a></li><li><a href="./terms/">Terms</a></li></ul></div><div class="foot-col"><b>Developers</b><ul style="list-style:none;margin:0;padding:0"><li><a href="https://github.com/ahmadrrrtx/commit-canvas" target="_blank" rel="noopener">GitHub</a></li><li><a href="./how-it-works/#cli">CLI usage</a></li><li><a href="https://github.com/ahmadrrrtx/commit-canvas/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contributing</a></li><li><a href="https://github.com/ahmadrrrtx/commit-canvas#build--development" target="_blank" rel="noopener">Build & tests</a></li><li><a href="https://github.com/ahmadrrrtx/commit-canvas/issues" target="_blank" rel="noopener">Report an issue</a></li></ul></div><div class="foot-col"><b>Connect</b><ul style="list-style:none;margin:0;padding:0"><li><a href="https://github.com/ahmadrrrtx" target="_blank" rel="noopener">GitHub</a></li><li><a href="https://www.linkedin.com/in/ahmadrrrtx" target="_blank" rel="noopener">LinkedIn</a></li><li><a href="https://medium.com/@ahmadrrrtx333" target="_blank" rel="noopener">Medium</a></li><li><a href="https://hashnode.com/@ahmadrrrtx" target="_blank" rel="noopener">Hashnode</a></li><li><a href="https://dev.to/ahmad_rrrtx" target="_blank" rel="noopener">DEV</a></li><li><a href="https://www.indiehackers.com/ahmad_rrrtx" target="_blank" rel="noopener">Indie Hackers</a></li><li><a href="https://daily.dev/ahmadrrtx" target="_blank" rel="noopener">daily.dev</a></li></ul></div>
+  </div>
+  <div class="foot-cta">
+    <h2>Your repository already has a story.</h2>
+    <p>One command. One file. Zero cloud.</p>
+    <a class="btn btn-primary" href="./#try">Create your story →</a>
+  </div>
+  <div class="foot-sign" aria-hidden="true">
+    <span class="fs-word">COMMIT<em>CANVAS</em></span>
+    <span class="fs-tag">your code has a story</span>
   </div>
   <div class="foot-base">
     <span>© <span data-year="">2026</span> Muhammad Ahmad · MIT · v2.1.0</span>
@@ -2682,9 +2975,9 @@ window.__CC_DEMO__ = {"meta":{"v":2,"generated":"2026-09-01T12:53:12","source":"
       return b;
     }
     var bFirst = tbtn('<svg viewBox="0 0 14 14" fill="currentColor"><path d="M2 1.5v11M12 1.5L5 7l7 5.5z"/></svg>', "Jump to first month");
-    var bPrev = tbtn('<svg viewBox="0 0 14 14" fill="currentColor"><path d="M10 1.5L3 7l7 5.5z"/></svg>', "Previous month");
+    var bPrev = tbtn('<svg viewBox="0 0 14 14" fill="currentColor"><path d="M10 1.5L3 7l7 5.5z"/></svg>', "Previous milestone");
     var play = tbtn('<svg viewBox="0 0 16 16" fill="currentColor"><path d="M4 2.5v11l9-5.5z"/></svg>', "Play the project timeline", "tm-play");
-    var bNext = tbtn('<svg viewBox="0 0 14 14" fill="currentColor"><path d="M4 1.5L11 7l-7 5.5z"/></svg>', "Next month");
+    var bNext = tbtn('<svg viewBox="0 0 14 14" fill="currentColor"><path d="M4 1.5L11 7l-7 5.5z"/></svg>', "Next milestone");
     var bLast = tbtn('<svg viewBox="0 0 14 14" fill="currentColor"><path d="M12 1.5v11M2 1.5L9 7l-7 5.5z"/></svg>', "Jump to latest month");
     var speed = tbtn("1×", "Playback speed", "tm-speed");
     transport.appendChild(bFirst); transport.appendChild(bPrev); transport.appendChild(play);
@@ -2712,15 +3005,20 @@ window.__CC_DEMO__ = {"meta":{"v":2,"generated":"2026-09-01T12:53:12","source":"
       controls.appendChild(young);
     }
 
-    /* milestone ticks */
+    /* milestone ticks — positionally clustered so near-simultaneous
+       milestones (rapid releases) never stack into an unclickable blob */
     var tickShown = {};
+    var lastPct = -10;
     events.forEach(function (e) {
       if (e.idx <= 0 || e.idx >= months.length - 1) return;
       if (tickShown[e.idx]) return;
       tickShown[e.idx] = 1;
+      var pct = months.length < 2 ? 50 : (e.idx / (months.length - 1)) * 100;
+      if (pct - lastPct < 1.4) return;   /* too close to the previous tick */
+      lastPct = pct;
       var t = el("button", "tm-tick tick-" + e.kind);
       t.type = "button";
-      t.style.left = (months.length < 2 ? 50 : (e.idx / (months.length - 1)) * 100) + "%";
+      t.style.left = pct + "%";
       t.title = e.title + " · " + fmtDate(e.date);
       t.setAttribute("aria-label", "Jump to " + e.title + ", " + fmtDate(e.date));
       t.addEventListener("click", function () { setIndex(e.idx, true); });
@@ -2793,6 +3091,15 @@ window.__CC_DEMO__ = {"meta":{"v":2,"generated":"2026-09-01T12:53:12","source":"
 
     /* events by index */
     var evtByIndex = {};
+    var eventIdxList = events.map(function (e) { return e.idx; }).filter(function (ix, i, a) { return a.indexOf(ix) === i; }).sort(function (a, b) { return a - b; });
+    function prevEventIx(from) {
+      for (var i = eventIdxList.length - 1; i >= 0; i--) if (eventIdxList[i] < from - 0.5) return eventIdxList[i];
+      return 0;
+    }
+    function nextEventIx(from) {
+      for (var i = 0; i < eventIdxList.length; i++) if (eventIdxList[i] > from + 0.5) return eventIdxList[i];
+      return months.length - 1;
+    }
     events.forEach(function (e) {
       if (!evtByIndex[e.idx]) evtByIndex[e.idx] = e;
     });
@@ -2805,10 +3112,19 @@ window.__CC_DEMO__ = {"meta":{"v":2,"generated":"2026-09-01T12:53:12","source":"
     function updateEvent(i) {
       var e = evtByIndex[i];
       if (e) {
+        /* derived, honest metrics: what this month actually added */
+        var m1 = months[e.idx] || months[months.length - 1];
+        var m0 = months[Math.max(0, e.idx - 1)] || m1;
+        var chips = [];
+        if (m1.commits) chips.push("+" + fN(m1.commits) + " commits");
+        if (m1.new_contributors) chips.push("+" + fN(m1.new_contributors) + " contributors");
+        if (m1.files_end && m0.files_end && m1.files_end - m0.files_end) chips.push((m1.files_end - m0.files_end > 0 ? "+" : "") + fN(m1.files_end - m0.files_end) + " files");
+        if (m1.net_end !== undefined && m0.net_end !== undefined && m1.net_end - m0.net_end) chips.push((m1.net_end - m0.net_end > 0 ? "+" : "") + fK(Math.abs(m1.net_end - m0.net_end)) + " lines");
         evtOverlay.innerHTML =
           '<span class="te-kind">' + esc(e.kind) + "</span>" +
           '<b class="te-title">' + esc(e.title) + "</b>" +
           '<span class="te-sub">' + esc(e.sub) + "</span>" +
+          (chips.length ? '<span class="te-metrics">' + chips.slice(0, 3).map(esc).join("</span><span class='te-metrics'>") + "</span>" : "") +
           '<span class="te-date">' + esc(fmtDate(e.date)) + "</span>";
         evtOverlay.classList.add("show");
       } else {
@@ -2816,17 +3132,39 @@ window.__CC_DEMO__ = {"meta":{"v":2,"generated":"2026-09-01T12:53:12","source":"
       }
     }
 
+    var lastFloor = -1;
+    function lerpN(a, b, t) { return a + (b - a) * t; }
+    function smoothCounters(fl, t) {
+      var nx = Math.min(fl + 1, months.length - 1);
+      counterNodes[0].textContent = fN(lerpN(cumCommits[fl], cumCommits[nx], t));
+      counterNodes[1].textContent = fN(lerpN(months[fl].commits, months[nx].commits, t));
+      counterNodes[2].textContent = fN(lerpN(cumPeople[fl], cumPeople[nx], t));
+      counterNodes[3].textContent = fN(lerpN(cumMerges[fl], cumMerges[nx], t));
+      if (hasCode) {
+        counterNodes[4].textContent = fN(lerpN(months[fl].files_end || 0, months[nx].files_end || 0, t));
+        counterNodes[5].textContent = fK(lerpN(months[fl].net_end || 0, months[nx].net_end || 0, t));
+      } else {
+        counterNodes[4].textContent = fN(lerpN(months[fl].active_days || 0, months[nx].active_days || 0, t));
+      }
+    }
     function setIndex(i, fromUser) {
-      cur = Math.max(0, Math.min(months.length - 1, i | 0));
-      range.value = cur;
+      cur = Math.max(0, Math.min(months.length - 1, i));
+      var fl = cur | 0, t = cur - fl;
+      range.value = fl;
       range.style.setProperty("--fill", (months.length < 2 ? 100 : (cur / (months.length - 1)) * 100) + "%");
-      var m = months[cur];
-      dateline.innerHTML = "<b>" + esc(m.label) + "</b><span>" + fN(cumCommits[cur]) + " commits total</span>";
-      defs.forEach(function (def, ix) { counterNodes[ix].textContent = def.get(cur); });
-      msg.querySelector(".msgtxt").textContent = m.msg ? "“" + m.msg + "”" : "—";
-      renderLangs(langZone, m.langs, hasCode);
+      /* counters + chart pointer animate every frame — smooth, no snapping */
+      smoothCounters(fl, t);
       chart.update(cur);
-      updateEvent(cur);
+      /* month-anchored content swaps only when the month actually changes */
+      if (fl !== lastFloor) {
+        lastFloor = fl;
+        var m = months[fl];
+        var yr = Math.floor(fl / 12) + 1, yrs = Math.max(1, Math.ceil(months.length / 12));
+        dateline.innerHTML = "<b>" + esc(m.label) + "</b><span>year " + yr + " of " + yrs + " · " + fN(cumCommits[fl]) + " commits total</span>";
+        msg.querySelector(".msgtxt").textContent = m.msg ? "“" + m.msg + "”" : "—";
+        renderLangs(langZone, m.langs, hasCode);
+        updateEvent(fl);
+      }
       if (fromUser) stop();
     }
     function stop() {
@@ -2843,7 +3181,9 @@ window.__CC_DEMO__ = {"meta":{"v":2,"generated":"2026-09-01T12:53:12","source":"
       play.setAttribute("aria-label", "Pause the project timeline");
       play.title = "Pause";
       var base = Math.max(months.length / 14, 1.6);   /* 1× ≈ 14s journey */
-      var rate = base * speeds[speedIx];
+      /* smart pacing: slow down near meaningful events, cruise between them */
+      var near = eventIdxList.some(function (ix) { return Math.abs(cur - ix) < 0.8; });
+      var rate = base * speeds[speedIx] * (near ? 0.32 : 1);
       var last = null;
       function frame(t) {
         if (!playing) return;
@@ -2863,8 +3203,8 @@ window.__CC_DEMO__ = {"meta":{"v":2,"generated":"2026-09-01T12:53:12","source":"
     });
     bFirst.addEventListener("click", function () { setIndex(0, true); });
     bLast.addEventListener("click", function () { setIndex(months.length - 1, true); });
-    bPrev.addEventListener("click", function () { setIndex(cur - 1, true); });
-    bNext.addEventListener("click", function () { setIndex(cur + 1, true); });
+    bPrev.addEventListener("click", function () { setIndex(prevEventIx(cur), true); });
+    bNext.addEventListener("click", function () { setIndex(nextEventIx(cur), true); });
     speed.addEventListener("click", function () {
       speedIx = (speedIx + 1) % speeds.length;
       speed.textContent = speeds[speedIx] + "×";
@@ -2988,9 +3328,11 @@ window.__CC_DEMO__ = {"meta":{"v":2,"generated":"2026-09-01T12:53:12","source":"
     function update(i) {
       var x = PADL + (n < 2 ? iw / 2 : (i / (n - 1)) * iw);
       pointer.setAttribute("x1", x); pointer.setAttribute("x2", x);
-      dot.setAttribute("cx", x); dot.setAttribute("cy", pts[Math.max(0, Math.min(i, n - 1))][1]);
-      for (var k = 0; k < bars.length; k++) bars[k].setAttribute("fill", k <= i ? "#7b9a1d" : "#2E3344");
-      if (onChange) onChange(i);
+      dot.setAttribute("cx", x);
+      dot.setAttribute("cy", pts[Math.round(Math.max(0, Math.min(i, n - 1)))][1]);
+      var lit = Math.floor(i + 1e-4);
+      for (var k = 0; k < bars.length; k++) bars[k].setAttribute("fill", k <= lit ? "#7b9a1d" : "#2E3344");
+      if (onChange) onChange(lit);
     }
     container.update = update;
     return update;

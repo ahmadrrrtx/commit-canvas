@@ -17,6 +17,8 @@
 <meta name="twitter:description" content="Your repository, told like a film. Generated locally from real git data.">
 <meta name="twitter:image" content="assets/og-preview.png">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#0B0C10">
 <style>
 /*__LANDING_CSS__*/
 </style>
@@ -33,12 +35,100 @@
 {"@context":"https://schema.org","@type":"WebSite","name":"Commit Canvas","url":"https://ahmadrrrtx.github.io/commit-canvas/"}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"What is Commit Canvas?","acceptedAnswer":{"@type":"Answer","text":"An open-source tool that turns a git repository into a cinematic, interactive story generated from real commit data, output as a single self-contained HTML file."}},
-{"@type":"Question","name":"Does Commit Canvas require an account?","acceptedAnswer":{"@type":"Answer","text":"No. No sign-up, no login, no API key. The CLI works fully offline."}},
-{"@type":"Question","name":"Does Commit Canvas store repository data?","acceptedAnswer":{"@type":"Answer","text":"No. There is no backend or database. The CLI writes one HTML file locally; the web version runs entirely in the browser using GitHub's public API."}},
-{"@type":"Question","name":"Is Commit Canvas open source?","acceptedAnswer":{"@type":"Answer","text":"Yes, MIT licensed on GitHub."}}
-]}
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is Commit Canvas?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Commit Canvas is an open-source tool that turns a git repository into a cinematic, interactive story — chapters, a time machine, a developer fingerprint and share cards — generated from real commit data. The output is a single self-contained HTML file."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Who is it for?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Developers who want to see — and show — how a project actually evolved: maintainers, portfolio builders, teams writing retrospectives, and anyone who has ever wondered what their commit history says about how they work."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does it work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The CLI reads your local .git folder in a single pass (commits, merges, tags, authors, per-file line changes) and a deterministic engine derives the story — no AI, no guessing. The web version does the same analysis in your browser through the GitHub API for public repositories."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it require an account?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. There is no sign-up, no login, and no API key. The CLI works fully offline."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Commit Canvas store my repository data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. There is no backend and no database. The CLI writes one HTML file to your disk. The web version runs entirely in your browser — the only network calls are to GitHub's public API while analyzing a public repo. Generated story files contain commit metadata (authors, dates, messages) — what you choose to share is up to you."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can it analyze private repositories?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — with the local CLI, which reads the repository on your machine and never sends anything anywhere. The browser version only works with public GitHub repositories."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What can I export?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "PNG share cards (X/LinkedIn, square, 9:16 story, README banner), an animated GIF of the time machine, a WebM video, an SVG timeline, a README markdown block, and the full self-contained story.html."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it open source?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — MIT licensed. The whole product is on GitHub."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it need an API key or an account?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No key, no sign-in. The web version uses GitHub's public anonymous API. The CLI reads the local .git directory and works fully offline."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which git providers are supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Any of them. The CLI works on any local git repository — GitHub, GitLab, Bitbucket, Gitea, or a folder no server has ever seen. The web version accepts public GitHub URLs."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Who created Commit Canvas?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Muhammad Ahmad — a developer building tools at the intersection of developer experience, data storytelling and open source."
+      }
+    }
+  ]
+}
 </script>
 </head>
 <body class="site lp">
@@ -277,6 +367,14 @@ cd commit-canvas
         <summary>Is it open source?</summary>
         <p>Yes — MIT licensed. The whole product is <a href="https://github.com/ahmadrrrtx/commit-canvas">on GitHub</a>.</p>
       </details>
+        <details>
+          <summary>Does it need an API key or an account?</summary>
+          <p>No key, no sign-in. The web version uses GitHub's public anonymous API. The CLI reads the local .git directory and works fully offline.</p>
+        </details>
+        <details>
+          <summary>Which git providers are supported?</summary>
+          <p>Any of them. The CLI works on any local git repository — GitHub, GitLab, Bitbucket, Gitea, or a folder no server has ever seen. The web version accepts public GitHub URLs.</p>
+        </details>
       <details>
         <summary>Who created Commit Canvas?</summary>
         <p><a href="creator/">Muhammad Ahmad</a> — a developer building tools at the intersection of developer experience, data storytelling and open source.</p>

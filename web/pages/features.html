@@ -2,7 +2,8 @@
   <div class="page-hero">
     <span class="kicker">Features</span>
     <h1>Statistics tell you <em style="color:var(--accent);font-style:normal">what</em>.<br>Stories tell you <em style="color:var(--accent);font-style:normal">why</em>.</h1>
-    <p class="sub">Every section of a Commit Canvas story answers a question — and every answer comes from real git data.</p>
+    <p class="sub">Six instruments, one deterministic engine. Every visual below is rendered from a real analysis of <b style="color:var(--ink)">pallets/flask</b> — the same data the product would show for your repository.</p>
+    <span class="fd-pill"><span class="fd-dot"></span>live data · measured on pallets/flask</span>
   </div>
 
   <section class="pad">
@@ -11,44 +12,64 @@
         <span class="num">S</span>
         <h2 class="card-h">The story engine</h2>
         <p><strong>Question it answers:</strong> what kind of project is this? Chapters — The Beginning, The Sprint, The Silence, The Grind, The Launch, The Evolution — derived from velocity, gaps and releases. "The project went quiet for 43 days" corresponds to 43 actual days between commits.</p>
+        <div class="fd-demo" data-fd="chapters" aria-label="Real chapter timeline measured on Flask"></div>
         <span class="tag">deterministic · grounded in timestamps</span>
       </div>
+
       <div class="card rv" id="time-machine">
         <span class="num">T</span>
         <h2 class="card-h">Repository time machine</h2>
-        <p><strong>Question it answers:</strong> how did this become what it is? Scrub or autoplay the project's life — commits, contributors, merges, file counts, lines of code and language mix updating month by month, with milestone ticks and cinematic event cards at the moments that mattered.</p>
-        <span class="tag">the flagship</span>
+        <p>Scrub or press play and watch the whole life unfold — commits, contributors, and the codebase itself appearing month by month, with milestone ticks on the timeline and a narration line explaining each moment.</p>
+        <div class="fd-demo" data-fd="timeline" aria-label="Real timeline span measured on Flask"></div>
+        <span class="tag">interactive · every story ships with one</span>
       </div>
+
       <div class="card rv" id="fingerprint">
         <span class="num">F</span>
         <h2 class="card-h">Developer fingerprint</h2>
-        <p><strong>Question it answers:</strong> how does the dominant author actually work? Favorite hours, weekend share, streaks, burst ratio and message style become one honest archetype — The Night Builder, The Sprinter, The Shipper. Git behavior, explicitly not psychology.</p>
-        <span class="tag">behavior · not a personality test</span>
+        <p>Whose fingerprints are on this codebase? The engine profiles the top contributor's rhythm — not their identity — into an archetype, with favorite hour, weekend share, and burst patterns.</p>
+        <div class="fd-demo" data-fd="fingerprint" aria-label="Real contributor archetype measured on Flask"></div>
+        <span class="tag">behavior, not personality</span>
       </div>
+
       <div class="card rv" id="rhythm">
         <span class="num">R</span>
         <h2 class="card-h">The rhythm</h2>
-        <p><strong>Question it answers:</strong> when did the work happen? A weekday × hour punch card, a calendar covering the project's entire life (not just the last 52 weeks), streaks, and night/weekend shares.</p>
-        <span class="tag">full lifetime · accessible summaries</span>
+        <p>Every repository has a pulse. When did the work actually happen — at 2 AM or in standup hours? Weekends? The rhythm section shows the honest answer in a punch card and an hour-by-hour profile.</p>
+        <div class="fd-demo" data-fd="rhythm" aria-label="Real 24-hour commit rhythm measured on Flask"></div>
+        <span class="tag">clock data · timezone-honest</span>
       </div>
+
       <div class="card rv" id="roast">
-        <span class="num">R</span>
+        <span class="num">G</span>
         <h2 class="card-h">Roast my git</h2>
-        <p><strong>Question it answers:</strong> what would a kind but honest reviewer say? Vague commit names, monster commits, disappearances, 2–5am activity — every burn ships with its evidence attached.</p>
-        <span class="tag">affectionately brutal</span>
+        <p>For when the story needs a sense of humor. Every quip is generated with its evidence attached — a real commit, a real number, a real hour. If the data isn't funny, the roast doesn't fire.</p>
+        <div class="fd-demo" data-fd="roast" aria-label="A real generated roast line with evidence"></div>
+        <span class="tag">evidence or silence</span>
       </div>
+
       <div class="card rv" id="exports">
         <span class="num">E</span>
         <h2 class="card-h">Export studio</h2>
-        <p><strong>Question it answers:</strong> how do I show this to anyone? PNG cards sized for X/LinkedIn, square and 9:16; an animated GIF of the timeline; WebM video; SVG timelines; a README markdown block; and the entire story as one self-contained HTML file. All generated locally.</p>
-        <span class="tag">PNG · GIF · WebM · SVG · MD · HTML</span>
+        <p>Your story shouldn't die in a browser tab. Every story carries a built-in export studio: share cards, animation, vector, README embeds and raw data — all rendered locally, nothing uploaded.</p>
+        <div class="fd-demo fd-formats" aria-label="Export formats">
+          <span class="fmt">PNG<span>share cards · 4 templates</span></span>
+          <span class="fmt">GIF<span>time machine loop</span></span>
+          <span class="fmt">WebM<span>browser-recorded video</span></span>
+          <span class="fmt">SVG<span>terminal card · vector</span></span>
+          <span class="fmt">Markdown<span>README-ready summary</span></span>
+          <span class="fmt">JSON<span>the full analysis model</span></span>
+        </div>
+        <span class="tag">client-side only · no MP4 encoder — convert WebM locally if needed</span>
       </div>
     </div>
   </section>
+</div>
 
+<div class="page">
   <section class="pad" style="border-top:1px solid var(--line)">
     <div class="sec-head rv">
-      <span class="kicker">Under the hood</span>
+      <span class="kicker">Engineering</span>
       <h2 class="sec-title">Engineering choices you can check.</h2>
     </div>
     <div class="grid-3">
@@ -56,21 +77,91 @@
       <div class="card rv"><h3>Zero dependencies</h3><p>Python 3.8+ standard library and git. That's the entire runtime. The claim is testable: the launcher has no package to install.</p></div>
       <div class="card rv"><h3>Privacy by architecture</h3><p>The CLI never makes a network request. The output file never makes a network request. There is no backend, no database, and no telemetry — nothing to breach.</p></div>
     </div>
-    <p style="margin-top:24px"><a class="btn" href="{{ROOT}}how-it-works/">See the full pipeline →</a></p>
   </section>
 
   <section class="pad" style="border-top:1px solid var(--line)">
     <div class="sec-head rv">
-      <span class="kicker">See it on a real repository</span>
+      <span class="kicker">Proof</span>
       <h2 class="sec-title">Flask has 16 years of history.<br>Here's its story.</h2>
+      <p class="sec-sub">Not a mockup — the live story generated from the actual Flask repository, embedded on the <a href="{{ROOT}}examples/" style="color:var(--accent)">examples page</a>.</p>
     </div>
-    <p style="margin-top:0"><a class="btn btn-primary" href="{{ROOT}}examples/">Open the examples →</a></p>
+    <div class="card rv" style="padding:0;overflow:hidden">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;border-bottom:1px solid var(--line);background:var(--bg-2);flex-wrap:wrap">
+        <b style="font-size:15px">pallets/flask</b>
+        <a class="btn" href="{{ROOT}}examples/">Open the story →</a>
+      </div>
+      <div class="frame-wrap" style="min-height:420px">
+        <div class="frame-load"><span class="spin" aria-hidden="true"></span><span>rendering 16 years of history…</span></div>
+        <iframe src="{{ROOT}}demo/flask-story.html" title="Commit Canvas story for the Flask repository" loading="lazy" style="width:100%;height:420px;border:0;display:block;background:var(--bg)"></iframe>
+      </div>
+    </div>
   </section>
 </div>
 
-<div class="cta-final">
-  <h2>Your repository already has a story.</h2>
-  <p class="see">See it.</p>
-  <p>One command. One file. Zero cloud.</p>
-  <a class="btn btn-primary" href="{{ROOT}}#try">Create your story</a>
-</div>
+<script>
+/*__FEATURE_DATA__*/null
+</script>
+<script>
+/* Populate feature demos from the real embedded Flask analysis (no fabrication). */
+(function () {
+  var d = window.__CC_FEATURE_DEMO__;
+  if (!d) return;
+  var $ = function (sel) { return document.querySelector('[data-fd="' + sel + '"]'); };
+  function esc(s) { var t = document.createElement("t"); t.textContent = String(s); return t.innerHTML; }
+
+  /* chapters strip */
+  var ch = $("chapters");
+  if (ch && d.chapters) {
+    var first = new Date(d.months[0].key + "-01"), last = new Date(d.months[d.months.length - 1].key + "-01");
+    var span = last - first || 1;
+    var kinds = { beginning: "The Beginning", sprint: "The Sprint", silence: "The Silence", grind: "The Grind", launch: "The Launch", evolution: "The Evolution" };
+    ch.innerHTML = '<div class="fd-chapters">' + d.chapters.slice(0, 6).map(function (c) {
+      var s = new Date(c.start), e = new Date(c.end);
+      var l = Math.max(4, ((e - s) / span) * 100);
+      return '<i class="fc fc-' + c.kind + '" style="flex:' + l.toFixed(1) + '" title="' + esc(kinds[c.kind] || c.kind) + " · " + esc(s.toISOString().slice(0, 7)) + " → " + esc(e.toISOString().slice(0, 7)) + '"></i>';
+    }).join("") + "</div>" +
+      '<div class="fd-cap"><span>' + esc(d.months[0].label) + '</span><span>' + d.months.length + ' months of history</span><span>' + esc(d.months[d.months.length - 1].label) + "</span></div>";
+  }
+
+  /* mini timeline */
+  var tl = $("timeline");
+  if (tl && d.months) {
+    var evs = [];
+    (d.tags || []).slice(0, 60).forEach(function (t) { if (t.date) evs.push({ at: (new Date(t.date) - first) / span, name: t.name }); });
+    var dots = evs.filter(function (e) { return e.at > 0.01 && e.at < 0.99; }).slice(0, 26).map(function (e) {
+      return '<b style="left:' + (e.at * 100).toFixed(2) + '%" title="' + esc(e.name) + ' released"></b>';
+    }).join("");
+    tl.innerHTML =
+      '<div class="fd-timeline"><div class="fd-track"><i class="fd-fill"></i>' + dots + '<i class="fd-head"></i></div></div>' +
+      '<div class="fd-cap"><span>' + esc(d.repo.name) + '</span><span>' + (d.tags ? d.tags.length : 0) + ' releases tagged</span><span>press play ▶</span></div>';
+  }
+
+  /* fingerprint */
+  var fp = $("fingerprint");
+  if (fp && d.fingerprint) {
+    var f = d.fingerprint, a = f.archetype || {};
+    fp.innerHTML =
+      '<div class="fd-fp"><span class="fd-arch">' + esc(a.icon || "◈") + " " + esc(a.label || "The Builder") + '</span>' +
+      '<p class="fd-arch-tag">' + esc(a.tagline || "") + '</p>' +
+      '<div class="fd-fp-meta"><span><b>' + esc(f.author) + "</b> top contributor</span><span><b>" + esc(f.pct) + '%</b> of commits</span><span>since <b>' + esc(f.active_since) + "</b></span></div></div>";
+  }
+
+  /* rhythm sparkline */
+  var rh = $("rhythm");
+  if (rh && d.clock && d.clock.hours) {
+    var hrs = d.clock.hours, max = Math.max.apply(null, hrs), peak = d.clock.peak_hour;
+    rh.innerHTML =
+      '<div class="fd-hours">' + hrs.map(function (v, i) {
+        return '<i class="' + (i === peak ? "hot" : "") + '" style="height:' + (Math.max(6, (v / max) * 100)).toFixed(1) + '%"></i>';
+      }).join("") + "</div>" +
+      '<div class="fd-cap"><span>00:00</span><span>peak: <b style="color:var(--accent)">' + (peak < 10 ? "0" : "") + peak + ':00</b></span><span>23:00</span></div>';
+  }
+
+  /* roast */
+  var ro = $("roast");
+  if (ro && d.roast && d.roast.length) {
+    var r = d.roast[0];
+    ro.innerHTML = '<div class="fd-roast"><p>“' + esc(r.line) + '”</p><code>' + esc(r.evidence) + "</code></div>";
+  }
+})();
+</script>

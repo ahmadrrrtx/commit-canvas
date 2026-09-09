@@ -131,6 +131,15 @@ def footer_html(p):
     </div>
     {col_html}
   </div>
+  <div class="foot-cta">
+    <h2>Your repository already has a story.</h2>
+    <p>One command. One file. Zero cloud.</p>
+    <a class="btn btn-primary" href="{p}/#try">Create your story →</a>
+  </div>
+  <div class="foot-sign" aria-hidden="true">
+    <span class="fs-word">COMMIT<em>CANVAS</em></span>
+    <span class="fs-tag">your code has a story</span>
+  </div>
   <div class="foot-base">
     <span>© <span data-year="">2026</span> Muhammad Ahmad · MIT · v{VERSION}</span>
     <span>made with git · <a href="{gh}">ahmadrrrtx/commit-canvas</a></span>
@@ -157,7 +166,9 @@ def head_html(meta, p):
 <meta name="twitter:title" content="{meta['title']}">
 <meta name="twitter:description" content="{meta['description']}">
 <meta name="twitter:image" content="{og_image}">
-<link rel="icon" type="image/svg+xml" href="{p}/favicon.svg">'''
+<link rel="icon" type="image/svg+xml" href="{p}/favicon.svg">
+<link rel="manifest" href="{p}/site.webmanifest">
+<meta name="theme-color" content="#0B0C10">'''
 
 
 def page_html(meta, body, p, extra_head=""):
@@ -266,8 +277,16 @@ def build_site_pages():
     ]
     for route, fname, title, desc in simple:
         body = read(WEB, "pages", fname).replace("{{ROOT}}", "../")
-        meta = {"path": f"{route}/", "title": title, "description": desc}
-        outputs[os.path.join(route, "index.html")] = page_html(meta, body, "..")
+        meta = {"path": f"{route}/", "title": title, "description": desc,
+                "og_image": f"assets/og/{route}.png"}
+        extra = ""
+        if route == "features":
+            demo_path = os.path.join(WEB, "demo-data", "flask.json")
+            demo = read(WEB, "demo-data", "flask.json") if os.path.isfile(demo_path) else None
+            payload = "window.__CC_FEATURE_DEMO__ = " + (safe_payload(json.loads(demo)) if demo else "null") + ";"
+            extra = ""  # marker replaced in body below
+            body = body.replace("/*__FEATURE_DATA__*/null", payload)
+        outputs[os.path.join(route, "index.html")] = page_html(meta, body, "..", extra)
 
     cards = ""
     for a in ARTICLES:
@@ -281,7 +300,8 @@ def build_site_pages():
                   '</a>')
     jbody = read(WEB, "pages", "journal.html").replace("{{JOURNAL_CARDS}}", cards).replace("{{ROOT}}", "../")
     jmeta = {"path": "journal/", "title": "Journal — Commit Canvas",
-             "description": "Essays on code, time and stories: what git history contains, how to read it, and the building of Commit Canvas."}
+             "description": "Essays on code, time and stories: what git history contains, how to read it, and the building of Commit Canvas.",
+             "og_image": "assets/og/journal.png"}
     outputs[os.path.join("journal", "index.html")] = page_html(jmeta, jbody, "..")
 
     for a in ARTICLES:
@@ -407,6 +427,34 @@ def build_og_images():
         img.save(path, optimize=True)
         print("  og image: assets/og/" + a["slug"] + ".png")
 
+    PAGE_OGS = [
+        ("features", "Features", "Story engine · time machine · fingerprint · exports"),
+        ("how-it-works", "How it works", "one pass · deterministic · zero cloud"),
+        ("examples", "Examples", "real repositories · real stories"),
+        ("creator", "The maker", "the person behind the canvas"),
+        ("changelog", "Changelog", "the product has a story too"),
+        ("journal", "Journal", "essays on code, time & stories"),
+    ]
+    for route, title, tag in PAGE_OGS:
+        W, H = 1200, 630
+        img = Image.new("RGB", (W, H), (11, 12, 16))
+        d = ImageDraw.Draw(img)
+        for r in range(500, 0, -4):
+            alpha = int(16 * (1 - r / 500))
+            d.ellipse([W - 360 - r, -260 - r, W - 360 + r, -260 + r],
+                      fill=(11 + alpha, 12 + alpha, 16 + alpha * 3))
+        M = 56
+        d.rectangle([M, M, W - M, H - M], outline=(46, 51, 68), width=2)
+        d.text((M + 40, M + 44), "C O M M I T   C A N V A S   ·   " + title.upper(),
+               font=ImageFont.truetype(FM, 20), fill=(107, 112, 137))
+        d.text((M + 36, M + 170), "Your code has", font=ImageFont.truetype(FB, 64), fill=(233, 235, 243))
+        d.text((M + 36, M + 250), "a story.", font=ImageFont.truetype(FB, 64), fill=(226, 255, 58))
+        d.text((M + 40, H - M - 78), tag, font=ImageFont.truetype(FM, 22), fill=(155, 161, 181))
+        d.text((M + 40, H - M - 44), "ahmadrrrtx.github.io/commit-canvas",
+               font=ImageFont.truetype(FM, 19), fill=(107, 112, 137))
+        img.save(os.path.join(ROOT, "assets", "og", route + ".png"), optimize=True)
+        print("  og image: assets/og/" + route + ".png")
+
 
 # ─── main ───────────────────────────────────────────────────────────────────
 
@@ -426,6 +474,16 @@ def main():
         "index.html": build_landing(),
         "sitemap.xml": build_sitemap(),
         "robots.txt": ROBOTS,
+        "site.webmanifest": json.dumps({
+            "name": "Commit Canvas",
+            "short_name": "Commit Canvas",
+            "description": "Turn any git repository into a cinematic, shareable story.",
+            "start_url": ".",
+            "display": "browser",
+            "background_color": "#0B0C10",
+            "theme_color": "#0B0C10",
+            "icons": [{"src": "favicon.svg", "sizes": "any", "type": "image/svg+xml"}],
+        }, indent=2),
     }
     outputs.update(build_site_pages())
 

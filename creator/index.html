@@ -10,13 +10,15 @@
 <meta property="og:description" content="Muhammad Ahmad — developer and creator of Commit Canvas. The idea, the build, and what I care about.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://ahmadrrrtx.github.io/commit-canvas/creator/">
-<meta property="og:image" content="https://ahmadrrrtx.github.io/commit-canvas/assets/og-preview.png">
+<meta property="og:image" content="https://ahmadrrrtx.github.io/commit-canvas/assets/og/creator.png">
 <meta property="og:site_name" content="Commit Canvas">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The person behind the canvas — Commit Canvas">
 <meta name="twitter:description" content="Muhammad Ahmad — developer and creator of Commit Canvas. The idea, the build, and what I care about.">
-<meta name="twitter:image" content="https://ahmadrrrtx.github.io/commit-canvas/assets/og-preview.png">
+<meta name="twitter:image" content="https://ahmadrrrtx.github.io/commit-canvas/assets/og/creator.png">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="manifest" href="../site.webmanifest">
+<meta name="theme-color" content="#0B0C10">
 
 <style>
 /* ══════════════════════════════════════════════════════════════════
@@ -24,6 +26,48 @@
    Used by every marketing/content page (features, journal, creator…).
    Tokens match story.css so site + story feel like one product.
    ══════════════════════════════════════════════════════════════════ */
+
+/* ═══ COMMIT CANVAS — Global Design Tokens ════════════════════════
+   Single source of truth for site + landing + story.
+   Values mirror web/story.css :root — keep the two in sync.        */
+
+:root {
+  /* surfaces */
+  --bg:        #0B0C10;
+  --bg-2:      #0E1016;
+  --surface:   #12141C;
+  --surface-2: #171A24;
+  --line:      #232735;
+  --line-2:    #2E3344;
+
+  /* ink */
+  --ink:       #E9EBF3;
+  --ink-2:     #9BA1B5;
+  --ink-3:     #687089;
+
+  /* accents — neon used sparingly: CTAs, active states, key metrics */
+  --accent:    #E2FF3A;
+  --accent-ink:#151803;
+  --amber:     #FFB454;
+  --coral:     #FF7A6B;
+  --mint:      #6BE7C7;
+  --blue:      #6CA6FF;
+  --violet:    #B48CFF;
+
+  /* scale + motion */
+  --r-s: 8px; --r-m: 12px; --r-l: 18px;
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px; --sp-16: 64px; --sp-24: 96px;
+
+  --font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+          "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono",
+          Menlo, Consolas, monospace;
+
+  --shadow-1: 0 1px 0 rgba(255,255,255,.03) inset, 0 8px 30px rgba(0,0,0,.35);
+  --ease: cubic-bezier(.16,1,.3,1);
+  --glow: 0 0 24px rgba(226,255,58,.16);
+}
 
 .site *, .site *::before, .site *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -39,6 +83,7 @@
 }
 .site main { flex: 1; }
 .site ::selection { background: var(--accent); color: var(--accent-ink); }
+.site :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
 .site :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
 
 .site .sr-only {
@@ -757,6 +802,141 @@ html { scroll-behavior: smooth; }
   .site .proj { opacity: 1 !important; transform: none !important; }
 }
 
+/* ═══ SIGNATURE FOOTER — the brand ending ═════════════════════════ */
+.site .foot-cta {
+  text-align: center;
+  padding: clamp(44px, 7vw, 84px) 24px 8px;
+  border-top: 1px solid var(--line);
+  margin-top: clamp(28px, 5vw, 56px);
+}
+.site .foot-cta h2 {
+  font-size: clamp(24px, 3.6vw, 40px); font-weight: 700;
+  letter-spacing: -0.025em; line-height: 1.12;
+}
+.site .foot-cta p {
+  color: var(--ink-3); font-family: var(--mono);
+  font-size: 13px; margin: 10px 0 22px; letter-spacing: .06em;
+}
+.site .foot-sign {
+  position: relative; overflow: hidden;
+  padding: clamp(30px, 6vw, 68px) 24px clamp(34px, 6vw, 72px);
+  text-align: center; user-select: none;
+}
+/* faint blueprint grid */
+.site .foot-sign::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(rgba(46,51,68,.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(46,51,68,.14) 1px, transparent 1px);
+  background-size: 44px 44px;
+  -webkit-mask-image: radial-gradient(58% 80% at 50% 50%, #000 30%, transparent 78%);
+  mask-image: radial-gradient(58% 80% at 50% 50%, #000 30%, transparent 78%);
+}
+/* soft glow pooling behind the wordmark */
+.site .foot-sign::after {
+  content: ''; position: absolute; left: 50%; bottom: -46%;
+  width: min(760px, 92vw); height: 60%; transform: translateX(-50%);
+  background: radial-gradient(50% 60% at 50% 100%, rgba(226,255,58,.10), transparent 70%);
+  pointer-events: none;
+}
+.site .fs-word {
+  display: block; position: relative;
+  font-size: clamp(44px, 11vw, 148px);
+  font-weight: 800; line-height: .94; letter-spacing: -.035em;
+  color: var(--ink);
+  text-shadow: 0 0 34px rgba(226,255,58,.10);
+}
+.site .fs-word em {
+  font-style: normal; color: transparent;
+  -webkit-text-stroke: 1.5px rgba(226,255,58,.75);
+  text-shadow: 0 0 26px rgba(226,255,58,.12);
+}
+.site .fs-tag {
+  position: relative; display: block; margin-top: 14px;
+  font-family: var(--mono); font-size: clamp(11px, 1.6vw, 14px);
+  letter-spacing: .34em; text-transform: uppercase; color: var(--ink-3);
+}
+@media (prefers-reduced-motion: reduce) {
+  .site .foot-sign::after { animation: none; }
+}
+
+/* ═══ FEATURE DEMO VISUALS (features page) ════════════════════════ */
+.site .fd-pill {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 18px;
+  padding: 7px 14px; border-radius: 999px;
+  background: rgba(226,255,58,.05); border: 1px solid rgba(226,255,58,.18);
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em;
+  color: var(--ink-2); text-transform: lowercase;
+}
+.site .fd-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulseDot 2.4s ease-out infinite; }
+.site .fd-demo { margin: 18px 0 4px; }
+.site .fd-cap {
+  display: flex; justify-content: space-between; gap: 8px; margin-top: 8px;
+  font-family: var(--mono); font-size: 11.5px; color: var(--ink-3);
+}
+.site .fd-chapters { display: flex; gap: 3px; height: 30px; }
+.site .fd-chapters i { border-radius: 4px; min-width: 6px; opacity: .92; transition: opacity .2s ease, transform .2s ease; }
+.site .fd-chapters i:hover { opacity: 1; transform: scaleY(1.12); }
+.site .fc-beginning  { background: #6CA6FF; }
+.site .fc-sprint     { background: #E2FF3A; }
+.site .fc-silence    { background: #2E3344; }
+.site .fc-grind      { background: #687089; }
+.site .fc-launch     { background: #6BE7C7; }
+.site .fc-evolution  { background: #B48CFF; }
+.site .fd-timeline { padding: 12px 0 6px; }
+.site .fd-track {
+  position: relative; height: 8px; border-radius: 4px;
+  background: var(--surface-2); border: 1px solid var(--line);
+}
+.site .fd-fill {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 34%;
+  border-radius: 4px 0 0 4px;
+  background: linear-gradient(90deg, rgba(226,255,58,.7), rgba(226,255,58,.25));
+}
+.site .fd-track b {
+  position: absolute; top: -3px; width: 3px; height: 12px; border-radius: 2px;
+  background: #6CA6FF; opacity: .85; cursor: default;
+}
+.site .fd-head {
+  position: absolute; top: -4px; left: 34%; width: 14px; height: 14px;
+  border-radius: 50%; background: var(--accent); border: 2.5px solid var(--bg);
+  box-shadow: 0 0 12px rgba(226,255,58,.55);
+  animation: fdHead 3.2s ease-in-out infinite alternate;
+}
+@keyframes fdHead { from { left: 30%; } to { left: 72%; } }
+.site .fd-fp {
+  padding: 14px 16px; border-radius: 12px;
+  background: var(--surface); border: 1px solid var(--line);
+}
+.site .fd-arch { font-weight: 700; font-size: 16.5px; letter-spacing: -.01em; }
+.site .fd-arch-tag { color: var(--ink-2); font-size: 13px; margin: 4px 0 10px; line-height: 1.45; }
+.site .fd-fp-meta { display: flex; flex-wrap: wrap; gap: 6px 16px; font-family: var(--mono); font-size: 11.5px; color: var(--ink-3); }
+.site .fd-fp-meta b { color: var(--ink); font-weight: 600; }
+.site .fd-hours {
+  display: flex; align-items: flex-end; gap: 3px; height: 64px;
+  padding: 10px 12px 6px; border-radius: 12px;
+  background: var(--surface); border: 1px solid var(--line);
+}
+.site .fd-hours i { flex: 1; border-radius: 2px 2px 0 0; background: var(--line-2); min-height: 3px; }
+.site .fd-hours i.hot { background: var(--accent); box-shadow: 0 0 10px rgba(226,255,58,.35); }
+.site .fd-roast {
+  padding: 14px 16px; border-radius: 12px;
+  background: var(--surface); border: 1px solid var(--line);
+  border-left: 3px solid var(--amber);
+}
+.site .fd-roast p { font-size: 14.5px; line-height: 1.5; color: var(--ink); }
+.site .fd-roast code { display: inline-block; margin-top: 8px; font-size: 11.5px; color: var(--ink-3); }
+.site .fd-formats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.site .fd-formats .fmt {
+  display: flex; flex-direction: column; gap: 2px; padding: 10px 12px;
+  border-radius: 10px; background: var(--surface); border: 1px solid var(--line);
+  font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--ink);
+  transition: border-color .2s ease, transform .2s ease;
+}
+.site .fd-formats .fmt:hover { border-color: #3a4157; transform: translateY(-2px); }
+.site .fd-formats .fmt span { font-weight: 400; font-size: 11px; color: var(--ink-3); }
+@media (max-width: 560px) { .site .fd-formats { grid-template-columns: repeat(2, 1fr); } }
+
 </style>
 </head>
 <body class="site">
@@ -942,12 +1122,6 @@ html { scroll-behavior: smooth; }
 })();
 </script>
 
-<div class="cta-final">
-  <h2>Your repository already has a story.</h2>
-  <p class="see">See it.</p>
-  <p>One command. One file. Zero cloud.</p>
-  <a class="btn btn-primary" href="../#try">Create your story</a>
-</div>
 
 </main>
 <footer class="foot">
@@ -957,6 +1131,15 @@ html { scroll-behavior: smooth; }
       <p>Your code has a story. Free, open source (MIT), and private by architecture — no cloud, no accounts, zero requests in the output.</p>
     </div>
     <div class="foot-col"><b>Product</b><ul style="list-style:none;margin:0;padding:0"><li><a href="../#try">Create a story</a></li><li><a href="../features/#time-machine">Time machine</a></li><li><a href="../examples/">Examples</a></li><li><a href="../features/#exports">Exports</a></li><li><a href="../changelog/">Changelog</a></li></ul></div><div class="foot-col"><b>Explore</b><ul style="list-style:none;margin:0;padding:0"><li><a href="../how-it-works/">How it works</a></li><li><a href="../journal/">Journal</a></li><li><a href="../creator/">Creator</a></li><li><a href="../privacy/">Privacy</a></li><li><a href="../terms/">Terms</a></li></ul></div><div class="foot-col"><b>Developers</b><ul style="list-style:none;margin:0;padding:0"><li><a href="https://github.com/ahmadrrrtx/commit-canvas" target="_blank" rel="noopener">GitHub</a></li><li><a href="../how-it-works/#cli">CLI usage</a></li><li><a href="https://github.com/ahmadrrrtx/commit-canvas/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contributing</a></li><li><a href="https://github.com/ahmadrrrtx/commit-canvas#build--development" target="_blank" rel="noopener">Build & tests</a></li><li><a href="https://github.com/ahmadrrrtx/commit-canvas/issues" target="_blank" rel="noopener">Report an issue</a></li></ul></div><div class="foot-col"><b>Connect</b><ul style="list-style:none;margin:0;padding:0"><li><a href="https://github.com/ahmadrrrtx" target="_blank" rel="noopener">GitHub</a></li><li><a href="https://www.linkedin.com/in/ahmadrrrtx" target="_blank" rel="noopener">LinkedIn</a></li><li><a href="https://medium.com/@ahmadrrrtx333" target="_blank" rel="noopener">Medium</a></li><li><a href="https://hashnode.com/@ahmadrrrtx" target="_blank" rel="noopener">Hashnode</a></li><li><a href="https://dev.to/ahmad_rrrtx" target="_blank" rel="noopener">DEV</a></li><li><a href="https://www.indiehackers.com/ahmad_rrrtx" target="_blank" rel="noopener">Indie Hackers</a></li><li><a href="https://daily.dev/ahmadrrtx" target="_blank" rel="noopener">daily.dev</a></li></ul></div>
+  </div>
+  <div class="foot-cta">
+    <h2>Your repository already has a story.</h2>
+    <p>One command. One file. Zero cloud.</p>
+    <a class="btn btn-primary" href="../#try">Create your story →</a>
+  </div>
+  <div class="foot-sign" aria-hidden="true">
+    <span class="fs-word">COMMIT<em>CANVAS</em></span>
+    <span class="fs-tag">your code has a story</span>
   </div>
   <div class="foot-base">
     <span>© <span data-year="">2026</span> Muhammad Ahmad · MIT · v2.1.0</span>
