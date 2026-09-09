@@ -178,27 +178,120 @@
     launch: "🚀", evolution: "◈",
   };
 
+  /* ── chapters: a real timeline, not bullets ─────────────────────── */
+  function chapterSparkbar(months, i0, i1) {
+    /* honest visual: monthly commits inside the chapter's own date range */
+    var seg = months.slice(Math.max(0, i0), Math.min(months.length - 1, i1) + 1);
+    if (seg.length < 2) return null;
+    var BUCKETS = 44;
+    var per = Math.ceil(seg.length / BUCKETS);
+    var buckets = [];
+    for (var i = 0; i < seg.length; i += per) {
+      var s = 0;
+      for (var k = i; k < Math.min(i + per, seg.length); k++) s += seg[k].commits;
+      buckets.push(s);
+    }
+    var max = Math.max.apply(null, buckets) || 1;
+    var W = 360, H = 56, bw = W / buckets.length;
+    var out = '<svg viewBox="0 0 ' + W + ' ' + H + '" class="ch-spark" role="img" aria-label="Commit activity during this chapter">';
+    buckets.forEach(function (v, i) {
+      var h = Math.max(2, (v / max) * (H - 6));
+      out += '<rect x="' + (i * bw + 1).toFixed(1) + '" y="' + (H - h).toFixed(1) +
+        '" width="' + Math.max(1, bw - 2).toFixed(1) + '" height="' + h.toFixed(1) + '" rx="1.5" class="ch-bar' + (v === max ? " ch-bar-hot" : "") + '"></rect>';
+    });
+    return out + "</svg>";
+  }
+
   function chapters(root, d) {
     var wrap = section(root, "story", "Chapter one to now", "The story, chapter by chapter",
       "Every chapter below is grounded in real git data — timestamps, tags, and commit counts. Nothing invented.");
-    var list = el("div", "chapters");
-    d.chapters.forEach(function (ch) {
-      var c = el("article", "chapter");
-      var when = (ch.start && ch.start.slice(0, 7)) === (ch.end && ch.end.slice(0, 7))
+    wrap.parentElement.classList.add("sec-story");
+    var months = d.months, chs = d.chapters || [];
+
+    /* chapter navigation — compact, clickable, scroll-aware */
+    var nav = el("nav", "ch-nav");
+    nav.setAttribute("aria-label", "Chapter navigation");
+    chs.forEach(function (ch, i) {
+      var b = el("button", "ch-nav-btn");
+      b.type = "button";
+      b.innerHTML = "<b>" + String(i + 1).padStart(2, "0") + "</b> " + esc(ch.title.replace(/^The /, ""));
+      b.addEventListener("click", function () {
+        var target = document.getElementById("ch-" + i);
+        if (target && target.scrollIntoView) target.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+      nav.appendChild(b);
+    });
+    wrap.appendChild(nav);
+
+    var tl = el("div", "chapters-tl");
+    chs.forEach(function (ch, i) {
+      var i0 = Math.max(monthIndexOf(months, ch.start), 0);
+      var i1 = Math.max(monthIndexOf(months, ch.end), i0);
+      var art = el("article", "chapter ch-kind-" + ch.kind);
+      art.id = "ch-" + i;
+      art.setAttribute("data-ghost", String(i + 1).padStart(2, "0"));
+
+      var when = (String(ch.start).slice(0, 7) === String(ch.end).slice(0, 7))
         ? fmtDate(ch.start, { month: "short", year: "numeric" })
-        : fmtDate(ch.start, { month: "short", year: "numeric" }) + " – " + fmtDate(ch.end, { month: "short", year: "numeric" });
-      var facts = el("ul", "facts");
-      (ch.facts || []).forEach(function (f, i) {
+        : fmtDate(ch.start, { month: "short", year: "numeric" }) + " → " + fmtDate(ch.end, { month: "short", year: "numeric" });
+
+      var head = el("header", "ch-head");
+      head.innerHTML =
+        '<span class="ch-num" aria-hidden="true">' + String(i + 1).padStart(2, "0") + "</span>" +
+        '<div><h3>' + esc(ch.title) + '</h3><span class="ch-when">' + esc(when) + "</span></div>";
+      var sub = el("p", "ch-sub", esc(ch.subtitle || ""));
+
+      /* kind-specific visual — each derived from the model, never invented */
+      var visual = null;
+      if (ch.kind === "beginning" && months.length) {
+        var m0 = months[0];
+        visual = '<div class="ch-first"><span class="ch-first-date">' + esc(fmtDate(d.repo.first, { month: "long", day: "numeric", year: "numeric" })) +
+          '</span><span class="ch-first-msg">“' + esc(m0.msg || "the first commit") + "”</span></div>";
+      } else if (ch.kind === "silence") {
+        var days = Math.max(1, Math.round((new Date(ch.end) - new Date(ch.start)) / 86400000));
+        visual = '<div class="ch-silence"><b>' + fN(days) + '</b><span>days of silence</span></div>';
+      } else if (ch.kind === "launch" && (d.tags || []).length) {
+        var tg = d.tags;
+        visual = '<div class="ch-tags"><span class="ch-tag">' + esc(tg[0].name) + '</span><span class="ch-tag-dots">…</span><span class="ch-tag ch-tag-last">' + esc(tg[tg.length - 1].name) + "</span></div>" +
+          '<span class="ch-tags-note">first → latest of ' + fN(tg.length) + " releases</span>";
+      } else {
+        var spark = chapterSparkbar(months, i0, i1);
+        if (spark) visual = '<div class="ch-viz">' + spark + "</div>";
+      }
+
+      var facts = el("ul", "ch-facts");
+      (ch.facts || []).slice(0, 3).forEach(function (f) {
         facts.appendChild(el("li", f.charAt(0) === "“" ? "q" : null, esc(f)));
       });
-      c.innerHTML =
-        '<div class="glyph" aria-hidden="true">' + (CHAPTER_GLYPHS[ch.kind] || "·") + "</div>" +
-        '<div><h3>' + esc(ch.title) + ' <span class="when">' + esc(when) + "</span></h3>" +
-        '<p class="sub">' + esc(ch.subtitle || "") + "</p></div>";
-      c.appendChild(facts);
-      list.appendChild(c);
+
+      art.appendChild(head);
+      art.appendChild(sub);
+      if (visual) art.appendChild(el("div", "ch-visual", visual));
+      art.appendChild(facts);
+      tl.appendChild(art);
     });
-    wrap.appendChild(list);
+    wrap.appendChild(tl);
+
+    /* scroll-aware active chapter (subtle — no scroll-jacking) */
+    if ("IntersectionObserver" in window && chs.length > 1) {
+      var navBtns = nav.querySelectorAll(".ch-nav-btn");
+      var spy = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          var ix = +e.target.id.replace("ch-", "");
+          tl.querySelectorAll(".chapter").forEach(function (c) { c.classList.remove("active"); });
+          e.target.classList.add("active");
+          navBtns.forEach(function (b, bi) { b.classList.toggle("on", bi === ix); });
+          /* keep the active nav chip visible on mobile */
+          var on = navBtns[ix];
+          if (on && nav.scrollWidth > nav.clientWidth) {
+            var nl = on.offsetLeft - nav.clientWidth / 2 + on.offsetWidth / 2;
+            nav.scrollTo({ left: Math.max(0, nl), behavior: "smooth" });
+          }
+        });
+      }, { rootMargin: "-30% 0px -55% 0px" });
+      tl.querySelectorAll(".chapter").forEach(function (c) { spy.observe(c); });
+    }
   }
 
   /* ── TIME MACHINE v2 ─────────────────────────────────────────── */
@@ -1847,7 +1940,15 @@
     certificate(container, data);
     footer(container, data);
     dotNav(container, data);
-    if (!document.querySelector(".style-fab")) stylePanel(container);
+    var standalone = document.body.classList.contains("cc-story");
+    if (standalone && !document.querySelector(".story-bar")) storyBar(container, data);
+    if (!document.querySelector(".style-fab")) {
+      stylePanel(container, !standalone);
+      if (standalone) {
+        var acts = document.querySelector(".story-bar .sb-acts");
+        if (acts) acts.insertBefore(document.querySelector(".style-fab"), acts.firstChild);
+      }
+    }
     activateReveals();
   }
 
@@ -1885,12 +1986,51 @@
       (document.body.getAttribute("data-density")) || "standard";
   }
 
-  function stylePanel(container) {
-    var fab = el("button", "style-fab");
+  function storyBar(container, data) {
+    var bar = el("div", "story-bar");
+    var brand = el("a", "sb-brand");
+    brand.href = "https://ahmadrrrtx.github.io/commit-canvas/";
+    brand.target = "_blank";
+    brand.rel = "noopener";
+    brand.setAttribute("aria-label", "Made with Commit Canvas — visit the project");
+    brand.innerHTML =
+      '<svg viewBox="0 0 26 26" fill="none" aria-hidden="true">' +
+      '<rect x="1" y="1" width="24" height="24" rx="6" stroke="currentColor" stroke-width="1.5" opacity=".55"/>' +
+      '<path d="M6 19h6M9 19v-6h6V7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity=".8"/>' +
+      '<circle cx="6" cy="19" r="2.4" fill="var(--accent)"/>' +
+      '<circle cx="12" cy="19" r="2" fill="currentColor" opacity=".6"/>' +
+      '<circle cx="15" cy="13" r="2" fill="currentColor" opacity=".6"/>' +
+      '<circle cx="21" cy="7" r="2.4" fill="var(--accent)"/></svg>' +
+      "<span>commit canvas</span>";
+    bar.appendChild(brand);
+
+    var acts = el("div", "sb-acts");
+    var share = el("button", "sb-btn");
+    share.type = "button";
+    share.innerHTML = "↗ Share";
+    share.setAttribute("aria-label", "Share this story");
+    share.addEventListener("click", function () { openExportStudio(data, "image"); });
+    var exp = el("button", "sb-btn");
+    exp.type = "button";
+    exp.innerHTML = "⤓ Export";
+    exp.setAttribute("aria-label", "Open the export studio");
+    exp.addEventListener("click", function () { openExportStudio(data); });
+    acts.appendChild(share);
+    acts.appendChild(exp);
+    bar.appendChild(acts);
+    document.body.appendChild(bar);
+
+    var onScroll = function () { bar.classList.toggle("scrolled", (window.scrollY || 0) > 24); };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+
+  function stylePanel(container, dock) {
+    var fab = el("button", "style-fab sb-btn" + (dock ? " dock" : ""));
     fab.type = "button";
     fab.innerHTML = '◐ <span>Style</span>';
     fab.setAttribute("aria-label", "Change story theme and density");
-    var panel = el("div", "style-panel");
+    var panel = el("div", "style-panel" + (dock ? " dock" : ""));
     panel.hidden = true;
     panel.setAttribute("role", "dialog");
     panel.setAttribute("aria-label", "Story style");

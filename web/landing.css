@@ -298,3 +298,45 @@
 .lp .lp-theme.on { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
 .lp .lp-theme i { width: 34px; height: 16px; border-radius: 4px; display: block; }
 .lp .lp-theme span { font: 600 11px var(--mono); letter-spacing: .03em; color: var(--ink-2); }
+
+/* ── hero input: the primary interaction, terminal-framed ── */
+.lp .lp-term {
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: 14px;
+  overflow: hidden;
+  text-align: left;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .42), 0 0 0 1px rgba(226,255,58,0);
+  transition: border-color .2s, box-shadow .25s;
+}
+.lp .lp-term:focus-within {
+  border-color: rgba(226,255,58,.5);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .46), 0 0 0 4px rgba(226,255,58,.09);
+}
+.lp .lp-term-bar {
+  display: flex; align-items: center; gap: 7px;
+  padding: 10px 14px; border-bottom: 1px solid var(--line);
+  background: var(--bg-2);
+}
+.lp .lp-term-bar i { width: 11px; height: 11px; border-radius: 50%; background: var(--line-2); }
+.lp .lp-term-bar i:first-child { background: rgba(255,122,107,.75); }
+.lp .lp-term-bar i:nth-child(2) { background: rgba(255,180,84,.75); }
+.lp .lp-term-bar i:nth-child(3) { background: rgba(107,231,199,.75); }
+.lp .lp-term-bar span { margin-left: 8px; font: 500 11.5px var(--mono); color: var(--ink-3); letter-spacing: .04em; }
+.lp .lp-term .lp-try-row { display: flex; gap: 10px; padding: 12px; }
+.lp .lp-term input {
+  flex: 1; min-width: 0;
+  font: 500 16px var(--mono);
+  color: var(--ink); background: var(--bg-2);
+  border: 1px solid var(--line); border-radius: 10px;
+  padding: 14px 16px;
+  transition: border-color .15s, background .15s;
+}
+.lp .lp-term input:hover { border-color: var(--line-2); }
+.lp .lp-term input::placeholder { color: var(--ink-3); }
+.lp .lp-term input:focus { outline: none; border-color: var(--accent); }
+.lp .lp-term .btn-go { border-radius: 10px; padding: 14px 24px; }
+@media (max-width: 560px) {
+  .lp .lp-term .lp-try-row { flex-direction: column; padding: 10px; }
+  .lp .lp-term input { font-size: 15px; }
+}

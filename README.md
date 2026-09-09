@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="favicon.svg" width="72" alt="Commit Canvas logo" />
+<img src="docs/banner.png" alt="COMMIT CANVAS — turn any repository into a story you can share" />
 
 # COMMIT CANVAS
 
@@ -18,12 +18,6 @@ One command. One file. Zero cloud.
 **[★ Star on GitHub](https://github.com/ahmadrrrtx/commit-canvas)** · **[Live demo →](https://ahmadrrrtx.github.io/commit-canvas/)** · **[Flask's story →](https://ahmadrrrtx.github.io/commit-canvas/demo/flask-story.html)**
 
 </div>
-
----
-
-![A Commit Canvas story — midnight edition](docs/screenshots/story-midnight.png)
-
-> *"I didn't know my Git history could look like this."*
 
 ---
 
@@ -52,13 +46,31 @@ GitHub shows metrics. Gource shows animations. GitStock shows the last 100 commi
 
 ## Screenshots
 
-| Time machine | Export studio |
-| --- | --- |
-| ![Time machine](docs/screenshots/time-machine.png) | ![Export studio](docs/screenshots/export-studio.png) |
+**The homepage** — paste a repository, get a story. No account, no upload.
 
-| Sunset edition | Paper edition | Mobile |
-| --- | --- | --- |
-| ![Sunset theme](docs/screenshots/story-sunset.png) | ![Paper theme](docs/screenshots/story-paper.png) | ![Mobile](docs/screenshots/mobile.png) |
+![Homepage — paste any repository URL](docs/screenshots/homepage.png)
+
+**A generated story** — chapters on a real timeline, derived from actual commit history.
+
+![A Commit Canvas story — midnight edition](docs/screenshots/story-midnight.png)
+
+**The time machine** — scrub through the project's entire life, year by year.
+
+![Time machine](docs/screenshots/time-machine.png)
+
+**Visual editions** — the same story retold: sunset and paper.
+
+| Sunset edition | Paper edition |
+| --- | --- |
+| ![Sunset theme](docs/screenshots/story-sunset.png) | ![Paper theme](docs/screenshots/story-paper.png) |
+
+**Export studio** — images, GIF, data and offline bundles.
+
+![Export studio](docs/screenshots/export-studio.png)
+
+**On mobile** — the full story in your pocket.
+
+![Mobile](docs/screenshots/mobile.png)
 
 ## Quick start
 

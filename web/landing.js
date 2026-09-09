@@ -575,9 +575,10 @@ function buildThemeRow(mount) {
           throw new UserError("This repository has no commits yet.", "An empty repository has no story — make the first commit and come back.");
         if (err instanceof ApiError && err.kind === "rate") {
           var reset = err.resp && err.resp.headers && err.resp.headers.get("x-ratelimit-reset");
-          var when = reset ? new Date(+reset * 1000).toLocaleTimeString() : "within the hour";
+          var when = "within the hour";
+          if (reset) { var ts = new Date(+reset * 1000); if (!isNaN(ts.getTime())) when = "around " + ts.toLocaleTimeString(); }
           throw new UserError("GitHub's anonymous API limit was hit (60 requests/hour).",
-            "It resets around " + when + ". Meanwhile, the local CLI has no limits at all: ./run.sh /path/to/repo");
+            "It resets " + when + ". Meanwhile, the local CLI has no limits at all: ./run.sh /path/to/repo");
         }
         throw wrapNet(err);
       })
@@ -617,7 +618,11 @@ function buildThemeRow(mount) {
       .catch(function (err) {
         loadingVisible(false);
         if (err instanceof UserError) showError(err.message, err.hint);
-        else showError("Couldn't analyze that repository.", String(err && err.message || err) + " — check the URL, or use the local CLI for private repos.");
+        else {
+          var net = wrapNet(err);
+          if (net && net instanceof UserError) showError(net.message, net.hint);
+          else showError("Couldn't analyze that repository.", "Check the URL and try again — or use the local CLI, which works offline for any repo: ./run.sh /path/to/repo");
+        }
       })
       .then(function () {
         goBtn.disabled = false;
@@ -628,7 +633,9 @@ function buildThemeRow(mount) {
   function UserError(message, hint) { this.name = "UserError"; this.message = message; this.hint = hint; }
   UserError.prototype = Object.create(Error.prototype);
   function wrapNet(err) {
-    if (err instanceof TypeError) return new UserError("Network request failed.", "You may be offline, or the API is unreachable. The CLI version works fully offline: ./run.sh /path/to/repo");
+    if (err && (err instanceof TypeError || err instanceof Error) &&
+        /fetch|network|load failed|abort|timed? ?out/i.test(err.name + " " + err.message))
+      return new UserError("Network request failed.", "You may be offline, or the API is unreachable. The CLI version works fully offline: ./run.sh /path/to/repo");
     return err;
   }
 

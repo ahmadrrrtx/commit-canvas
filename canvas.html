@@ -7,6 +7,8 @@
 <meta name="description" content="a repository — a cinematic story generated from real git history. Chapters, a time machine, and a developer fingerprint. Made with Commit Canvas.">
 <meta property="og:title" content="The story of a repository">
 <meta property="og:description" content="Chapters, a time machine, and a developer fingerprint — generated from real git history. Made with Commit Canvas.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 26'%3E%3Crect x='1' y='1' width='24' height='24' rx='6' fill='%230B0C10' stroke='%232E3344' stroke-width='1.5'/%3E%3Cpath d='M6 19h6M9 19v-6h6V7' stroke='%23E9EBF3' stroke-width='1.8' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='6' cy='19' r='2.4' fill='%23E2FF3A'/%3E%3Ccircle cx='12' cy='19' r='2' fill='%23687089'/%3E%3Ccircle cx='15' cy='13' r='2' fill='%23687089'/%3E%3Ccircle cx='21' cy='7' r='2.4' fill='%23E2FF3A'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#0B0C10">
 <meta property="og:type" content="website">
 <style>
 /* ══════════════════════════════════════════════════════════════════
@@ -232,54 +234,121 @@ body {
 .scroll-cue svg { animation: cueDrift 2.4s ease-in-out infinite; }
 @keyframes cueDrift { 0%,100% { transform: translateY(0);} 50% { transform: translateY(5px);} }
 
-/* ── chapters ────────────────────────────────────────────────────── */
+/* ── chapters: the story timeline ─────────────────────────────────── */
 
-.chapters { display: flex; flex-direction: column; gap: var(--sp-6); }
+.sec-story .wrap { max-width: 1080px; }
+
+/* chapter nav — compact, horizontally scrollable on mobile */
+.ch-nav {
+  display: flex; gap: 7px; overflow-x: auto; scrollbar-width: none;
+  padding-bottom: 6px; margin-bottom: var(--sp-12);
+  -webkit-overflow-scrolling: touch;
+}
+.ch-nav::-webkit-scrollbar { display: none; }
+.ch-nav-btn {
+  appearance: none; cursor: pointer; white-space: nowrap;
+  font: 600 12px var(--mono); letter-spacing: .04em;
+  color: var(--ink-3); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 999px;
+  padding: 6px 13px;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.ch-nav-btn b { color: var(--ink-3); font-weight: 700; margin-right: 4px; }
+.ch-nav-btn:hover { color: var(--ink); border-color: var(--line-2); }
+.ch-nav-btn.on { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); }
+.ch-nav-btn.on b { color: var(--accent-ink); }
+
+/* the timeline spine */
+.chapters-tl { position: relative; display: flex; flex-direction: column; gap: var(--sp-12); }
+.chapters-tl::before {
+  content: ''; position: absolute; left: 27px; top: 8px; bottom: 8px; width: 2px;
+  background: linear-gradient(var(--line-2), var(--line));
+  border-radius: 1px;
+}
 
 .chapter {
-  display: grid;
-  grid-template-columns: 52px 1fr;
-  gap: var(--sp-6);
+  position: relative;
+  margin-left: 68px;
   padding: var(--sp-8);
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--r-l);
-  position: relative;
-  transition: border-color .2s;
+  transition: border-color .3s, box-shadow .3s, transform .3s;
+  overflow: hidden;
 }
-.chapter:hover { border-color: var(--line-2); }
-
-.chapter .glyph {
-  width: 44px; height: 44px;
+.chapter.active { border-color: var(--line-2); box-shadow: var(--shadow-1); }
+.chapter .ch-num {
+  position: absolute; left: -68px; top: 26px;
+  width: 56px; height: 56px; border-radius: 50%;
   display: grid; place-items: center;
-  font-size: 20px;
-  border-radius: var(--r-m);
-  background: var(--surface-2);
-  border: 1px solid var(--line-2);
+  font: 700 15px var(--mono);
+  color: var(--ink-3); background: var(--bg);
+  border: 2px solid var(--line-2);
+  transition: color .3s, border-color .3s, box-shadow .3s;
 }
+.chapter.active .ch-num {
+  color: var(--accent-ink); background: var(--accent); border-color: var(--accent);
+  box-shadow: 0 0 0 5px rgba(var(--accent-rgb), .14);
+}
+.chapter::after {
+  content: attr(data-ghost);
+  position: absolute; right: 8px; top: -22px;
+  font: 800 110px var(--font); letter-spacing: -.05em;
+  color: var(--ink); opacity: .035; pointer-events: none; user-select: none;
+}
+.ch-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.ch-head h3 { font-size: 24px; letter-spacing: -.018em; font-weight: 700; }
+.ch-when { font-family: var(--mono); font-size: 12px; color: var(--ink-3); letter-spacing: .05em; }
+.ch-sub { color: var(--ink-2); font-size: 15.5px; margin-top: 6px; max-width: 56ch; }
+.ch-facts { list-style: none; margin-top: var(--sp-4); display: flex; flex-direction: column; gap: 8px; }
+.ch-facts li { display: flex; gap: 10px; align-items: baseline; color: var(--ink-2); font-size: 14.5px; }
+.ch-facts li::before {
+  content: ''; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--accent); flex: none; transform: translateY(-2px);
+}
+.ch-facts li.q { color: var(--ink); font-style: italic; }
 
-.chapter h3 {
-  font-size: 21px; letter-spacing: -0.015em; font-weight: 700;
-  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+/* kind-specific visuals (all derived from the model) */
+.ch-visual { margin-top: var(--sp-6); }
+.ch-viz svg { width: 100%; max-width: 480px; height: auto; display: block; }
+.ch-spark .ch-bar { fill: var(--bar-dim); }
+.ch-spark .ch-bar.ch-bar-hot { fill: var(--accent); }
+.ch-first {
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 18px 20px; border-left: 3px solid var(--accent);
+  background: var(--surface-2); border-radius: 0 var(--r-m) var(--r-m) 0;
 }
-.chapter .when {
-  font-family: var(--mono); font-size: 12px; color: var(--ink-3);
-  font-weight: 500; letter-spacing: .04em;
+.ch-first-date { font: 700 clamp(18px, 3vw, 26px) var(--mono); color: var(--ink); letter-spacing: -.01em; }
+.ch-first-msg { color: var(--ink-2); font-size: 14.5px; font-style: italic; }
+.ch-silence { display: flex; align-items: baseline; gap: 14px; }
+.ch-silence b {
+  font: 700 clamp(44px, 8vw, 76px) var(--mono); letter-spacing: -.04em;
+  color: var(--ink-3); line-height: 1;
 }
-.chapter .sub { color: var(--ink-2); font-size: 15px; margin-top: 2px; }
+.ch-silence span { font-family: var(--mono); font-size: 13px; color: var(--ink-3); letter-spacing: .14em; text-transform: uppercase; }
+.ch-tags { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.ch-tag {
+  font: 700 14px var(--mono); color: var(--ink);
+  padding: 6px 13px; border-radius: 999px;
+  background: var(--surface-2); border: 1px solid var(--line-2);
+}
+.ch-tag-last { color: var(--accent); border-color: rgba(var(--accent-rgb), .4); }
+.ch-tag-dots { color: var(--ink-3); letter-spacing: .2em; }
+.ch-tags-note { display: block; margin-top: 8px; font-family: var(--mono); font-size: 11.5px; color: var(--ink-3); }
 
-.facts { list-style: none; margin-top: var(--sp-4); display: flex; flex-direction: column; gap: 8px; }
-.facts li {
-  display: flex; gap: 10px; align-items: baseline;
-  color: var(--ink-2); font-size: 15px;
+/* desktop: center spine, alternating chapters */
+@media (min-width: 1080px) {
+  .chapters-tl::before { left: 50%; transform: translateX(-50%); }
+  .chapter { width: calc(50% - 44px); margin-left: 0; }
+  .chapter:nth-child(odd) { margin-right: auto; text-align: left; }
+  .chapter:nth-child(even) { margin-left: auto; }
+  .chapter:nth-child(odd) .ch-num { left: calc(100% + 16px); }
+  .chapter:nth-child(even) .ch-num { left: -72px; }
+  .chapter:nth-child(even)::after { right: auto; left: 8px; }
 }
-.facts li::before {
-  content: '';
-  width: 5px; height: 5px; border-radius: 50%;
-  background: var(--accent); flex: none;
-  transform: translateY(-2px);
+@media (prefers-reduced-motion: reduce) {
+  .chapter, .chapter .ch-num, .ch-nav-btn { transition: none; }
 }
-.facts li.q { color: var(--ink); font-style: italic; }
 
 /* ── time machine ────────────────────────────────────────────────── */
 
@@ -929,6 +998,7 @@ body {
    ══════════════════════════════════════════════════════════════════ */
 
 [data-theme="neon"] {
+  --bar-rgb: 5, 6, 10;
   --bg:#05060A; --bg-2:#080B12; --surface:#0C111C; --surface-2:#111827;
   --line:#1C2739; --line-2:#273549;
   --ink:#EAF2FF; --ink-2:#93A4C3; --ink-3:#5D6E8C;
@@ -936,6 +1006,7 @@ body {
   --bar-lit:#0E8F5C; --bar-dim:#1B2A3E; --glow:0 0 24px rgba(61,255,180,.18);
 }
 [data-theme="paper"] {
+  --bar-rgb: 246, 242, 233;
   --bg:#F6F2E9; --bg-2:#EFEADC; --surface:#FCFAF4; --surface-2:#F1ECDF;
   --line:#DDD5C2; --line-2:#CBC1A8;
   --ink:#211D14; --ink-2:#5C5442; --ink-3:#8B8065;
@@ -944,6 +1015,7 @@ body {
   --glow:none;
 }
 [data-theme="terminal"] {
+  --bar-rgb: 7, 13, 8;
   --bg:#070D08; --bg-2:#0A120B; --surface:#0D1710; --surface-2:#122019;
   --line:#1B2E22; --line-2:#27402F;
   --ink:#C8F7CF; --ink-2:#7FBF8C; --ink-3:#4E7A58;
@@ -952,6 +1024,7 @@ body {
   --bar-lit:#1D9A46; --bar-dim:#173024;
 }
 [data-theme="aurora"] {
+  --bar-rgb: 10, 15, 30;
   --bg:#0A0F1E; --bg-2:#0D1428; --surface:#111A32; --surface-2:#16213F;
   --line:#1D2B4D; --line-2:#2A3B63;
   --ink:#E4ECFF; --ink-2:#94A5D1; --ink-3:#5F6F9B;
@@ -959,6 +1032,7 @@ body {
   --bar-lit:#2E8FA8; --bar-dim:#1A2747; --glow:0 0 28px rgba(125,249,255,.16);
 }
 [data-theme="blueprint"] {
+  --bar-rgb: 8, 24, 48;
   --bg:#081830; --bg-2:#0A1F3D; --surface:#0E2748; --surface-2:#133057;
   --line:#1B3B63; --line-2:#2A4E7E;
   --ink:#DCE9FB; --ink-2:#8FA9CE; --ink-3:#5C77A0;
@@ -966,6 +1040,7 @@ body {
   --bar-lit:#B8862E; --bar-dim:#17335A; --glow:0 0 24px rgba(255,209,102,.14);
 }
 [data-theme="mono"] {
+  --bar-rgb: 250, 250, 250;
   --bg:#FAFAFA; --bg-2:#F2F2F2; --surface:#FFFFFF; --surface-2:#EDEDED;
   --line:#DDDDDD; --line-2:#C4C4C4;
   --ink:#101010; --ink-2:#4A4A4A; --ink-3:#8A8A8A;
@@ -974,6 +1049,7 @@ body {
   --glow:none;
 }
 [data-theme="sunset"] {
+  --bar-rgb: 22, 13, 20;
   --bg:#160D14; --bg-2:#1C1019; --surface:#241420; --surface-2:#2C1826;
   --line:#3C2233; --line-2:#4E2C41;
   --ink:#F7EAE2; --ink-2:#C4A193; --ink-3:#8C6B60;
@@ -1062,20 +1138,57 @@ body {
 .tm-jump.on { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); }
 
 /* ═══ STYLE PANEL (theme + density switcher) ══════════════════════ */
-.style-fab {
+.style-fab { display: inline-flex; }
+.style-fab.dock {
   position: fixed; left: 18px; bottom: 18px; z-index: 80;
-  display: inline-flex; align-items: center; gap: 7px;
-  font: 600 12px var(--mono); letter-spacing: .05em;
+  box-shadow: var(--shadow-1);
+}
+.style-fab.dock:hover { transform: translateY(-1px); }
+.style-panel.dock { left: 18px; right: auto; top: auto; bottom: 62px; }
+
+/* ── story topbar: persistent brand + actions ────────────────────── */
+.story-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 80;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 18px;
+  transition: background .3s, border-color .3s, backdrop-filter .3s;
+  border-bottom: 1px solid transparent;
+}
+.story-bar.scrolled {
+  background: rgba(var(--bar-rgb), .82);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2); backdrop-filter: blur(12px) saturate(1.2);
+  border-bottom-color: var(--line);
+}
+
+.sb-brand {
+  display: inline-flex; align-items: center; gap: 9px;
+  font: 700 13px var(--mono); letter-spacing: .02em;
+  color: var(--ink-2); text-decoration: none;
+  transition: color .2s;
+}
+.sb-brand:hover { color: var(--ink); }
+.sb-brand svg { width: 22px; height: 22px; display: block; color: var(--ink-2); }
+
+.sb-acts { display: flex; align-items: center; gap: 7px; }
+.sb-btn {
+  appearance: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+  font: 600 12px var(--mono); letter-spacing: .04em;
   color: var(--ink-2); background: var(--surface);
   border: 1px solid var(--line-2); border-radius: 999px;
-  padding: 9px 14px; cursor: pointer;
-  box-shadow: var(--shadow-1);
-  transition: color .15s, border-color .15s, transform .15s;
+  padding: 7px 13px;
+  transition: color .15s, border-color .15s;
 }
-.style-fab:hover { color: var(--accent); border-color: var(--accent); transform: translateY(-1px); }
+.sb-btn:hover { color: var(--accent); border-color: var(--accent); }
+@media (max-width: 560px) {
+  .sb-btn span { display: none; }
+  .sb-btn { padding: 7px 11px; }
+}
+
+/* style panel: dropdown under the topbar */
 .style-panel {
-  position: fixed; left: 18px; bottom: 62px; z-index: 81;
-  width: min(300px, calc(100vw - 36px));
+  position: fixed; right: 16px; top: 58px; z-index: 81;
+  width: min(300px, calc(100vw - 32px));
   background: var(--surface); border: 1px solid var(--line-2); border-radius: var(--r-l);
   box-shadow: 0 24px 60px rgba(0,0,0,.45); padding: 16px;
 }
@@ -1483,27 +1596,120 @@ body {
     launch: "🚀", evolution: "◈",
   };
 
+  /* ── chapters: a real timeline, not bullets ─────────────────────── */
+  function chapterSparkbar(months, i0, i1) {
+    /* honest visual: monthly commits inside the chapter's own date range */
+    var seg = months.slice(Math.max(0, i0), Math.min(months.length - 1, i1) + 1);
+    if (seg.length < 2) return null;
+    var BUCKETS = 44;
+    var per = Math.ceil(seg.length / BUCKETS);
+    var buckets = [];
+    for (var i = 0; i < seg.length; i += per) {
+      var s = 0;
+      for (var k = i; k < Math.min(i + per, seg.length); k++) s += seg[k].commits;
+      buckets.push(s);
+    }
+    var max = Math.max.apply(null, buckets) || 1;
+    var W = 360, H = 56, bw = W / buckets.length;
+    var out = '<svg viewBox="0 0 ' + W + ' ' + H + '" class="ch-spark" role="img" aria-label="Commit activity during this chapter">';
+    buckets.forEach(function (v, i) {
+      var h = Math.max(2, (v / max) * (H - 6));
+      out += '<rect x="' + (i * bw + 1).toFixed(1) + '" y="' + (H - h).toFixed(1) +
+        '" width="' + Math.max(1, bw - 2).toFixed(1) + '" height="' + h.toFixed(1) + '" rx="1.5" class="ch-bar' + (v === max ? " ch-bar-hot" : "") + '"></rect>';
+    });
+    return out + "</svg>";
+  }
+
   function chapters(root, d) {
     var wrap = section(root, "story", "Chapter one to now", "The story, chapter by chapter",
       "Every chapter below is grounded in real git data — timestamps, tags, and commit counts. Nothing invented.");
-    var list = el("div", "chapters");
-    d.chapters.forEach(function (ch) {
-      var c = el("article", "chapter");
-      var when = (ch.start && ch.start.slice(0, 7)) === (ch.end && ch.end.slice(0, 7))
+    wrap.parentElement.classList.add("sec-story");
+    var months = d.months, chs = d.chapters || [];
+
+    /* chapter navigation — compact, clickable, scroll-aware */
+    var nav = el("nav", "ch-nav");
+    nav.setAttribute("aria-label", "Chapter navigation");
+    chs.forEach(function (ch, i) {
+      var b = el("button", "ch-nav-btn");
+      b.type = "button";
+      b.innerHTML = "<b>" + String(i + 1).padStart(2, "0") + "</b> " + esc(ch.title.replace(/^The /, ""));
+      b.addEventListener("click", function () {
+        var target = document.getElementById("ch-" + i);
+        if (target && target.scrollIntoView) target.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+      nav.appendChild(b);
+    });
+    wrap.appendChild(nav);
+
+    var tl = el("div", "chapters-tl");
+    chs.forEach(function (ch, i) {
+      var i0 = Math.max(monthIndexOf(months, ch.start), 0);
+      var i1 = Math.max(monthIndexOf(months, ch.end), i0);
+      var art = el("article", "chapter ch-kind-" + ch.kind);
+      art.id = "ch-" + i;
+      art.setAttribute("data-ghost", String(i + 1).padStart(2, "0"));
+
+      var when = (String(ch.start).slice(0, 7) === String(ch.end).slice(0, 7))
         ? fmtDate(ch.start, { month: "short", year: "numeric" })
-        : fmtDate(ch.start, { month: "short", year: "numeric" }) + " – " + fmtDate(ch.end, { month: "short", year: "numeric" });
-      var facts = el("ul", "facts");
-      (ch.facts || []).forEach(function (f, i) {
+        : fmtDate(ch.start, { month: "short", year: "numeric" }) + " → " + fmtDate(ch.end, { month: "short", year: "numeric" });
+
+      var head = el("header", "ch-head");
+      head.innerHTML =
+        '<span class="ch-num" aria-hidden="true">' + String(i + 1).padStart(2, "0") + "</span>" +
+        '<div><h3>' + esc(ch.title) + '</h3><span class="ch-when">' + esc(when) + "</span></div>";
+      var sub = el("p", "ch-sub", esc(ch.subtitle || ""));
+
+      /* kind-specific visual — each derived from the model, never invented */
+      var visual = null;
+      if (ch.kind === "beginning" && months.length) {
+        var m0 = months[0];
+        visual = '<div class="ch-first"><span class="ch-first-date">' + esc(fmtDate(d.repo.first, { month: "long", day: "numeric", year: "numeric" })) +
+          '</span><span class="ch-first-msg">“' + esc(m0.msg || "the first commit") + "”</span></div>";
+      } else if (ch.kind === "silence") {
+        var days = Math.max(1, Math.round((new Date(ch.end) - new Date(ch.start)) / 86400000));
+        visual = '<div class="ch-silence"><b>' + fN(days) + '</b><span>days of silence</span></div>';
+      } else if (ch.kind === "launch" && (d.tags || []).length) {
+        var tg = d.tags;
+        visual = '<div class="ch-tags"><span class="ch-tag">' + esc(tg[0].name) + '</span><span class="ch-tag-dots">…</span><span class="ch-tag ch-tag-last">' + esc(tg[tg.length - 1].name) + "</span></div>" +
+          '<span class="ch-tags-note">first → latest of ' + fN(tg.length) + " releases</span>";
+      } else {
+        var spark = chapterSparkbar(months, i0, i1);
+        if (spark) visual = '<div class="ch-viz">' + spark + "</div>";
+      }
+
+      var facts = el("ul", "ch-facts");
+      (ch.facts || []).slice(0, 3).forEach(function (f) {
         facts.appendChild(el("li", f.charAt(0) === "“" ? "q" : null, esc(f)));
       });
-      c.innerHTML =
-        '<div class="glyph" aria-hidden="true">' + (CHAPTER_GLYPHS[ch.kind] || "·") + "</div>" +
-        '<div><h3>' + esc(ch.title) + ' <span class="when">' + esc(when) + "</span></h3>" +
-        '<p class="sub">' + esc(ch.subtitle || "") + "</p></div>";
-      c.appendChild(facts);
-      list.appendChild(c);
+
+      art.appendChild(head);
+      art.appendChild(sub);
+      if (visual) art.appendChild(el("div", "ch-visual", visual));
+      art.appendChild(facts);
+      tl.appendChild(art);
     });
-    wrap.appendChild(list);
+    wrap.appendChild(tl);
+
+    /* scroll-aware active chapter (subtle — no scroll-jacking) */
+    if ("IntersectionObserver" in window && chs.length > 1) {
+      var navBtns = nav.querySelectorAll(".ch-nav-btn");
+      var spy = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          var ix = +e.target.id.replace("ch-", "");
+          tl.querySelectorAll(".chapter").forEach(function (c) { c.classList.remove("active"); });
+          e.target.classList.add("active");
+          navBtns.forEach(function (b, bi) { b.classList.toggle("on", bi === ix); });
+          /* keep the active nav chip visible on mobile */
+          var on = navBtns[ix];
+          if (on && nav.scrollWidth > nav.clientWidth) {
+            var nl = on.offsetLeft - nav.clientWidth / 2 + on.offsetWidth / 2;
+            nav.scrollTo({ left: Math.max(0, nl), behavior: "smooth" });
+          }
+        });
+      }, { rootMargin: "-30% 0px -55% 0px" });
+      tl.querySelectorAll(".chapter").forEach(function (c) { spy.observe(c); });
+    }
   }
 
   /* ── TIME MACHINE v2 ─────────────────────────────────────────── */
@@ -3152,7 +3358,15 @@ body {
     certificate(container, data);
     footer(container, data);
     dotNav(container, data);
-    if (!document.querySelector(".style-fab")) stylePanel(container);
+    var standalone = document.body.classList.contains("cc-story");
+    if (standalone && !document.querySelector(".story-bar")) storyBar(container, data);
+    if (!document.querySelector(".style-fab")) {
+      stylePanel(container, !standalone);
+      if (standalone) {
+        var acts = document.querySelector(".story-bar .sb-acts");
+        if (acts) acts.insertBefore(document.querySelector(".style-fab"), acts.firstChild);
+      }
+    }
     activateReveals();
   }
 
@@ -3190,12 +3404,51 @@ body {
       (document.body.getAttribute("data-density")) || "standard";
   }
 
-  function stylePanel(container) {
-    var fab = el("button", "style-fab");
+  function storyBar(container, data) {
+    var bar = el("div", "story-bar");
+    var brand = el("a", "sb-brand");
+    brand.href = "https://ahmadrrrtx.github.io/commit-canvas/";
+    brand.target = "_blank";
+    brand.rel = "noopener";
+    brand.setAttribute("aria-label", "Made with Commit Canvas — visit the project");
+    brand.innerHTML =
+      '<svg viewBox="0 0 26 26" fill="none" aria-hidden="true">' +
+      '<rect x="1" y="1" width="24" height="24" rx="6" stroke="currentColor" stroke-width="1.5" opacity=".55"/>' +
+      '<path d="M6 19h6M9 19v-6h6V7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity=".8"/>' +
+      '<circle cx="6" cy="19" r="2.4" fill="var(--accent)"/>' +
+      '<circle cx="12" cy="19" r="2" fill="currentColor" opacity=".6"/>' +
+      '<circle cx="15" cy="13" r="2" fill="currentColor" opacity=".6"/>' +
+      '<circle cx="21" cy="7" r="2.4" fill="var(--accent)"/></svg>' +
+      "<span>commit canvas</span>";
+    bar.appendChild(brand);
+
+    var acts = el("div", "sb-acts");
+    var share = el("button", "sb-btn");
+    share.type = "button";
+    share.innerHTML = "↗ Share";
+    share.setAttribute("aria-label", "Share this story");
+    share.addEventListener("click", function () { openExportStudio(data, "image"); });
+    var exp = el("button", "sb-btn");
+    exp.type = "button";
+    exp.innerHTML = "⤓ Export";
+    exp.setAttribute("aria-label", "Open the export studio");
+    exp.addEventListener("click", function () { openExportStudio(data); });
+    acts.appendChild(share);
+    acts.appendChild(exp);
+    bar.appendChild(acts);
+    document.body.appendChild(bar);
+
+    var onScroll = function () { bar.classList.toggle("scrolled", (window.scrollY || 0) > 24); };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+
+  function stylePanel(container, dock) {
+    var fab = el("button", "style-fab sb-btn" + (dock ? " dock" : ""));
     fab.type = "button";
     fab.innerHTML = '◐ <span>Style</span>';
     fab.setAttribute("aria-label", "Change story theme and density");
-    var panel = el("div", "style-panel");
+    var panel = el("div", "style-panel" + (dock ? " dock" : ""));
     panel.hidden = true;
     panel.setAttribute("role", "dialog");
     panel.setAttribute("aria-label", "Story style");

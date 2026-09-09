@@ -145,11 +145,14 @@
     <p class="lp-sub">Commit Canvas turns any repository into chapters, a time machine, and a developer fingerprint — generated from real git data. No cloud. No account. One shareable file.</p>
 
     <form class="lp-try" id="try-form" autocomplete="off">
-      <div class="lp-try-row">
-        <label class="sr-only" for="repo-input">Public GitHub repository URL</label>
-        <input id="repo-input" type="text" inputmode="url" spellcheck="false"
-               placeholder="https://github.com/owner/repo" />
-        <button class="btn-go" id="go-btn" type="submit">Analyze →</button>
+      <div class="lp-term">
+        <div class="lp-term-bar" aria-hidden="true"><i></i><i></i><i></i><span>commit-canvas · analyze</span></div>
+        <div class="lp-try-row">
+          <label class="sr-only" for="repo-input">Public GitHub repository URL</label>
+          <input id="repo-input" type="text" inputmode="url" spellcheck="false"
+                 placeholder="https://github.com/owner/repo" />
+          <button class="btn-go" id="go-btn" type="submit">Analyze →</button>
+        </div>
       </div>
       <p class="lp-try-note">Try <code>pallets/flask</code> · <code>expressjs/express</code> · or your own repo. Private repos work via the <a href="#privacy" style="color:var(--ink-2)">local CLI</a>.</p>
       <div class="lp-themes" id="lp-themes" aria-label="Choose your story theme">
