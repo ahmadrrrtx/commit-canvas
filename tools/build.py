@@ -28,6 +28,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WEB = os.path.join(ROOT, "web")
 BASE = "https://ahmadrrrtx.github.io/commit-canvas/"
 VERSION = "3.0.0"
+# Date the site content was last materially updated (used for sitemap <lastmod>).
+SITEMAP_LASTMOD = "2026-09-10"
 
 
 def read(*parts):
@@ -383,7 +385,9 @@ def build_sitemap():
               "demo/express-story.html", "demo/commit-canvas-story.html"]
     for a in ARTICLES:
         routes.append("journal/" + a["slug"] + "/")
-    urls = "".join("  <url><loc>" + BASE + r + "</loc></url>\n" for r in routes)
+    urls = "".join(
+        "  <url><loc>" + BASE + r + "</loc><lastmod>" + SITEMAP_LASTMOD +
+        "</lastmod></url>\n" for r in routes)
     return ('<?xml version="1.0" encoding="UTF-8"?>\n'
             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
             + urls + "</urlset>\n")
