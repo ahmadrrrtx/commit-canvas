@@ -90,7 +90,7 @@
   border: 1px solid var(--line-2); border-radius: 999px; padding: 7px 14px;
   background: var(--surface);
 }
-.lp .lp-eyebrow .pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: lpPulse 2.2s infinite; }
+.lp .lp-eyebrow .pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: lpPulse 2.2s infinite; padding: 0; flex: none; }
 @keyframes lpPulse { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
 
 .lp h1 {
@@ -154,6 +154,8 @@
 @media (prefers-reduced-motion: reduce) {
   .lp .lp-branch.hot, .lp .lp-node.hot { animation: none; stroke-dashoffset: 0; opacity: 1; }
   .lp .lp-eyebrow .pulse { animation: none; }
+  .lp .lp-step, .lp .lp-feat, .lp .lp-arc { transition: none; }
+  .lp .lp-step:hover, .lp .lp-feat:hover, .lp .lp-arc:hover { transform: none; }
 }
 
 /* ── proof strip ── */
@@ -198,7 +200,12 @@
 @media (max-width: 860px) { .lp .lp-steps { grid-template-columns: 1fr; } }
 .lp .lp-step {
   background: var(--surface); border: 1px solid var(--line);
-  border-radius: 16px; padding: 28px;
+  border-radius: 16px; padding: 28px; min-width: 0;
+  transition: transform .25s var(--ease), border-color .2s ease, box-shadow .25s ease;
+}
+.lp .lp-step:hover {
+  transform: translateY(-2px); border-color: var(--line-2);
+  box-shadow: 0 14px 36px rgba(0,0,0,.38);
 }
 .lp .lp-step .n {
   font-family: var(--mono); font-weight: 700; font-size: 13px;
@@ -221,7 +228,12 @@
 .lp .lp-feat {
   display: grid; grid-template-columns: 54px 1fr; gap: 18px;
   background: var(--surface); border: 1px solid var(--line);
-  border-radius: 16px; padding: 26px;
+  border-radius: 16px; padding: 26px; min-width: 0;
+  transition: transform .25s var(--ease), border-color .2s ease, box-shadow .25s ease;
+}
+.lp .lp-feat:hover {
+  transform: translateY(-2px); border-color: var(--line-2);
+  box-shadow: 0 14px 36px rgba(0,0,0,.38);
 }
 .lp .lp-feat .ic {
   width: 46px; height: 46px; border-radius: 13px;
@@ -249,6 +261,35 @@
 .lp .lp-priv pre .c { color: var(--ink-3); }
 .lp .lp-priv pre .a { color: var(--accent); }
 
+/* hero + final CTA action rows */
+.lp .lp-hero-actions,
+.lp .lp-final-actions {
+  display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+  margin-top: 26px;
+}
+.lp .lp-hero-actions { margin-top: 30px; }
+
+/* narrative engine arcs */
+.lp .lp-arcs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+@media (max-width: 1020px) { .lp .lp-arcs { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .lp .lp-arcs { grid-template-columns: 1fr; } }
+.lp .lp-arc {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 14px; padding: 20px; min-width: 0;
+  transition: transform .25s var(--ease), border-color .2s ease, box-shadow .25s ease;
+}
+.lp .lp-arc:hover {
+  transform: translateY(-2px); border-color: var(--line-2);
+  box-shadow: 0 14px 36px rgba(0,0,0,.38);
+}
+.lp .lp-arc svg { width: 72px; height: 26px; display: block; margin-bottom: 12px; }
+.lp .lp-arc svg path {
+  fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  opacity: .9;
+}
+.lp .lp-arc h3 { font-size: 16px; letter-spacing: -.01em; margin-bottom: 6px; }
+.lp .lp-arc p { color: var(--ink-3); font-size: 13.5px; line-height: 1.5; }
+
 /* final cta */
 .lp .lp-final { text-align: center; }
 .lp .lp-final h2 { font-size: clamp(30px, 5vw, 52px); letter-spacing: -0.03em; font-weight: 800; }
@@ -258,8 +299,13 @@
   font-family: var(--mono); font-size: 14px; line-height: 1.9;
   background: var(--surface); border: 1px solid var(--line-2);
   border-radius: 14px; padding: 20px 26px; color: var(--ink-2);
+  max-width: 100%; overflow-x: auto;
 }
 .lp .lp-cmd .a { color: var(--accent); }
+
+/* footer — story.css injects align-items:flex-end into .foot-grid,
+   which bottom-staggers the columns on the landing. Reset to top-align. */
+.lp .foot-grid { align-items: start; }
 
 /* footer */
 .lp .lp-foot { border-top: 1px solid var(--line); padding: 40px 0 60px; }
@@ -1014,6 +1060,14 @@ html { scroll-behavior: smooth; }
 .site .social-card .sic { transition: transform .3s cubic-bezier(.34,1.56,.64,1); }
 .site .social-card:hover .sic { transform: scale(1.14) translateY(-2px); }
 
+/* ── consistent card elevation on hover (shared, subtle) ─────── */
+.site .social-card:hover,
+.site .proj:hover,
+.site .fd-formats .fmt:hover { box-shadow: 0 14px 36px rgba(0, 0, 0, .38); }
+.site .proj, .site .fd-formats .fmt {
+  transition: transform .25s var(--ease), border-color .2s ease, box-shadow .25s ease;
+}
+
 /* ── project wall + skeleton shimmer ────────────────────────────── */
 .site .proj { opacity: 0; transform: translateY(10px); animation: projIn .45s cubic-bezier(.22,.9,.36,1) forwards; }
 @keyframes projIn { to { opacity: 1; transform: none; } }
@@ -1332,7 +1386,8 @@ html { scroll-behavior: smooth; }
   --ink-3:     #687089;
 
   /* accents */
-  --accent:    var(--accent);   /* signal — carried over from v1 brand */
+  --accent:    #E2FF3A;   /* signal — carried over from v1 brand */
+  --accent-rgb:226, 255, 58;
   --accent-ink:#151803;
   --amber:     #FFB454;
   --coral:     #FF7A6B;
@@ -2694,6 +2749,11 @@ body {
       </div>
     </form>
 
+    <div class="lp-hero-actions">
+      <a class="btn" href="#example">See a live story ↓</a>
+      <a class="btn" href="https://github.com/ahmadrrrtx/commit-canvas" target="_blank" rel="noopener">View on GitHub</a>
+    </div>
+
     <svg class="lp-hero-svg" viewBox="0 0 760 180" fill="none" aria-hidden="true">
       <path class="lp-branch hot"    d="M40 130 H700"/>
       <path class="lp-branch hot d2" d="M180 130 C 260 130 260 60 340 60 H700"/>
@@ -2830,6 +2890,26 @@ body {
   </div>
 </section>
 
+<!-- ═══════════════ NARRATIVE ENGINE ═══════════════ -->
+<section class="lp-sec" id="arcs">
+  <div class="lp-wrap">
+    <div class="lp-sec-head lp-rv">
+      <span class="lp-kicker">The narrative engine</span>
+      <h2>Every history has a shape.<br>We name it honestly.</h2>
+      <p>The engine reads velocity, gaps and comebacks, then assigns the arc that the timestamps actually support — never one they don't.</p>
+    </div>
+    <div class="lp-arcs">
+      <div class="lp-arc lp-rv"><svg viewBox="0 0 72 26" aria-hidden="true"><path d="M2 22 L14 18 L26 12 L38 9 L50 6 L70 3" /></svg><h3>Fresh Start</h3><p>This story is just opening — commits and counting.</p></div>
+      <div class="lp-arc lp-rv"><svg viewBox="0 0 72 26" aria-hidden="true"><path d="M2 22 L12 20 L20 6 L28 20 L38 18 L46 4 L56 20 L70 16" /></svg><h3>The Sprint</h3><p>Built in bursts of deep focus — the history remembers every surge.</p></div>
+      <div class="lp-arc lp-rv"><svg viewBox="0 0 72 26" aria-hidden="true"><path d="M2 23 L14 21 L26 17 L38 12 L50 8 L70 3" /></svg><h3>The Climb</h3><p>It started quiet and kept accelerating. Momentum you can see.</p></div>
+      <div class="lp-arc lp-rv"><svg viewBox="0 0 72 26" aria-hidden="true"><path d="M2 8 L16 9 L30 10 L40 22 L50 6 L70 4" /></svg><h3>The Return</h3><p>It went quiet. Then it came back. Projects don't do that by accident.</p></div>
+      <div class="lp-arc lp-rv"><svg viewBox="0 0 72 26" aria-hidden="true"><path d="M2 14 L12 12 L22 15 L32 12 L42 14 L52 12 L62 14 L70 12" /></svg><h3>The Marathon</h3><p>No drama, no spikes — just showing up, month after month.</p></div>
+      <div class="lp-arc lp-rv"><svg viewBox="0 0 72 26" aria-hidden="true"><path d="M2 6 L14 8 L26 11 L38 15 L50 19 L70 22" /></svg><h3>The Slow Fade</h3><p>The early energy was real. What comes next is the interesting part.</p></div>
+      <div class="lp-arc lp-rv"><svg viewBox="0 0 72 26" aria-hidden="true"><path d="M2 18 L12 10 L22 16 L32 7 L42 15 L52 9 L62 14 L70 8" /></svg><h3>The Journey</h3><p>Quiet parts, loud parts, and everything in between.</p></div>
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════════ PRIVACY ═══════════════ -->
 <section class="lp-sec" id="privacy">
   <div class="lp-wrap">
@@ -2931,6 +3011,10 @@ cd commit-canvas
     <h2>Your next README<br>is already in your <span style="color:var(--accent)">.git</span> folder.</h2>
     <p>One command. One file. A story you didn't know you had.</p>
     <div class="lp-cmd">git clone https://github.com/ahmadrrrtx/commit-canvas<br>cd commit-canvas &amp;&amp; <span class="a">./run.sh /path/to/repo</span></div>
+    <div class="lp-final-actions">
+      <a class="btn btn-primary" href="https://github.com/ahmadrrrtx/commit-canvas" target="_blank" rel="noopener">View on GitHub</a>
+      <a class="btn" href="#try">Try it in your browser ↑</a>
+    </div>
   </div>
 </section>
 </main>
@@ -5943,6 +6027,20 @@ function buildThemeRow(mount) {
     el.innerHTML = "<b>" + c[0] + "</b><span style='color:var(--ink-2);font-size:11px'>" + c[1] + "</span><span>" + c[2] + "</span>";
     grid.appendChild(el);
   });
+
+  /* These cards are injected after the page-level reveal observer was set
+     up, so they would otherwise stay invisible forever. Observe them here
+     (and honor reduced motion). */
+  var dyn = grid.querySelectorAll(".lp-rv");
+  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if ("IntersectionObserver" in window && !reduced) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    dyn.forEach(function (n) { io.observe(n); });
+  } else {
+    dyn.forEach(function (n) { n.classList.add("in"); });
+  }
 })();
 
 </script>

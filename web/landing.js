@@ -699,4 +699,18 @@ function buildThemeRow(mount) {
     el.innerHTML = "<b>" + c[0] + "</b><span style='color:var(--ink-2);font-size:11px'>" + c[1] + "</span><span>" + c[2] + "</span>";
     grid.appendChild(el);
   });
+
+  /* These cards are injected after the page-level reveal observer was set
+     up, so they would otherwise stay invisible forever. Observe them here
+     (and honor reduced motion). */
+  var dyn = grid.querySelectorAll(".lp-rv");
+  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if ("IntersectionObserver" in window && !reduced) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    dyn.forEach(function (n) { io.observe(n); });
+  } else {
+    dyn.forEach(function (n) { n.classList.add("in"); });
+  }
 })();

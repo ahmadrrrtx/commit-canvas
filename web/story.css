@@ -21,7 +21,8 @@
   --ink-3:     #687089;
 
   /* accents */
-  --accent:    var(--accent);   /* signal — carried over from v1 brand */
+  --accent:    #E2FF3A;   /* signal — carried over from v1 brand */
+  --accent-rgb:226, 255, 58;
   --accent-ink:#151803;
   --amber:     #FFB454;
   --coral:     #FF7A6B;

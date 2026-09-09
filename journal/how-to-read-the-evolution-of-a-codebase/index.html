@@ -667,6 +667,14 @@ html { scroll-behavior: smooth; }
 .site .social-card .sic { transition: transform .3s cubic-bezier(.34,1.56,.64,1); }
 .site .social-card:hover .sic { transform: scale(1.14) translateY(-2px); }
 
+/* ── consistent card elevation on hover (shared, subtle) ─────── */
+.site .social-card:hover,
+.site .proj:hover,
+.site .fd-formats .fmt:hover { box-shadow: 0 14px 36px rgba(0, 0, 0, .38); }
+.site .proj, .site .fd-formats .fmt {
+  transition: transform .25s var(--ease), border-color .2s ease, box-shadow .25s ease;
+}
+
 /* ── project wall + skeleton shimmer ────────────────────────────── */
 .site .proj { opacity: 0; transform: translateY(10px); animation: projIn .45s cubic-bezier(.22,.9,.36,1) forwards; }
 @keyframes projIn { to { opacity: 1; transform: none; } }
