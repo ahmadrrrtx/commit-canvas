@@ -1925,7 +1925,31 @@
     var h1 = el("b", "sp-h", "Theme");
     var h2 = el("b", "sp-h", "Density");
     var note = el("p", "style-note", "Themes restyle instantly — the repository analysis is never re-run.");
-    panel.appendChild(h1); panel.appendChild(th); panel.appendChild(h2); panel.appendChild(dn); panel.appendChild(note);
+
+    /* story presets — named configurations of theme + density */
+    var h3 = el("b", "sp-h", "Presets");
+    var pr = el("div", "style-dens style-presets");
+    var PRESETS = [
+      ["My story", "midnight", "standard"],
+      ["Portfolio", "paper", "compact"],
+      ["Cinematic", "aurora", "cinematic"],
+      ["Terminal", "terminal", "standard"],
+    ];
+    PRESETS.forEach(function (p) {
+      var b = el("button");
+      b.type = "button";
+      b.textContent = p[0];
+      b.title = p[1] + " · " + p[2];
+      b.addEventListener("click", function () {
+        applyTheme(p[1], container);
+        applyDensity(p[2], container);
+        th.querySelectorAll(".style-th").forEach(function (x) { x.classList.toggle("on", x.getAttribute("aria-label") === "Theme: " + p[1][0].toUpperCase() + p[1].slice(1)); });
+        dn.querySelectorAll("button").forEach(function (x) { x.classList.toggle("on", x.textContent === p[2]); });
+      });
+      pr.appendChild(b);
+    });
+    panel.appendChild(h1); panel.appendChild(th); panel.appendChild(h2); panel.appendChild(dn);
+    panel.appendChild(h3); panel.appendChild(pr); panel.appendChild(note);
 
     fab.addEventListener("click", function () { panel.hidden = !panel.hidden; });
     document.addEventListener("click", function (e) {

@@ -2373,6 +2373,10 @@ body {
   .style-fab, .style-th, .tm-jump, .made-with .mw-links a { transition: none; }
 }
 
+/* preset chips */
+.style-presets { margin-bottom: 2px; }
+.style-presets button { font-size: 10.5px; padding: 6px 4px; }
+
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"Commit Canvas","url":"https://ahmadrrrtx.github.io/commit-canvas/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Turn any git repository into a cinematic, shareable story — chapters, a time machine, and a developer fingerprint. Generated from real commit data, locally.","featureList":["Story engine with evidence-grounded chapters","Repository time machine","Developer fingerprint","Roast my git","PNG/GIF/WebM/SVG/HTML exports","Offline, zero-dependency CLI"],"author":{"@type":"Person","name":"Muhammad Ahmad","url":"https://ahmadrrrtx.github.io/commit-canvas/creator/"},"license":"https://github.com/ahmadrrrtx/commit-canvas/blob/main/LICENSE","isAccessibleForFree":true}
@@ -2560,6 +2564,17 @@ body {
 </div>
 
 <!-- ═══════════════ LIVE EXAMPLE ═══════════════ -->
+<section class="lp-sec" id="inside">
+  <div class="lp-wrap">
+    <div class="lp-sec-head lp-rv">
+      <span class="lp-kicker">See what's inside</span>
+      <h2>Six chapters of proof.</h2>
+      <p>Every story is assembled from the same deterministic engine. Here's what it finds — measured on Flask below, on your repository in ten seconds.</p>
+    </div>
+    <div class="fd-formats" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))" id="inside-grid"></div>
+  </div>
+</section>
+
 <section class="lp-sec" id="example">
   <div class="lp-wrap">
     <div class="lp-sec-head lp-rv">
@@ -4876,7 +4891,31 @@ window.__CC_DEMO__ = {"meta":{"v":2,"generated":"2026-09-01T12:53:12","source":"
     var h1 = el("b", "sp-h", "Theme");
     var h2 = el("b", "sp-h", "Density");
     var note = el("p", "style-note", "Themes restyle instantly — the repository analysis is never re-run.");
-    panel.appendChild(h1); panel.appendChild(th); panel.appendChild(h2); panel.appendChild(dn); panel.appendChild(note);
+
+    /* story presets — named configurations of theme + density */
+    var h3 = el("b", "sp-h", "Presets");
+    var pr = el("div", "style-dens style-presets");
+    var PRESETS = [
+      ["My story", "midnight", "standard"],
+      ["Portfolio", "paper", "compact"],
+      ["Cinematic", "aurora", "cinematic"],
+      ["Terminal", "terminal", "standard"],
+    ];
+    PRESETS.forEach(function (p) {
+      var b = el("button");
+      b.type = "button";
+      b.textContent = p[0];
+      b.title = p[1] + " · " + p[2];
+      b.addEventListener("click", function () {
+        applyTheme(p[1], container);
+        applyDensity(p[2], container);
+        th.querySelectorAll(".style-th").forEach(function (x) { x.classList.toggle("on", x.getAttribute("aria-label") === "Theme: " + p[1][0].toUpperCase() + p[1].slice(1)); });
+        dn.querySelectorAll("button").forEach(function (x) { x.classList.toggle("on", x.textContent === p[2]); });
+      });
+      pr.appendChild(b);
+    });
+    panel.appendChild(h1); panel.appendChild(th); panel.appendChild(h2); panel.appendChild(dn);
+    panel.appendChild(h3); panel.appendChild(pr); panel.appendChild(note);
 
     fab.addEventListener("click", function () { panel.hidden = !panel.hidden; });
     document.addEventListener("click", function (e) {
@@ -5570,6 +5609,32 @@ function buildThemeRow(mount) {
 
   /* exposed for testing */
   window.CommitCanvasWeb = { analyzeGithub: analyzeGithub, parseRepo: parseRepo };
+})();
+
+/* ── see what's inside: real mini-visuals from the Flask model ──── */
+(function () {
+  var grid = document.getElementById("inside-grid");
+  var d = window.__CC_DEMO__;
+  if (!grid || !d) return;
+  function esc(s) { var t = document.createElement("t"); t.textContent = String(s); return t.innerHTML; }
+  var busiest = d.months.reduce(function (a, b) { return (b.commits > a.commits ? b : a); });
+  var fp = d.fingerprint || {}, arch = fp.archetype || {};
+  var t = d.totals;
+  var cards = [
+    ["Chapters", "the narrative arc", d.chapters ? d.chapters.length + " chapters · " + esc(d.shape.label) : "—"],
+    ["Time machine", "scrub the whole life", d.months.length + " months · " + (d.tags || []).length + " releases"],
+    ["Pulse", "one line, whole life", "busiest: " + busiest.label + " · " + busiest.commits + " commits"],
+    ["Fingerprint", "how the work happened", fp.author ? esc(fp.author) + " · " + esc(arch.label || "") : "—"],
+    ["People", "who built it", t.contributors + " contributors · " + t.active_days + " active days"],
+    ["Exports", "share it anywhere", "PNG · GIF · WebM · SVG · MD · JSON"],
+  ];
+  cards.forEach(function (c, i) {
+    var el = document.createElement("div");
+    el.className = "fmt lp-rv";
+    el.style.transitionDelay = (i * 60) + "ms";
+    el.innerHTML = "<b>" + c[0] + "</b><span style='color:var(--ink-2);font-size:11px'>" + c[1] + "</span><span>" + c[2] + "</span>";
+    grid.appendChild(el);
+  });
 })();
 
 </script>

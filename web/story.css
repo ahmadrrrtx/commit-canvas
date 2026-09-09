@@ -1108,3 +1108,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .style-fab, .style-th, .tm-jump, .made-with .mw-links a { transition: none; }
 }
+
+/* preset chips */
+.style-presets { margin-bottom: 2px; }
+.style-presets button { font-size: 10.5px; padding: 6px 4px; }

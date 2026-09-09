@@ -667,3 +667,29 @@ function buildThemeRow(mount) {
   /* exposed for testing */
   window.CommitCanvasWeb = { analyzeGithub: analyzeGithub, parseRepo: parseRepo };
 })();
+
+/* ── see what's inside: real mini-visuals from the Flask model ──── */
+(function () {
+  var grid = document.getElementById("inside-grid");
+  var d = window.__CC_DEMO__;
+  if (!grid || !d) return;
+  function esc(s) { var t = document.createElement("t"); t.textContent = String(s); return t.innerHTML; }
+  var busiest = d.months.reduce(function (a, b) { return (b.commits > a.commits ? b : a); });
+  var fp = d.fingerprint || {}, arch = fp.archetype || {};
+  var t = d.totals;
+  var cards = [
+    ["Chapters", "the narrative arc", d.chapters ? d.chapters.length + " chapters · " + esc(d.shape.label) : "—"],
+    ["Time machine", "scrub the whole life", d.months.length + " months · " + (d.tags || []).length + " releases"],
+    ["Pulse", "one line, whole life", "busiest: " + busiest.label + " · " + busiest.commits + " commits"],
+    ["Fingerprint", "how the work happened", fp.author ? esc(fp.author) + " · " + esc(arch.label || "") : "—"],
+    ["People", "who built it", t.contributors + " contributors · " + t.active_days + " active days"],
+    ["Exports", "share it anywhere", "PNG · GIF · WebM · SVG · MD · JSON"],
+  ];
+  cards.forEach(function (c, i) {
+    var el = document.createElement("div");
+    el.className = "fmt lp-rv";
+    el.style.transitionDelay = (i * 60) + "ms";
+    el.innerHTML = "<b>" + c[0] + "</b><span style='color:var(--ink-2);font-size:11px'>" + c[1] + "</span><span>" + c[2] + "</span>";
+    grid.appendChild(el);
+  });
+})();

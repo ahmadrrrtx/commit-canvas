@@ -379,7 +379,8 @@ def build_landing():
 def build_sitemap():
     routes = ["", "features/", "how-it-works/", "examples/", "compare/",
               "creator/", "journal/", "changelog/", "privacy/", "terms/",
-              "demo/flask-story.html"]
+              "demo/flask-story.html", "demo/requests-story.html",
+              "demo/express-story.html", "demo/commit-canvas-story.html"]
     for a in ARTICLES:
         routes.append("journal/" + a["slug"] + "/")
     urls = "".join("  <url><loc>" + BASE + r + "</loc></url>\n" for r in routes)
