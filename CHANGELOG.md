@@ -6,6 +6,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [3.0.0] — 2026-09-09
+
+The Story Engine release — Commit Canvas becomes a storytelling platform.
+
+### Added
+- **Themes**: eight visual editions (Midnight, Neon, Paper, Terminal, Aurora, Blueprint, Mono, Sunset). Select before generating on the website, via `--theme` in the CLI, or switch live inside any story — presentation is a separate layer from analysis, so switching never re-runs the model.
+- **Story density**: `--density compact|standard|cinematic` controls section depth and spacing.
+- **Project pulse**: the whole history as one signature heartbeat line — chapter bands, milestone ticks, hover inspection.
+- **Project archetype**: every story now identifies the project (The Comeback, The Marathon, The Movement…) with the evidence that earned the label.
+- **Story cover hero**: "Commit Canvas presents" eyebrow, archetype title, derived subtitle.
+- **Jump-to-story**: milestone chips in the time machine (Beginning → First release → … → Latest).
+- **Made with Commit Canvas** signature footer on every story, linking back to the project.
+- Website: theme picker, live GitHub star count in the nav, `/compare/` page (fact-checked against Gource/GitStock/GitHub docs), "Why Commit Canvas?" essay.
+- Repository: `pyproject.toml` packaging, issue templates, PR template, enhanced CI (themed generation + website freshness checks), security boundaries documentation, README with Mermaid architecture diagrams.
+
+### Changed
+- Charts now read theme variables instead of hardcoded colors — every visualization follows the active edition.
+- Time-machine milestone ticks cluster positionally (rapid releases no longer stack).
+- `prev`/`next` transport buttons jump between milestones instead of single months.
+
+### Fixed
+- Punch-card cells keep their layout class when themed.
+
+---
+
 ## [2.1.0] — 2026-09-01
 
 The "say it anywhere" release — a full export studio, a sharper time machine, and a project website.

@@ -1,0 +1,57 @@
+<article class="prose">
+  <div class="art-meta">
+    <span>Essay</span><span>{{DATE}}</span><span>{{READING_TIME}} min read</span><span>Muhammad Ahmad</span>
+  </div>
+  <h1>Why Commit Canvas?</h1>
+  <p class="standfirst">GitHub shows metrics. Gource shows animations. GitStock shows the last hundred commits. This is the case for focusing on the story itself.</p>
+
+  <div class="art-toc" id="art-toc"><b>Contents</b><ul id="toc-list"></ul></div>
+
+  <h2 id="everyone-measures-nobody-narrates">Everyone measures, nobody narrates</h2>
+  <p>Open any repository page and you can find numbers fast: commit counts, contributor graphs, weekly punch cards. The infrastructure for <em>measuring</em> git history is solved. What's strange is how little of it helps you <em>understand</em> a project — what kind of thing it is, what it went through, why it looks the way it does.</p>
+  <p>A contribution graph can tell you a repository was busy in March. It cannot tell you that March was a rewrite, that it was followed by three months of silence, and that the project nearly died before its most important release. That's not a smaller version of the same information. It's different information.</p>
+
+  <h2 id="the-tools-that-exist-and-what-they-choose">The tools that exist, and what they choose</h2>
+  <p>There are good tools in this space, and each made a deliberate trade:</p>
+  <ul>
+    <li><strong>GitHub Insights</strong> is the authoritative dashboard — always current, hosted, zero setup. It is built for monitoring, not meaning. Nothing in it is exportable as an artifact, and it only exists while the platform does.</li>
+    <li><strong>Gource</strong> turns history into a hypnotic animation of a growing file tree. It's genuinely beautiful — and it's a video tool. You watch it; you don't read it, scrub it, or share it as a living page.</li>
+    <li><strong>GitStock</strong> charts the last hundred commits of a public repo as candles and exports an MP4. Quick, useful, shallow by design — a hundred commits is a sprint, not a story.</li>
+    <li><strong>AI summarizers</strong> will hand you a paragraph about your repository. Sometimes it's even right. But a summary you can't verify isn't proof of work — it's a vibe.</li>
+  </ul>
+  <p>None of these is doing anything wrong. They're all solving the measurement problem, the animation problem, or the summarization problem. The <em>narrative</em> problem — the whole life of a repository as one honest, shareable, self-contained artifact — is the one nobody picked up.</p>
+
+  <h2 id="the-bet">The bet</h2>
+  <p>Commit Canvas is built on one belief: <strong>git history isn't a database. It's a story.</strong> Not a story in the fictional sense — a story in the documentary sense. Chapters, silences, comebacks and launches are all physically present in the commit timestamps. The dates don't lie. The work of this tool is to read them honestly and render them beautifully, with every claim traceable to the data that produced it.</p>
+  <p>That belief drives three design decisions that dashboards can't make:</p>
+  <ul>
+    <li><strong>The unit is the lifetime, not the calendar year.</strong> "Wrapped"-style tools reset every January. A project's defining silence might span eighteen months and two years. The story doesn't care about your fiscal calendar.</li>
+    <li><strong>The output is a portable artifact.</strong> One HTML file, zero requests, works from a USB stick in ten years. If the story only exists on a platform, the platform owns the story.</li>
+    <li><strong>Every claim carries its evidence.</strong> "The project went quiet for 43 days" is either true or the tool is broken. There's no room for a language model to improvise, so there's no language model.</li>
+  </ul>
+
+  <h2 id="what-storytelling-actually-adds">What storytelling actually adds</h2>
+  <p>Here's the surprising part: narrative isn't decoration on top of data — it's compression. A chapter strip tells you more about a repository in three seconds than a table of monthly counts does in three minutes, because it encodes <em>transitions</em>: the sprint that ended, the silence that broke, the release that changed the project's shape. Transitions are where projects live.</p>
+  <p>That's also why the time machine matters. Scrubbing through a life month by month — watching contributors arrive, the codebase swell, the quiet seasons pass — is the closest thing to <em>remembering</em> a project you never worked on.</p>
+
+  <h2 id="who-this-is-for">Who this is for</h2>
+  <p>Maintainers who want a README that opens with something true and beautiful instead of a badge wall. Engineers shipping portfolios who need proof of work, not claims about work. Teams archiving a project's life when it matters. And anyone who has ever looked at a green-square heatmap and thought: <em>I know this is my year, but I can't see it.</em></p>
+
+  <h2 id="the-honest-limitations">The honest limitations</h2>
+  <p>Commit Canvas won't tell you code quality, impact, or whether the project was any good — commits measure activity, not value, and pretending otherwise would be dishonest. Its narrative is deterministic pattern-reading, not literary insight; some repos genuinely have boring stories. And the web version only reaches public GitHub repositories, because it refuses to ask for accounts or keys. Private history belongs to the local CLI, which is where it should stay.</p>
+
+  <h2 id="try-it-on-your-own-history">Try it on your own history</h2>
+  <p>The fastest test is your own most-loved repository — the one with the messy middle. Paste it into the <a href="{{ROOT}}#try">story generator</a> or run <code style="font-family:var(--mono);font-size:.88em">./run.sh /path/to/repo</code> anywhere. If the story it finds isn't worth the ten seconds it took to generate, the tool has failed at its one job.</p>
+
+  <div class="art-share">
+    <a href="https://twitter.com/intent/tweet?url={{URL}}&amp;text=Why%20Commit%20Canvas%3F" target="_blank" rel="noopener">Share on X ↗</a>
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url={{URL}}" target="_blank" rel="noopener">Share on LinkedIn ↗</a>
+  </div>
+
+  <div class="rel">
+    <h3>Related</h3>
+    <a href="{{ROOT}}journal/your-git-history-is-a-story/">Your git history is a story — you just can't see it yet<span>→</span></a>
+    <a href="{{ROOT}}journal/what-your-commit-timestamps-say-about-how-you-build/">What your commit timestamps say about how you build<span>→</span></a>
+    <a href="{{ROOT}}compare/">How Commit Canvas is different<span>→</span></a>
+  </div>
+</article>

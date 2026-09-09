@@ -52,6 +52,12 @@ def main(argv=None):
                         help="analyze only the N most recent commits (huge repos)")
     parser.add_argument("--json", default=None, dest="json_out",
                         help="also write the raw analysis model as JSON (used by the landing page build)")
+    parser.add_argument("--theme", default=None,
+                        choices=["midnight", "neon", "paper", "terminal", "aurora", "blueprint", "mono", "sunset"],
+                        help="visual edition for the generated story (default: midnight)")
+    parser.add_argument("--density", default=None,
+                        choices=["compact", "standard", "cinematic"],
+                        help="story detail level (default: standard)")
     args = parser.parse_args(argv)
 
     repo_path = os.path.abspath(os.path.expanduser(args.repo_path))
@@ -90,7 +96,7 @@ def main(argv=None):
     for label, detail in _STEPS[2:4]:
         shown = _progress(shown, label, detail)
 
-    render_story(data, output_path)
+    render_story(data, output_path, theme=args.theme, density=args.density)
     _progress(shown, *_STEPS[4])
 
     if args.json_out:

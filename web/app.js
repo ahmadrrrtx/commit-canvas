@@ -58,6 +58,38 @@
 
   /* ── sections ─────────────────────────────────────────────────── */
 
+  /* ── project archetype: deterministic identity, derived from real data ── */
+  function projectArchetype(d) {
+    var ch = d.chapters || [], t = d.totals, months = d.months || [];
+    var years = months.length / 12;
+    var silence = ch.filter(function (c) { return c.kind === "silence"; })
+      .sort(function (a, b) { return new Date(b.end) - new Date(a.end); })[0];
+    var busiest = months.reduce(function (a, b) { return (b.commits > a.commits ? b : a); }, months[0] || { commits: 0, label: "" });
+    if (silence && months.length >= 6) {
+      var days = Math.round((new Date(silence.end) - new Date(silence.start)) / 86400000);
+      return { id: "comeback", label: "The Comeback", tag: "A project that refused to stay down.",
+        why: "it went quiet for " + fN(Math.max(days, 30)) + " days — and the commits came back." };
+    }
+    if (t.contributors >= 50) {
+      return { id: "movement", label: "The Movement", tag: "One idea, many hands.",
+        why: fN(t.contributors) + " people have left commits in this history." };
+    }
+    if (years >= 3) {
+      return { id: "marathon", label: "The Marathon", tag: "Built to outlast trends.",
+        why: "the history spans " + Math.floor(years) + "+ years of continuous work." };
+    }
+    if (busiest && busiest.commits >= 40) {
+      return { id: "sprint", label: "The Sprint", tag: "Fast, focused, shipped.",
+        why: "the busiest month alone landed " + fN(busiest.commits) + " commits." };
+    }
+    if (t.contributors === 1) {
+      return { id: "solo", label: "The Solo Build", tag: "One person, whole history.",
+        why: "every single commit comes from one author." };
+    }
+    return { id: "steady", label: "The Steady Build", tag: "Quiet, consistent work.",
+      why: fN(t.commits) + " commits at a sustainable pace." };
+  }
+
   function hero(root, d) {
     var t = d.totals, r = d.repo, sh = d.shape;
     var sec = el("header", "hero");
@@ -69,7 +101,11 @@
     else meta.appendChild(chip("analyzed locally · offline"));
     meta.appendChild(chip(t.merges ? fN(t.commits) + " commits · " + t.merges + " merges" : fN(t.commits) + " commits"));
 
+    var arch = projectArchetype(d);
+    var eyebrow = el("div", "hero-eyebrow hero-in d1", "Commit Canvas presents");
     var h1 = el("h1", "hero-in d1", esc(r.name));
+    var archLine = el("div", "hero-arch hero-in d2", esc(arch.label));
+    var sub = el("p", "hero-sub hero-in d2", esc(arch.tag) + " " + esc(sh.summary));
 
     var span = el("div", "datespan hero-in d2");
     span.innerHTML =
@@ -110,7 +146,8 @@
     cue.setAttribute("aria-label", "Scroll to the story");
     cue.innerHTML = 'Read the story <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M2 7l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
 
-    wrap.appendChild(meta); wrap.appendChild(h1); wrap.appendChild(span);
+    wrap.appendChild(meta); wrap.appendChild(eyebrow); wrap.appendChild(h1);
+    wrap.appendChild(archLine); wrap.appendChild(sub); wrap.appendChild(span);
     wrap.appendChild(shape); wrap.appendChild(stats); wrap.appendChild(cue);
     sec.appendChild(wrap);
     root.appendChild(sec);
@@ -242,6 +279,96 @@
     return "Work happened in " + active + " of " + months.length + " months — the gaps are part of the story too.";
   }
 
+  /* ── project pulse: the whole life in one line ─────────────────── */
+  function projectPulse(root, d) {
+    var months = d.months || [];
+    if (months.length < 2) return;
+    var wrap = section(root, "pulse", "The whole life, one line", "Project pulse",
+      "Every month of " + d.repo.name + " as a single heartbeat — quiet seasons, sprints and comebacks, all real.");
+    var wide = el("div", "wrap pulse-wide");
+    var W = 1080, H = 220, PADT = 18, PADB = 30, PADL = 8, PADR = 8;
+    var iw = W - PADL - PADR, ih = H - PADT - PADB;
+    var n = months.length;
+    var maxC = Math.max.apply(null, months.map(function (m) { return m.commits; })) || 1;
+    var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, "class": "pulse-svg", role: "img",
+      "aria-label": "Project pulse: monthly commit activity across the whole history" });
+
+    /* chapter bands (real phases as background) */
+    (d.chapters || []).slice(0, 8).forEach(function (c) {
+      try {
+        var i0 = monthIndexOf(months, c.start), i1 = monthIndexOf(months, c.end);
+        if (i1 <= i0) i1 = Math.min(i0 + 1, n - 1);
+        var x0 = PADL + (i0 / (n - 1)) * iw, x1 = PADL + (i1 / (n - 1)) * iw;
+        svg.appendChild(svgEl("rect", { x: x0, y: PADT, width: Math.max(1, x1 - x0), height: ih, "class": "pl-band b-" + c.kind }));
+      } catch (e) {}
+    });
+
+    /* year gridlines */
+    var lastYr = null;
+    months.forEach(function (m, i) {
+      var yr = m.key.slice(0, 4);
+      if (yr !== lastYr) {
+        lastYr = yr;
+        var x = PADL + (i / (n - 1)) * iw;
+        svg.appendChild(svgEl("line", { x1: x, y1: PADT, x2: x, y2: H - PADB, "class": "pl-grid" }));
+        var t = svgEl("text", { x: x + 4, y: H - 8, "class": "pl-year" });
+        t.textContent = yr;
+        svg.appendChild(t);
+      }
+    });
+
+    /* the pulse line */
+    var pts = months.map(function (m, i) {
+      return [PADL + (i / (n - 1)) * iw, PADT + ih - (m.commits / maxC) * (ih * 0.92)];
+    });
+    var lineD = pts.map(function (p, i) { return (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1); }).join(" ");
+    svg.appendChild(svgEl("path", { d: lineD + " L" + pts[n - 1][0].toFixed(1) + " " + (PADT + ih) + " L" + pts[0][0].toFixed(1) + " " + (PADT + ih) + " Z", "class": "pl-area" }));
+    svg.appendChild(svgEl("path", { d: lineD, "class": "pl-line" }));
+
+    /* milestone ticks */
+    (d.tags || []).slice(0, 40).forEach(function (tg) {
+      if (!tg.date) return;
+      var i = monthIndexOf(months, tg.date);
+      if (i <= 0 || i >= n - 1) return;
+      var x = PADL + (i / (n - 1)) * iw;
+      svg.appendChild(svgEl("rect", { x: x - 1, y: H - PADB + 4, width: 2, height: 7, "class": "pl-tick" }));
+    });
+
+    /* hover inspection */
+    var cursor = svgEl("line", { x1: 0, y1: PADT, x2: 0, y2: H - PADB, "class": "pl-cursor", opacity: 0 });
+    var dot = svgEl("circle", { r: 4, "class": "pl-dot", opacity: 0 });
+    var tip = svgEl("text", { x: 0, y: 14, "class": "pl-year", "text-anchor": "middle", opacity: 0 });
+    svg.appendChild(cursor); svg.appendChild(dot); svg.appendChild(tip);
+    months.forEach(function (m, i) {
+      var hit = svgEl("rect", { x: PADL + (i / n) * iw - iw / n / 2, y: 0, width: iw / n + 1, height: H, "class": "pl-hit" });
+      var t = el("title");
+      t.textContent = m.label + " — " + m.commits + (m.commits === 1 ? " commit" : " commits");
+      hit.appendChild(t);
+      hit.addEventListener("mouseenter", function () {
+        cursor.setAttribute("x1", pts[i][0]); cursor.setAttribute("x2", pts[i][0]); cursor.setAttribute("opacity", 1);
+        dot.setAttribute("cx", pts[i][0]); dot.setAttribute("cy", pts[i][1]); dot.setAttribute("opacity", 1);
+      });
+      hit.addEventListener("mouseleave", function () {
+        cursor.setAttribute("opacity", 0); dot.setAttribute("opacity", 0);
+      });
+      svg.appendChild(hit);
+    });
+
+    wide.appendChild(svg);
+    wrap.appendChild(wide);
+
+    /* derived pulse facts — honest, computed */
+    var busiest = months.reduce(function (a, b) { return (b.commits > a.commits ? b : a); });
+    var quiet = months.filter(function (m) { return m.commits === 0; }).length;
+    var facts = el("div", "pulse-read");
+    facts.innerHTML =
+      '<span class="pulse-fact">busiest: <b>' + esc(busiest.label) + "</b> · " + fN(busiest.commits) + " commits</span>" +
+      (quiet ? '<span class="pulse-fact">quiet months: <b>' + quiet + "</b></span>" : "") +
+      '<span class="pulse-fact">span: <b>' + esc(d.repo.age_label) + "</b></span>";
+    wrap.appendChild(facts);
+    root.appendChild(wrap);
+  }
+
   function timeMachine(root, d) {
     var months = d.months;
     var hasCode = d.meta.has_code_size && months.some(function (m) { return m.files_end > 0 || m.net_end > 0; });
@@ -289,6 +416,11 @@
     controls.appendChild(transport); controls.appendChild(scrub);
     tm.appendChild(controls);
 
+    /* jump-to-story: meaningful navigation, derived from real events */
+    var jumps = el("div", "tm-jumps");
+    jumps.setAttribute("role", "navigation");
+    jumps.setAttribute("aria-label", "Jump to story moments");
+
     if (months.length < 3) {
       play.style.display = "none";
       var young = el("p", "tm-young");
@@ -296,6 +428,26 @@
         " of history — the time machine gets interesting from month three.";
       controls.appendChild(young);
     }
+
+    /* jump chips from the real event list */
+    var jumpDefs = events.slice(0, 7).map(function (e) {
+      return { ix: e.idx, label: e.title };
+    });
+    jumpDefs.push({ ix: months.length - 1, label: "Latest" });
+    var seenJ = {};
+    jumpDefs.filter(function (j) { return j.ix >= 0 && !seenJ["x" + j.ix] && (seenJ["x" + j.ix] = 1); })
+      .forEach(function (j) {
+        var b = el("button", "tm-jump");
+        b.type = "button";
+        b.textContent = j.label;
+        b.addEventListener("click", function () {
+          setIndex(j.ix, true);
+          jumps.querySelectorAll(".tm-jump").forEach(function (x) { x.classList.remove("on"); });
+          b.classList.add("on");
+        });
+        jumps.appendChild(b);
+      });
+    if (jumps.children.length > 1) tm.appendChild(jumps);
 
     /* milestone ticks — positionally clustered so near-simultaneous
        milestones (rapid releases) never stack into an unclickable blob */
@@ -571,8 +723,8 @@
       if (yr !== lastYear) {
         lastYear = yr;
         var x = PADL + (n < 2 ? 0 : (i / (n - 1)) * iw);
-        svg.appendChild(svgEl("line", { x1: x, y1: PADT, x2: x, y2: H - PADB, stroke: "#232735", "stroke-width": 1 }));
-        var t = svgEl("text", { x: x + 4, y: H - 8, fill: "#687089", "font-size": 10, "font-family": "ui-monospace,Menlo,monospace" });
+        svg.appendChild(svgEl("line", { x1: x, y1: PADT, x2: x, y2: H - PADB, "class": "tmgrid", "stroke-width": 1 }));
+        var t = svgEl("text", { x: x + 4, y: H - 8, "class": "tmyear", "font-size": 10 });
         t.textContent = yr;
         svg.appendChild(t);
       }
@@ -583,7 +735,7 @@
       var x = PADL + (n < 2 ? iw / 2 : (i / (n - 1)) * iw);
       var r = svgEl("rect", {
         x: x - bw / 2, y: PADT + ih - h, width: bw, height: Math.max(h, m.commits ? 1.5 : 0),
-        rx: Math.min(2, bw / 3), fill: "#2E3344",
+        rx: Math.min(2, bw / 3), "class": "tmb",
       });
       if (m.commits) {
         var tt = el("title");
@@ -603,17 +755,17 @@
     var areaD = lineD + " L" + pts[pts.length - 1][0].toFixed(1) + " " + (PADT + ih) + " L" + pts[0][0].toFixed(1) + " " + (PADT + ih) + " Z";
     var defs = svgEl("defs");
     var grad = svgEl("linearGradient", { id: "ccgrad", x1: 0, y1: 0, x2: 0, y2: 1 });
-    grad.appendChild(svgEl("stop", { offset: "0%", "stop-color": "#E2FF3A", "stop-opacity": 0.28 }));
-    grad.appendChild(svgEl("stop", { offset: "100%", "stop-color": "#E2FF3A", "stop-opacity": 0 }));
+    grad.appendChild(svgEl("stop", { offset: "0%", "class": "tmarea-stop", "stop-opacity": 0.28 }));
+    grad.appendChild(svgEl("stop", { offset: "100%", "class": "tmarea-stop", "stop-opacity": 0 }));
     defs.appendChild(grad);
     svg.appendChild(defs);
     svg.appendChild(svgEl("path", { d: areaD, fill: "url(#ccgrad)" }));
-    svg.appendChild(svgEl("path", { d: lineD, fill: "none", stroke: "#E2FF3A", "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round" }));
+    svg.appendChild(svgEl("path", { d: lineD, fill: "none", "class": "tmline", "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round" }));
 
-    var pointer = svgEl("line", { x1: 0, y1: PADT, x2: 0, y2: H - PADB, stroke: "#E9EBF3", "stroke-width": 1, "stroke-dasharray": "3 3", opacity: 0.7 });
-    var dot = svgEl("circle", { r: 4.5, fill: "#E2FF3A", stroke: "#0B0C10", "stroke-width": 2 });
+    var pointer = svgEl("line", { x1: 0, y1: PADT, x2: 0, y2: H - PADB, "class": "tmpointer", "stroke-width": 1, "stroke-dasharray": "3 3", opacity: 0.7 });
+    var dot = svgEl("circle", { r: 4.5, "class": "tmdot", "stroke-width": 2 });
     svg.appendChild(pointer); svg.appendChild(dot);
-    svg.appendChild(svgEl("line", { x1: PADL, y1: PADT + ih, x2: W - PADR, y2: PADT + ih, stroke: "#232735" }));
+    svg.appendChild(svgEl("line", { x1: PADL, y1: PADT + ih, x2: W - PADR, y2: PADT + ih, "class": "tmgrid" }));
 
     container.appendChild(svg);
 
@@ -623,7 +775,7 @@
       dot.setAttribute("cx", x);
       dot.setAttribute("cy", pts[Math.round(Math.max(0, Math.min(i, n - 1)))][1]);
       var lit = Math.floor(i + 1e-4);
-      for (var k = 0; k < bars.length; k++) bars[k].setAttribute("fill", k <= lit ? "#7b9a1d" : "#2E3344");
+      for (var k = 0; k < bars.length; k++) bars[k].classList.toggle("lit", k <= lit);
       if (onChange) onChange(lit);
     }
     container.update = update;
@@ -660,7 +812,7 @@
         c.style.borderRadius = "50%";
         c.style.aspectRatio = "1";
         if (v) {
-          c.style.background = frac > 0.66 ? "#E2FF3A" : frac > 0.33 ? "#9db32a" : "#5c6b1f";
+          c.className = "punch-cell lb-" + (frac > 0.66 ? "hi" : frac > 0.33 ? "md" : "lo");
           c.title = days[di] + " " + (hi < 10 ? "0" : "") + hi + ":00 — " + v + " commits";
         }
         prow.appendChild(c);
@@ -862,6 +1014,7 @@
   function roast(root, d) {
     var wrap = section(root, "roast", "Affectionately brutal", "Roast my git",
       "Every burn below is backed by a real number from the history. Nothing personal — it's in the data.");
+    wrap.parentElement.classList.add("sec--extra");
     var list = el("div", "roast");
     d.roast.forEach(function (q) {
       var item = el("div", "quip");
@@ -1253,9 +1406,14 @@
   }
 
   function buildStoryHTML(d) {
+    var curTheme = currentTheme(document.querySelector(".cc-root")) || "midnight";
+    var curDensity = currentDensity(document.querySelector(".cc-root")) || "standard";
     var inject = function (shell) {
       var json = JSON.stringify(d).replace(/</g, "\\u003c").replace(/>/g, "\\u003e");
-      return shell.replace("/*__CC_DATA__*/null", "window.__CC_DATA__ = " + json + ";", 1);
+      var html = shell.replace("/*__CC_DATA__*/null", "window.__CC_DATA__ = " + json + ";", 1);
+      html = html.replace('data-theme="midnight"', 'data-theme="' + curTheme + '"', 1);
+      html = html.replace('data-density="standard"', 'data-density="' + curDensity + '"', 1);
+      return html;
     };
     return fetch("canvas.html")
       .then(function (r) { if (!r.ok) throw new Error("no shell"); return r.text(); })
@@ -1593,6 +1751,20 @@
     gen.appendChild(el("span", null, d.meta.generator + " · generated " + (d.meta.generated || "")));
     wrap.appendChild(gen);
     foot.appendChild(wrap);
+
+    var made = el("div", "made-with");
+    made.innerHTML =
+      '<div class="mw-label">MADE WITH <em>COMMIT CANVAS</em></div>' +
+      '<div class="mw-links">' +
+      '<a href="https://ahmadrrrtx.github.io/commit-canvas/" target="_blank" rel="noopener">Create yours →</a>' +
+      '<a href="https://github.com/ahmadrrrtx/commit-canvas" target="_blank" rel="noopener">View on GitHub →</a>' +
+      '<button type="button" data-cc-style="1">Change theme →</button>' +
+      '</div>';
+    made.querySelector("[data-cc-style]").addEventListener("click", function () {
+      var fab = document.querySelector(".style-fab");
+      if (fab) fab.click();
+    });
+    root.appendChild(made);
     root.appendChild(foot);
   }
 
@@ -1645,8 +1817,26 @@
   function render(container, data, opts) {
     opts = opts || {};
     container.innerHTML = "";
+    container.classList.add("cc-root");
     document.title = "The story of " + data.repo.name;
+
+    /* presentation layer: theme + density (never touches the model) */
+    var savedTheme = null, savedDensity = null;
+    try {
+      savedTheme = localStorage.getItem("cc-theme");
+      savedDensity = localStorage.getItem("cc-density");
+    } catch (e) {}
+    var theme = (opts && opts.theme) || savedTheme || container.getAttribute("data-theme") || "midnight";
+    var density = (opts && opts.density) || savedDensity || container.getAttribute("data-density") || "standard";
+    container.setAttribute("data-theme", theme);
+    container.setAttribute("data-density", density);
+    if (document.body.classList.contains("cc-story")) {
+      document.body.setAttribute("data-theme", theme);
+      document.body.setAttribute("data-density", density);
+    }
+
     hero(container, data);
+    projectPulse(container, data);
     chapters(container, data);
     timeMachine(container, data);
     rhythm(container, data);
@@ -1657,7 +1847,93 @@
     certificate(container, data);
     footer(container, data);
     dotNav(container, data);
+    if (!document.querySelector(".style-fab")) stylePanel(container);
     activateReveals();
+  }
+
+  /* ── style panel: theme + density without re-analysis ─────────── */
+  var STYLE_THEMES = [
+    ["midnight", "Midnight", "#0B0C10", "#E2FF3A"],
+    ["neon", "Neon", "#05060A", "#3DFFB4"],
+    ["paper", "Paper", "#F6F2E9", "#9A6B0F"],
+    ["terminal", "Terminal", "#070D08", "#3EFF6E"],
+    ["aurora", "Aurora", "#0A0F1E", "#7DF9FF"],
+    ["blueprint", "Blueprint", "#081830", "#FFD166"],
+    ["mono", "Mono", "#FAFAFA", "#101010"],
+    ["sunset", "Sunset", "#160D14", "#FF9E64"],
+  ];
+  var DENSITIES = ["compact", "standard", "cinematic"];
+
+  function applyTheme(name, container) {
+    var root = container || document.querySelector("[data-theme].cc-root") || document.body;
+    root.setAttribute("data-theme", name);
+    if (document.body.classList.contains("cc-story")) document.body.setAttribute("data-theme", name);
+    try { localStorage.setItem("cc-theme", name); } catch (e) {}
+  }
+  function applyDensity(name, container) {
+    var root = container || document.body;
+    root.setAttribute("data-density", name);
+    if (document.body.classList.contains("cc-story")) document.body.setAttribute("data-density", name);
+    try { localStorage.setItem("cc-density", name); } catch (e) {}
+  }
+  function currentTheme(container) {
+    return (container && container.getAttribute("data-theme")) ||
+      (document.body.getAttribute("data-theme")) || "midnight";
+  }
+  function currentDensity(container) {
+    return (container && container.getAttribute("data-density")) ||
+      (document.body.getAttribute("data-density")) || "standard";
+  }
+
+  function stylePanel(container) {
+    var fab = el("button", "style-fab");
+    fab.type = "button";
+    fab.innerHTML = '◐ <span>Style</span>';
+    fab.setAttribute("aria-label", "Change story theme and density");
+    var panel = el("div", "style-panel");
+    panel.hidden = true;
+    panel.setAttribute("role", "dialog");
+    panel.setAttribute("aria-label", "Story style");
+
+    var th = el("div", "style-themes");
+    STYLE_THEMES.forEach(function (t) {
+      var b = el("button", "style-th" + (currentTheme(container) === t[0] ? " on" : ""));
+      b.type = "button";
+      b.setAttribute("aria-label", "Theme: " + t[1]);
+      b.title = t[1];
+      b.innerHTML = '<i style="background:linear-gradient(90deg,' + t[2] + ' 55%,' + t[3] + ' 55%)"></i><span>' + t[1] + '</span>';
+      b.addEventListener("click", function () {
+        applyTheme(t[0], container);
+        th.querySelectorAll(".style-th").forEach(function (x) { x.classList.remove("on"); });
+        b.classList.add("on");
+      });
+      th.appendChild(b);
+    });
+    var dn = el("div", "style-dens");
+    dn.setAttribute("aria-label", "Story density");
+    DENSITIES.forEach(function (name) {
+      var b = el("button", name === currentDensity(container) ? "on" : null);
+      b.type = "button";
+      b.textContent = name;
+      b.addEventListener("click", function () {
+        applyDensity(name, container);
+        dn.querySelectorAll("button").forEach(function (x) { x.classList.remove("on"); });
+        b.classList.add("on");
+      });
+      dn.appendChild(b);
+    });
+    var h1 = el("b", "sp-h", "Theme");
+    var h2 = el("b", "sp-h", "Density");
+    var note = el("p", "style-note", "Themes restyle instantly — the repository analysis is never re-run.");
+    panel.appendChild(h1); panel.appendChild(th); panel.appendChild(h2); panel.appendChild(dn); panel.appendChild(note);
+
+    fab.addEventListener("click", function () { panel.hidden = !panel.hidden; });
+    document.addEventListener("click", function (e) {
+      if (!panel.hidden && !panel.contains(e.target) && e.target !== fab && !fab.contains(e.target)) panel.hidden = true;
+    });
+    document.body.appendChild(fab);
+    document.body.appendChild(panel);
+    window.__ccStyle = { applyTheme: applyTheme, applyDensity: applyDensity, THEMES: STYLE_THEMES };
   }
 
   window.CommitCanvas = { render: render, openExportStudio: openExportStudio, drawCard: drawCard, svgTimeline: svgTimeline, readmeMarkdown: readmeMarkdown, buildStoryHTML: buildStoryHTML, esc: esc, fN: fN, fK: fK, fmtDate: fmtDate };

@@ -1,0 +1,2 @@
+# Commit Canvas has zero runtime dependencies.
+# This file exists to document that explicitly: the CLI is stdlib-only.

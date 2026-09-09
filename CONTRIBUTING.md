@@ -34,6 +34,27 @@ python -m pytest tests/ -v
 
 ---
 
+## 🏗️ How It Works Internally
+
+The codebase is deliberately small — four files carry the product:
+
+| File | Role |
+| --- | --- |
+| `cc/analyzer.py` | Single-pass git log parser → story model (dict). Deterministic, evidence-grounded. |
+| `cc/story.py` | Model → HTML: loads the shell, injects the JSON payload, sets theme/density. |
+| `web/app.js` | The renderer: builds every section from the model. Also runs in the browser (website flow). |
+| `web/story.css` | The design system + 8 theme token layers. |
+
+**The core principle: analysis and presentation are separate layers.** The story model is pure data (JSON-serializable — that's what `--json` writes). The renderer never re-derives facts; CSS themes never touch data. This is why themes switch instantly and why the same model can be re-rendered by future renderers.
+
+**Adding a theme:** add a `[data-theme="name"] { --tokens… }` block in `web/story.css`, add it to `THEMES` in `web/app.js`, the CLI choices in `cc/__main__.py`, `THEMES` in `cc/story.py`, and the landing picker list in `web/landing.js`. Rebuild with `python tools/build.py`.
+
+**Adding a story section:** write a `function sectionName(root, d)` in `web/app.js`, call it in `render()`, use only model data (never fabricate — if the data doesn't support a claim, don't render it), and extend `web/story.css`. Then rebuild and regenerate the demo stories.
+
+**Website:** all site pages live in `web/pages/`, are assembled by `tools/build.py`, and must stay fresh (`python tools/build.py --check` runs in CI).
+
+---
+
 ## 🧪 Testing Guidelines
 
 - All new features **must** include tests

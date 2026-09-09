@@ -43,3 +43,10 @@ jobs:
           git add . && git commit -m "Initial commit"
           python -m cc . --title "CI Test" --output story.html
           test -f story.html && echo "✅ HTML generation works" || exit 1
+          python -m cc . --theme sunset --output story-themed.html
+          grep -q 'data-theme="sunset"' story-themed.html && echo "✅ themed generation works" || exit 1
+
+      - name: Verify website outputs are fresh
+        run: |
+          pip install pillow
+          python tools/build.py --check

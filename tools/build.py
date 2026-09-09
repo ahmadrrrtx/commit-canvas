@@ -27,7 +27,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WEB = os.path.join(ROOT, "web")
 BASE = "https://ahmadrrrtx.github.io/commit-canvas/"
-VERSION = "2.1.0"
+VERSION = "3.0.0"
 
 
 def read(*parts):
@@ -73,6 +73,7 @@ def nav_html(p):
       <a href="{p}/journal/">Journal</a>
       <a href="{p}/creator/">Creator</a>
       <a href="{gh}" target="_blank" rel="noopener">GitHub</a>
+      <a class="nav-star" data-star href="{gh}" target="_blank" rel="noopener" title="Star commit-canvas on GitHub">★ Star on GitHub</a>
       <a class="nav-cta" href="{p}/#try">Create yours</a>
     </nav>
   </div>
@@ -96,6 +97,7 @@ def footer_html(p):
         ]),
         ("Explore", [
             ("How it works", f"{p}/how-it-works/"),
+            ("How it's different", f"{p}/compare/"),
             ("Journal", f"{p}/journal/"),
             ("Creator", f"{p}/creator/"),
             ("Privacy", f"{p}/privacy/"),
@@ -199,6 +201,14 @@ def page_html(meta, body, p, extra_head=""):
 
 ARTICLES = [
     {
+        "slug": "why-commit-canvas",
+        "title": "Why Commit Canvas?",
+        "description": "GitHub shows metrics. Gource shows animations. GitStock shows the last 100 commits. This is the case for focusing on the story itself.",
+        "date": "2026-09-01",
+        "kind": "Essay",
+        "standfirst": "Metrics, graphs and animations all exist. The story is what was missing.",
+    },
+    {
         "slug": "your-git-history-is-a-story",
         "title": "Your git history is a story — you just can't see it yet",
         "description": "Every repository quietly records a narrative: beginnings, sprints, silences and comebacks. The problem was never the data — it's that nobody renders it.",
@@ -268,6 +278,8 @@ def build_site_pages():
          "Real Commit Canvas stories generated from real repositories — including Flask's 16-year, 5,600-commit history."),
         ("creator", "creator.html", "The person behind the canvas — Commit Canvas",
          "Muhammad Ahmad — developer and creator of Commit Canvas. The idea, the build, and what I care about."),
+        ("compare", "compare.html", "How Commit Canvas is different — Commit Canvas",
+         "A factual comparison against GitHub Insights, Gource and GitStock — what each tool is actually for."),
         ("changelog", "changelog.html", "Changelog — Commit Canvas",
          "Commit Canvas has a story too — product evolution from v1.0 through the v2.0 rebuild to the v2.1 export studio."),
         ("privacy", "privacy.html", "Privacy — Commit Canvas",
@@ -365,8 +377,8 @@ def build_landing():
 # ─── sitemap + robots ───────────────────────────────────────────────────────
 
 def build_sitemap():
-    routes = ["", "features/", "how-it-works/", "examples/", "creator/",
-              "journal/", "changelog/", "privacy/", "terms/",
+    routes = ["", "features/", "how-it-works/", "examples/", "compare/",
+              "creator/", "journal/", "changelog/", "privacy/", "terms/",
               "demo/flask-story.html"]
     for a in ARTICLES:
         routes.append("journal/" + a["slug"] + "/")

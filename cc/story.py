@@ -44,7 +44,12 @@ def safe_json_payload(data: dict) -> str:
     return raw
 
 
-def render_story(data: dict, output_path: str, shell: str = None) -> str:
+THEMES = ("midnight", "neon", "paper", "terminal", "aurora", "blueprint", "mono", "sunset")
+DENSITIES = ("compact", "standard", "cinematic")
+
+
+def render_story(data: dict, output_path: str, shell: str = None,
+                 theme: str = None, density: str = None) -> str:
     shell = shell if shell is not None else load_shell()
     if PLACEHOLDER not in shell:
         raise RuntimeError(
@@ -53,6 +58,12 @@ def render_story(data: dict, output_path: str, shell: str = None) -> str:
         )
     payload = "window.__CC_DATA__ = " + safe_json_payload(data) + ";"
     html = shell.replace(PLACEHOLDER, payload, 1)
+
+    # themed edition (presentation only — the analysis model is untouched)
+    if theme and theme in THEMES:
+        html = html.replace('data-theme="midnight"', f'data-theme="{theme}"', 1)
+    if density and density in DENSITIES:
+        html = html.replace('data-density="standard"', f'data-density="{density}"', 1)
 
     # personalize <title> + meta so the artifact is shareable as-is
     name = str(data.get("repo", {}).get("name", "a repository"))

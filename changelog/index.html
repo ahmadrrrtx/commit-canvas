@@ -937,6 +937,27 @@ html { scroll-behavior: smooth; }
 .site .fd-formats .fmt span { font-weight: 400; font-size: 11px; color: var(--ink-3); }
 @media (max-width: 560px) { .site .fd-formats { grid-template-columns: repeat(2, 1fr); } }
 
+/* ── nav star CTA (secondary to Create yours) ── */
+.site .nav-star {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: var(--mono); font-size: 12.5px; font-weight: 600;
+  color: var(--ink-2); border: 1px solid var(--line-2);
+  border-radius: 999px; padding: 6px 13px !important;
+  transition: color .2s ease, border-color .2s ease, transform .15s ease;
+}
+.site .nav-star:hover { color: var(--accent); border-color: #3a4157; transform: translateY(-1px); background: transparent; }
+@media (max-width: 1020px) { .site .nav-links .nav-star { display: none; } }
+
+/* ═══ COMPARISON TABLE ════════════════════════════════════════════ */
+.site table.cmp { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 640px; }
+.site .cmp th, .site .cmp td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.site .cmp thead th { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); border-bottom: 2px solid var(--line-2); }
+.site .cmp tbody th { font-weight: 600; color: var(--ink); white-space: nowrap; }
+.site .cmp td.y { color: var(--accent); font-weight: 600; }
+.site .cmp td.n { color: var(--ink-3); }
+.site .cmp td.p { color: var(--ink-2); }
+.site .cmp tbody tr:hover { background: var(--surface); }
+
 </style>
 </head>
 <body class="site">
@@ -952,6 +973,7 @@ html { scroll-behavior: smooth; }
       <a href="../journal/">Journal</a>
       <a href="../creator/">Creator</a>
       <a href="https://github.com/ahmadrrrtx/commit-canvas" target="_blank" rel="noopener">GitHub</a>
+      <a class="nav-star" data-star href="https://github.com/ahmadrrrtx/commit-canvas" target="_blank" rel="noopener" title="Star commit-canvas on GitHub">★ Star on GitHub</a>
       <a class="nav-cta" href="../#try">Create yours</a>
     </nav>
   </div>
@@ -966,6 +988,16 @@ html { scroll-behavior: smooth; }
 
   <section class="pad">
     <div class="cl">
+      <div class="cl-ver rv">
+        <div class="v-head"><h2>v3.0</h2><time>September 2026</time></div>
+        <p>The Story Engine release. Eight themes you can switch live inside any story, story density control, the project pulse visualization, project archetypes (The Comeback, The Marathon…), jump-to-story milestone chips, and a "Made with Commit Canvas" signature on every page. The website gains a theme picker, a fact-checked comparison page, and the "Why Commit Canvas?" essay.</p>
+        <ul>
+          <li><b>Themes</b> — midnight · neon · paper · terminal · aurora · blueprint · mono · sunset</li>
+          <li><b>Pulse</b> — the whole history as one heartbeat line</li>
+          <li><b>Archetypes</b> — every project gets an identity, with evidence</li>
+          <li><b>Density</b> — compact · standard · cinematic</li>
+        </ul>
+      </div>
       <div class="cl-ver rv">
         <div class="v-head"><h2>v2.1</h2><time>September 2026</time></div>
         <h3>Added</h3>
@@ -1017,7 +1049,7 @@ html { scroll-behavior: smooth; }
       <a class="brand" href="../" style="text-decoration:none"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true" style="width:24px;height:24px;display:block"><rect x="1" y="1" width="24" height="24" rx="6" stroke="#2E3344" stroke-width="1.5"/><path d="M6 19h6M9 19v-6h6V7" stroke="#2E3344" stroke-width="1.8" stroke-linecap="round"/><circle cx="6" cy="19" r="2.4" fill="#E2FF3A"/><circle cx="12" cy="19" r="2" fill="#687089"/><circle cx="15" cy="13" r="2" fill="#687089"/><circle cx="21" cy="7" r="2.4" fill="#E2FF3A"/></svg><span>commit canvas</span></a>
       <p>Your code has a story. Free, open source (MIT), and private by architecture — no cloud, no accounts, zero requests in the output.</p>
     </div>
-    <div class="foot-col"><b>Product</b><ul style="list-style:none;margin:0;padding:0"><li><a href="../#try">Create a story</a></li><li><a href="../features/#time-machine">Time machine</a></li><li><a href="../examples/">Examples</a></li><li><a href="../features/#exports">Exports</a></li><li><a href="../changelog/">Changelog</a></li></ul></div><div class="foot-col"><b>Explore</b><ul style="list-style:none;margin:0;padding:0"><li><a href="../how-it-works/">How it works</a></li><li><a href="../journal/">Journal</a></li><li><a href="../creator/">Creator</a></li><li><a href="../privacy/">Privacy</a></li><li><a href="../terms/">Terms</a></li></ul></div><div class="foot-col"><b>Developers</b><ul style="list-style:none;margin:0;padding:0"><li><a href="https://github.com/ahmadrrrtx/commit-canvas" target="_blank" rel="noopener">GitHub</a></li><li><a href="../how-it-works/#cli">CLI usage</a></li><li><a href="https://github.com/ahmadrrrtx/commit-canvas/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contributing</a></li><li><a href="https://github.com/ahmadrrrtx/commit-canvas#build--development" target="_blank" rel="noopener">Build & tests</a></li><li><a href="https://github.com/ahmadrrrtx/commit-canvas/issues" target="_blank" rel="noopener">Report an issue</a></li></ul></div><div class="foot-col"><b>Connect</b><ul style="list-style:none;margin:0;padding:0"><li><a href="https://github.com/ahmadrrrtx" target="_blank" rel="noopener">GitHub</a></li><li><a href="https://www.linkedin.com/in/ahmadrrrtx" target="_blank" rel="noopener">LinkedIn</a></li><li><a href="https://medium.com/@ahmadrrrtx333" target="_blank" rel="noopener">Medium</a></li><li><a href="https://hashnode.com/@ahmadrrrtx" target="_blank" rel="noopener">Hashnode</a></li><li><a href="https://dev.to/ahmad_rrrtx" target="_blank" rel="noopener">DEV</a></li><li><a href="https://www.indiehackers.com/ahmad_rrrtx" target="_blank" rel="noopener">Indie Hackers</a></li><li><a href="https://daily.dev/ahmadrrtx" target="_blank" rel="noopener">daily.dev</a></li></ul></div>
+    <div class="foot-col"><b>Product</b><ul style="list-style:none;margin:0;padding:0"><li><a href="../#try">Create a story</a></li><li><a href="../features/#time-machine">Time machine</a></li><li><a href="../examples/">Examples</a></li><li><a href="../features/#exports">Exports</a></li><li><a href="../changelog/">Changelog</a></li></ul></div><div class="foot-col"><b>Explore</b><ul style="list-style:none;margin:0;padding:0"><li><a href="../how-it-works/">How it works</a></li><li><a href="../compare/">How it's different</a></li><li><a href="../journal/">Journal</a></li><li><a href="../creator/">Creator</a></li><li><a href="../privacy/">Privacy</a></li><li><a href="../terms/">Terms</a></li></ul></div><div class="foot-col"><b>Developers</b><ul style="list-style:none;margin:0;padding:0"><li><a href="https://github.com/ahmadrrrtx/commit-canvas" target="_blank" rel="noopener">GitHub</a></li><li><a href="../how-it-works/#cli">CLI usage</a></li><li><a href="https://github.com/ahmadrrrtx/commit-canvas/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contributing</a></li><li><a href="https://github.com/ahmadrrrtx/commit-canvas#build--development" target="_blank" rel="noopener">Build & tests</a></li><li><a href="https://github.com/ahmadrrrtx/commit-canvas/issues" target="_blank" rel="noopener">Report an issue</a></li></ul></div><div class="foot-col"><b>Connect</b><ul style="list-style:none;margin:0;padding:0"><li><a href="https://github.com/ahmadrrrtx" target="_blank" rel="noopener">GitHub</a></li><li><a href="https://www.linkedin.com/in/ahmadrrrtx" target="_blank" rel="noopener">LinkedIn</a></li><li><a href="https://medium.com/@ahmadrrrtx333" target="_blank" rel="noopener">Medium</a></li><li><a href="https://hashnode.com/@ahmadrrrtx" target="_blank" rel="noopener">Hashnode</a></li><li><a href="https://dev.to/ahmad_rrrtx" target="_blank" rel="noopener">DEV</a></li><li><a href="https://www.indiehackers.com/ahmad_rrrtx" target="_blank" rel="noopener">Indie Hackers</a></li><li><a href="https://daily.dev/ahmadrrtx" target="_blank" rel="noopener">daily.dev</a></li></ul></div>
   </div>
   <div class="foot-cta">
     <h2>Your repository already has a story.</h2>
@@ -1029,7 +1061,7 @@ html { scroll-behavior: smooth; }
     <span class="fs-tag">your code has a story</span>
   </div>
   <div class="foot-base">
-    <span>© <span data-year="">2026</span> Muhammad Ahmad · MIT · v2.1.0</span>
+    <span>© <span data-year="">2026</span> Muhammad Ahmad · MIT · v3.0.0</span>
     <span>made with git · <a href="https://github.com/ahmadrrrtx/commit-canvas">ahmadrrrtx/commit-canvas</a></span>
   </div>
 </footer>
@@ -1238,6 +1270,22 @@ html { scroll-behavior: smooth; }
   top.addEventListener("click", function () {
     if (REDUCED || !window.scrollTo) { window.scrollTo(0, 0); return; }
     try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch (e) { window.scrollTo(0, 0); }
+  });
+
+
+  /* ── live GitHub star count (graceful: plain label if unreachable) ── */
+  $$("a[data-star]").forEach(function (a) {
+    if (typeof fetch !== "function") return;   /* keep plain label */
+    fetch("https://api.github.com/repos/ahmadrrrtx/commit-canvas")
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        if (!j || typeof j.stargazers_count !== "number") return;
+        var n = j.stargazers_count >= 1000
+          ? (j.stargazers_count / 1000).toFixed(1).replace(/\.0$/, "") + "k" : String(j.stargazers_count);
+        a.textContent = "★ " + n + " on GitHub";
+        a.setAttribute("aria-label", "Star commit-canvas on GitHub — " + j.stargazers_count + " stars");
+      })
+      .catch(function () { /* keep plain label */ });
   });
 
   /* ── footer year ──────────────────────────────────────────────── */

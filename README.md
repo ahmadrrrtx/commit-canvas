@@ -1,136 +1,169 @@
 <div align="center">
 
-# Commit Canvas
+<img src="favicon.svg" width="72" alt="Commit Canvas logo" />
 
-### Your code has a story. Show it.
+# COMMIT CANVAS
 
-Turn any git repository into a cinematic, shareable story — **chapters, a time machine, a developer fingerprint, a roast** — generated from real commit data.
+**Your code has a story. Show it.**
 
-One command. One self-contained HTML file. Zero cloud, zero accounts, zero dependencies.
+Turn any git repository into a cinematic, animated, shareable story —
+chapters, a time machine, themes, and a developer fingerprint.
+One command. One file. Zero cloud.
 
-[**→ Make yours on the web**](https://ahmadrrrtx.github.io/commit-canvas/) · [**→ See a real story (Flask, 5,600 commits)**](https://ahmadrrrtx.github.io/commit-canvas/demo/flask-story.html)
+[![Tests](https://github.com/ahmadrrrtx/commit-canvas/actions/workflows/test.yml/badge.svg)](https://github.com/ahmadrrrtx/commit-canvas/actions/workflows/test.yml)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8%2B-0B0C10?labelColor=2E3344&logo=python&logoColor=E2FF3A)](https://www.python.org)
+[![License: MIT](https://img.shields.io/badge/license-MIT-E2FF3A?labelColor=2E3344)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/ahmadrrrtx/commit-canvas?label=stars&logo=github&color=E2FF3A&labelColor=2E3344)](https://github.com/ahmadrrrtx/commit-canvas/stargazers)
+
+**[★ Star on GitHub](https://github.com/ahmadrrrtx/commit-canvas)** · **[Live demo →](https://ahmadrrrtx.github.io/commit-canvas/)** · **[Flask's story →](https://ahmadrrrtx.github.io/commit-canvas/demo/flask-story.html)**
 
 </div>
 
 ---
 
+![A Commit Canvas story — midnight edition](docs/screenshots/story-midnight.png)
+
+> *"I didn't know my Git history could look like this."*
+
+---
+
+## What is Commit Canvas?
+
+Commit Canvas reads a repository's entire git history and renders it as a **self-contained interactive story page** — a single HTML file with zero external requests:
+
+- **Story engine** — real narrative chapters: The Beginning, The Sprint, The Silence, The Comeback… derived from velocity, gaps and releases, never invented
+- **Time machine** — scrub or autoplay the project's whole life with milestone ticks, smart pacing and keyboard controls
+- **Project pulse** — the entire history as one signature heartbeat line
+- **Developer fingerprint** — building rhythm and archetype (Night Builder, Weekend Sprinter…) from real timestamps
+- **Themes** — 8 visual editions: Midnight, Neon, Paper, Terminal, Aurora, Blueprint, Mono, Sunset
+- **Export studio** — PNG share cards, animated GIF, WebM video, SVG, Markdown, JSON
+
+It works on **any** git repository — GitHub, GitLab, Bitbucket, Gitea, or a folder no server has ever seen.
+
+## Why?
+
+GitHub shows metrics. Gource shows animations. GitStock shows the last 100 commits. Commit Canvas focuses on the thing none of them do: **the story**. Read the full reasoning in *[Why Commit Canvas?](https://ahmadrrrtx.github.io/commit-canvas/journal/why-commit-canvas/)* and a factual comparison in *[How it's different](https://ahmadrrrtx.github.io/commit-canvas/compare/)*.
+
+## Demo
+
+- **[Landing page + live generator](https://ahmadrrrtx.github.io/commit-canvas/)** — paste any public GitHub URL
+- **[Flask's story](https://ahmadrrrtx.github.io/commit-canvas/demo/flask-story.html)** — 16 years, 5,597 commits, 859 contributors
+- **[Commit Canvas' own story](https://ahmadrrrtx.github.io/commit-canvas/demo/commit-canvas-story.html)** — the tool telling its own story
+
+## Screenshots
+
+| Time machine | Export studio |
+| --- | --- |
+| ![Time machine](docs/screenshots/time-machine.png) | ![Export studio](docs/screenshots/export-studio.png) |
+
+| Sunset edition | Paper edition | Mobile |
+| --- | --- | --- |
+| ![Sunset theme](docs/screenshots/story-sunset.png) | ![Paper theme](docs/screenshots/story-paper.png) | ![Mobile](docs/screenshots/mobile.png) |
+
+## Quick start
+
 ```bash
 git clone https://github.com/ahmadrrrtx/commit-canvas
 cd commit-canvas
-./run.sh /path/to/your-project     # → story.html
+./run.sh .                       # your current project
+./run.sh /path/to/any/repo       # any repository, any host, private included
+./run.sh . --theme sunset        # pick a visual edition
+./run.sh . --density cinematic   # compact · standard · cinematic
+./run.sh . --open                # open in browser after
+./run.sh . --json model.json     # also export the raw analysis model
 ```
 
-## What you get
-
-Open `story.html`. Scroll slowly.
-
-| Section | What it shows |
-|---|---|
-| **Hero** | The project's story shape — *The Marathon, The Sprint, The Climb, The Return* — classified from real velocity data |
-| **The Story** | Chapters grounded in evidence: *The Beginning · The Sprint · The Silence · The Grind · The Launch · The Evolution* |
-| **Time Machine** ⏱️ | Press play and watch the project assemble itself — commits, contributors, files, and code growth, month by month |
-| **The Rhythm** | Punch card (weekday × hour), full-lifetime calendar, streaks — the project's pulse |
-| **Fingerprint** | The dominant author's git behavior as an archetype: *The Night Builder, The Shipper, The Sprinter…* |
-| **The People** | Contributors ranked, badged, timed — first appearance to last |
-| **The Moment & Glow Up** | The single most significant event, and *first commit → today* |
-| **Roast My Git** 🔥 | Affectionately brutal observations, each one backed by a real number |
-| **Certificate & Share Cards** | A screenshot-ready certificate plus downloadable cards (1200×630 and 1080×1920), drawn locally on your machine |
-
-Every factual claim comes from your repository. Nothing is invented, nothing is random, nothing leaves your machine. The output file makes **zero network requests**.
-
-## Two ways in
-
-**1 · The local CLI (works with private repos, fully offline)**
+Or install it properly:
 
 ```bash
-./run.sh .                         # current directory
-./run.sh /path/to/repo             # any repository
-./run.sh . --title "My Project"    # custom title
-./run.sh . --open                  # open in browser after
-./run.sh . --max-commits 5000      # cap huge histories
-python -m cc . --json model.json   # also export the raw analysis model
+pip install commit-canvas
+commit-canvas /path/to/repo --theme neon
 ```
 
-**2 · The web version (zero install)**
+**Web version (zero install):** paste a public GitHub URL on [the website](https://ahmadrrrtx.github.io/commit-canvas/) — analysis runs in your browser via GitHub's public API; nothing is uploaded anywhere.
 
-Paste any public GitHub URL on [the landing page](https://ahmadrrrtx.github.io/commit-canvas/) — the analysis runs in your browser via the GitHub API, renders the full story, and can download the same self-contained `story.html`. Private repos: use the CLI.
-
-## Export studio
-
-Every story (CLI or web) ships with a built-in export studio — no external service, nothing leaves the page:
-
-- **Share cards** — Open Graph, terminal, certificate and quote-card PNGs, rendered locally to `<canvas>`
-- **Animated GIF** — a client-side real-time export of the time machine (browser only; there is no MP4 support — for offline video, screen-record the page or use the JSON export)
-- **Markdown summary** — drop the whole story into a `README` or post
-- **JSON** — the exact analysis model, for your own tooling
-
-## The website
-
-The project site ([ahmadrrrtx.github.io/commit-canvas](https://ahmadrrrtx.github.io/commit-canvas/)) is itself part of this repo: landing page with a live embedded Flask story, [features](https://ahmadrrrtx.github.io/commit-canvas/features/), [examples](https://ahmadrrrtx.github.io/commit-canvas/examples/), a [journal](https://ahmadrrrtx.github.io/commit-canvas/journal/), [how it works](https://ahmadrrrtx.github.io/commit-canvas/how-it-works/), [changelog](https://ahmadrrrtx.github.io/commit-canvas/changelog/), [privacy](https://ahmadrrrtx.github.io/commit-canvas/privacy/) and [terms](https://ahmadrrrtx.github.io/commit-canvas/terms/). Rebuild locally with `python tools/build.py` (`--check` verifies freshness in CI; `--assets` regenerates OG images).
-
-
-## How it works
+## Usage
 
 ```
-.git folder ──▶ one git log pass ──▶ deterministic analysis ──▶ story.html
-                   commits, merges, tags,       chapters · shape · rhythm
-                   authors, files, lines,       fingerprint · roast · moment
-                   languages, hours, days       months × snapshots (time machine)
+commit-canvas [repo_path] [options]
+
+  -o, --output PATH       output HTML path (default ./story.html)
+      --title TITLE       custom project title
+      --theme NAME        midnight · neon · paper · terminal · aurora · blueprint · mono · sunset
+      --density LEVEL     compact · standard · cinematic
+      --max-commits N     analyze only the N most recent commits
+      --json PATH         also write the raw analysis model as JSON
+      --open              open the result in your browser
 ```
 
-- **One subprocess.** The whole history — commits, parent graphs, decorations, per-file numstat, create/delete modes — is read in a single `git log --all --numstat --summary` pass using a `\x1f` field separator (commit messages containing `|` or unicode are safe). A 30,000-commit repository analyzes in about 2 seconds.
-- **Merge-aware.** Merge commits are kept and counted as part of the story, not thrown away.
-- **Real snapshots.** File and line evolution is replayed chronologically with authoritative create/delete tracking, so the time machine's "state of the codebase" is measured, not guessed.
-- **One renderer.** `canvas.html` is a dependency-free shell (inline CSS + JS + your data). The CLI injects the model into it; the web flow fetches the same shell in-browser. Same story, either path.
-- **AI-free by design.** The narrative engine is deterministic. Every "chapter" is a rule with a timestamp behind it.
+Themes and density can also be changed **inside** the generated story (◐ Style button, bottom-left) — the analysis is never re-run; presentation is a separate layer.
 
-## Build & development
+## Architecture
 
-`canvas.html` and `index.html` are **generated** — never edit them by hand:
-
-```bash
-python tools/build.py          # rebuild from web/ sources
-python tools/build.py --check  # verify committed outputs are fresh (runs in CI)
-python -m pytest tests/ -v     # engine + assembly + build-freshness tests
+```mermaid
+flowchart LR
+    A[Git repository] --> B[Single-pass parser<br/>one git log subprocess]
+    B --> C[Story engine<br/>deterministic, evidence-grounded]
+    C --> D[Story model<br/>JSON: chapters, months, events, fingerprint]
+    D --> E[Theme renderer<br/>8 editions, CSS variable layers]
+    E --> F[Self-contained HTML<br/>zero requests, works offline]
+    F --> G[Export studio<br/>PNG · GIF · WebM · SVG · MD · JSON]
 ```
 
-Sources live in `web/`: `app.js` (story renderer), `story.css` (design system), `landing.*` (landing page), `landing.js` (in-browser GitHub analyzer).
+**How it works, in one paragraph:** the analyzer makes exactly one `git log` subprocess call (NUL-separated fields, merge-safe, Unicode-safe), builds a story model in pure Python, and injects it into an HTML shell that inlines the renderer, the theme system, the GIF encoder and the export studio. The output file is fully standalone — open it from a USB stick in a decade and it will still work.
 
-## Design decisions
+**Time machine architecture:** playback runs on a single `requestAnimationFrame` loop; counters interpolate between months every frame while month-anchored content swaps only when the month actually changes. Playback slows near milestones so important moments get screen time. No framework, no virtual DOM, no per-frame reflow storms.
 
-- **Dark, editorial, restrained.** One accent color. System type. Data first, beauty second.
-- **Zero requests in artifacts.** Story files work offline, forever — no fonts, no CDNs, no tracking.
-- **Motion with meaning.** Count-ups, scroll reveals, a playable timeline — all disabled under `prefers-reduced-motion`.
-- **Accessible.** Semantic sections, labeled controls, keyboard-scrubbable timeline, sr-only chart summaries, color-independent facts.
+```mermaid
+flowchart LR
+    R[rAF frame] --> I[interpolate fractional month index]
+    I --> C[counters lerp<br/>every frame]
+    I --> M[month-anchored DOM swap<br/>only on month change]
+    I --> P[SVG pointer move<br/>attribute writes only]
+    M --> N[narrative chips<br/>+commits +people +lines]
+```
 
-## Why this over…?
+## Supported git data
 
-- **GitHub Insights** — bars and counts vs. chapters, silences, comebacks, and a fingerprint
-- **Gource / git-story** — renders a video; Commit Canvas renders a portable, interactive, *shareable* HTML artifact
-- **github-readme-stats** — aggregate profile counters vs. the story of one repository, with evidence
-- **"GitHub Wrapped" clones** — user-level API dashboards vs. repo-level, lifetime, deterministic narrative that also works offline on private code
+Commits (dates, authors, messages, hashes) · merge topology · tags/releases · per-file line additions/removals · file counts · languages (by extension) · directory activity. Everything is derived from the local `.git` directory — no network, no telemetry, no accounts.
+
+## Configuration
+
+Everything has working defaults; the most common knobs:
+
+| Option | Values | Effect |
+| --- | --- | --- |
+| `--theme` | 8 editions | Visual identity of the story |
+| `--density` | compact / standard / cinematic | Section depth and spacing |
+| `--title` | any string | Overrides the repo name |
+| `--max-commits` | N | Cap analysis for huge histories |
+
+## Examples
+
+- [Flask (16 years, massive team)](https://ahmadrrrtx.github.io/commit-canvas/demo/flask-story.html) — *The Movement*
+- [Commit Canvas itself](https://ahmadrrrtx.github.io/commit-canvas/demo/commit-canvas-story.html) — *The Comeback*
+- More on the [examples page](https://ahmadrrrtx.github.io/commit-canvas/examples/)
+
+## Roadmap
+
+- [x] v1.0 — story page, CLI
+- [x] v2.0 — one renderer, CLI + web, rebuild
+- [x] v2.1 — export studio, time machine v2, project website
+- [x] v3.0 — themes, pulse, archetypes, density, comparison research
+- [ ] v3.x — more themes, story presets, contributor-focused editions
 
 ## Contributing
 
-```bash
-git clone https://github.com/ahmadrrrtx/commit-canvas
-cd commit-canvas
-python -m pytest tests/ -v
-python tools/build.py
-```
+PRs welcome — see [CONTRIBUTING.md](CONTRIBUTING.md). The codebase is deliberately small and readable: `cc/analyzer.py` (analysis), `cc/story.py` (assembly), `web/app.js` (renderer), `web/story.css` (design system). [Report issues here](https://github.com/ahmadrrrtx/commit-canvas/issues).
 
-Small, focused PRs welcome — especially new chapter rules (with tests proving they fire on real patterns).
+## Security
+
+See [SECURITY.md](SECURITY.md) — short version: the CLI never makes network requests, untrusted commit metadata is escaped before embedding, and generated HTML is safe to open locally.
 
 ## License
 
-MIT — free to use, modify, share.
+[MIT](LICENSE) © Muhammad Ahmad
 
----
+## Creator
 
-<div align="center">
-
-*Built by [Muhammad Ahmad (RRRTX)](https://github.com/ahmadrrrtx) · Open Source · Zero cost · Zero auth · Pure git*
-
-**[Star on GitHub](https://github.com/ahmadrrrtx/commit-canvas)** · **[Live example](https://ahmadrrrtx.github.io/commit-canvas/demo/flask-story.html)** · **[Make yours](https://ahmadrrrtx.github.io/commit-canvas/)**
-
-</div>
+Built by **[Muhammad Ahmad](https://ahmadrrrtx.github.io/commit-canvas/creator/)** — [GitHub](https://github.com/ahmadrrrtx) · [LinkedIn](https://www.linkedin.com/in/ahmadrrrtx) · [DEV](https://dev.to/ahmad_rrrtx) · [Medium](https://medium.com/@ahmadrrrtx333) · [Hashnode](https://hashnode.com/@ahmadrrrtx) · [Indie Hackers](https://www.indiehackers.com/ahmad_rrrtx) · [daily.dev](https://daily.dev/ahmadrrtx)

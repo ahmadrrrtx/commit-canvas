@@ -1,0 +1,44 @@
+<div class="page">
+  <div class="page-hero">
+    <span class="kicker">Comparison</span>
+    <h1>How Commit Canvas<br>is <em style="color:var(--accent);font-style:normal">different</em>.</h1>
+    <p class="sub">There are good tools in this space — this page says plainly what each one is for, and where Commit Canvas fits. Facts only, verified against each tool's own documentation; where we couldn't verify a claim, the cell says so.</p>
+  </div>
+
+  <section class="pad">
+    <div class="card rv" style="overflow-x:auto">
+      <table class="cmp">
+        <caption class="sr-only">Feature comparison between Commit Canvas, GitHub Insights, Gource and GitStock</caption>
+        <thead>
+          <tr><th scope="col">Capability</th><th scope="col">Commit Canvas</th><th scope="col">GitHub Insights</th><th scope="col">Gource</th><th scope="col">GitStock</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Project story &amp; narrative arcs</th><td class="y">✓ chapters, moments, archetypes</td><td class="n">—</td><td class="n">—</td><td class="n">—</td></tr>
+          <tr><th scope="row">Time machine</th><td class="y">✓ scrub + play + milestones</td><td class="p">Limited (network graph)</td><td class="p">Playback only</td><td class="p">Replay timeline</td></tr>
+          <tr><th scope="row">Full project history</th><td class="y">✓ entire lifetime</td><td class="y">✓</td><td class="y">✓</td><td class="n">Latest 100 commits</td></tr>
+          <tr><th scope="row">Visual themes</th><td class="y">✓ 8 editions</td><td class="n">—</td><td class="p">Color options</td><td class="n">—</td></tr>
+          <tr><th scope="row">Shareable story</th><td class="y">✓ one portable HTML file</td><td class="p">Hosted URL only</td><td class="p">Video output</td><td class="y">✓ embeds + video</td></tr>
+          <tr><th scope="row">Self-contained HTML export</th><td class="y">✓ works offline, zero requests</td><td class="n">—</td><td class="n">—</td><td class="p">Chart embed (verify)</td></tr>
+          <tr><th scope="row">CLI</th><td class="y">✓ zero dependencies</td><td class="n">—</td><td class="y">✓</td><td class="n">—</td></tr>
+          <tr><th scope="row">Offline / private repos</th><td class="y">✓ local git, no network</td><td class="n">—</td><td class="y">✓</td><td class="n">—</td></tr>
+          <tr><th scope="row">Developer fingerprint</th><td class="y">✓ rhythm + archetype</td><td class="n">—</td><td class="n">—</td><td class="n">—</td></tr>
+          <tr><th scope="row">Video export</th><td class="p">WebM in browser; MP4 via local conversion</td><td class="n">—</td><td class="p">Video via ppm pipe + encoder</td><td class="y">✓ MP4</td></tr>
+          <tr><th scope="row">Account / API key needed</th><td class="y">✓ none</td><td class="p">GitHub account</td><td class="y">✓ none</td><td class="y">✓ none</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="color:var(--ink-3);font-family:var(--mono);font-size:11.5px;margin-top:14px">Sources: github.com/acaudwell/Gource · gitstock.org · docs.github.com — checked September 2026. "verify" = claim not independently confirmed.</p>
+  </section>
+
+  <section class="pad" style="border-top:1px solid var(--line)">
+    <div class="sec-head rv">
+      <span class="kicker">Honest reads</span>
+      <h2 class="sec-title">When to use something else.</h2>
+    </div>
+    <div class="grid-3">
+      <div class="card rv"><h3>Use GitHub Insights</h3><p>If you want the authoritative, always-current view of a hosted repository — traffic, pull requests, contributor lists — nothing beats the platform itself. Commit Canvas doesn't try to replace it.</p></div>
+      <div class="card rv"><h3>Use Gource</h3><p>If you want a hypnotic video of your file tree growing — Gource's spatial animation is genuinely beautiful and fifteen years mature. It's a video tool, not a story tool.</p></div>
+      <div class="card rv"><h3>Use GitStock</h3><p>If you want a ten-second look at the last 100 commits of a public repo as a candle chart, with a quick MP4. Different job, done well.</p></div>
+    </div>
+  </section>
+</div>

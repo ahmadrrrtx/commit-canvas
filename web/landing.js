@@ -6,6 +6,40 @@
       story with the same renderer the CLI file uses.
    3. Assembles a downloadable story.html from canvas.html + the data.
    ══════════════════════════════════════════════════════════════════ */
+/* ── choose your story: theme cards ─────────────────────────────── */
+var LP_THEMES = [
+  ["midnight", "Midnight", "#0B0C10", "#E2FF3A"],
+  ["neon", "Neon", "#05060A", "#3DFFB4"],
+  ["paper", "Paper", "#F6F2E9", "#9A6B0F"],
+  ["terminal", "Terminal", "#070D08", "#3EFF6E"],
+  ["aurora", "Aurora", "#0A0F1E", "#7DF9FF"],
+  ["blueprint", "Blueprint", "#081830", "#FFD166"],
+  ["mono", "Mono", "#FAFAFA", "#101010"],
+  ["sunset", "Sunset", "#160D14", "#FF9E64"],
+];
+function buildThemeRow(mount) {
+  var row = document.getElementById("lp-theme-row");
+  if (!row) return;
+  var cur = null;
+  try { cur = localStorage.getItem("cc-theme") || "midnight"; } catch (e) { cur = "midnight"; }
+  LP_THEMES.forEach(function (t) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "lp-theme" + (cur === t[0] ? " on" : "");
+    b.setAttribute("aria-label", "Theme: " + t[1]);
+    b.title = t[1];
+    b.innerHTML = '<i style="background:linear-gradient(120deg,' + t[2] + ' 55%,' + t[3] + ' 55%)"></i><span>' + t[1] + '</span>';
+    b.addEventListener("click", function () {
+      try { localStorage.setItem("cc-theme", t[0]); } catch (e) {}
+      row.querySelectorAll(".lp-theme").forEach(function (x) { x.classList.remove("on"); });
+      b.classList.add("on");
+      var root = document.querySelector(".cc-root");
+      if (root && window.__ccStyle) window.__ccStyle.applyTheme(t[0], root);
+    });
+    row.appendChild(b);
+  });
+}
+
 (function () {
   "use strict";
 
@@ -27,7 +61,10 @@
 
   if (window.__CC_DEMO__) {
     try {
-      window.CommitCanvas.render($("demo-mount"), window.__CC_DEMO__);
+      var _themeSel = null;
+      try { _themeSel = localStorage.getItem("cc-theme") || "midnight"; } catch (e) { _themeSel = "midnight"; }
+      buildThemeRow($("demo-mount"));
+      window.CommitCanvas.render($("demo-mount"), window.__CC_DEMO__, { theme: _themeSel });
       var dm = $("demo-meta");
       if (dm) dm.textContent = window.__CC_DEMO__.totals.commits.toLocaleString("en-US") + " commits · " + window.__CC_DEMO__.repo.age_label;
     } catch (e) { /* demo mount failure is non-fatal */ }
@@ -565,7 +602,9 @@
         var data = analyzeGithub(target, meta, commits, tags, releases);
         currentData = data;
         try {
-          window.CommitCanvas.render($("result-mount"), data);
+          var _t = null;
+          try { _t = localStorage.getItem("cc-theme"); } catch (e) {}
+          window.CommitCanvas.render($("result-mount"), data, { theme: _t || undefined });
         } catch (err) {
           throw new UserError("Something broke while drawing the story.", String(err && err.message || err));
         }

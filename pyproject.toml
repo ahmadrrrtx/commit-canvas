@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "commit-canvas"
+version = "3.0.0"
+description = "Turn any git repository into a cinematic, shareable story — chapters, a time machine, themes, and a developer fingerprint."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Muhammad Ahmad (RRRTX)" }]
+requires-python = ">=3.8"
+dependencies = []  # zero dependencies — stdlib + git only, by design
+keywords = ["git", "visualization", "storytelling", "developer-tools", "wrapped", "history"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Version Control :: Git",
+]
+
+[project.urls]
+Homepage = "https://ahmadrrrtx.github.io/commit-canvas/"
+Repository = "https://github.com/ahmadrrrtx/commit-canvas"
+Changelog = "https://ahmadrrrtx.github.io/commit-canvas/changelog/"
+
+[project.scripts]
+commit-canvas = "cc.__main__:main"
+
+[tool.setuptools]
+packages = ["cc"]
+
+[tool.setuptools.package-data]
+cc = ["canvas.html"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
