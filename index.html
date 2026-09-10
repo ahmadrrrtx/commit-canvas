@@ -5449,9 +5449,14 @@ function buildThemeRow(mount) {
 
   function analyzeGithub(target, meta, commits, tags, releases) {
     var list = commits.map(function (c) {
-      var a = c.commit.author;
+      var cm = c.commit || {};
+      var a = cm.author || {
+        name: (c.author && c.author.login) || "unknown",
+        date: (cm.committer && cm.committer.date) || (c.author && c.author.date),
+        message: ""
+      };
       return {
-        author: (c.author && c.author.login) ? c.author.login : a.name,
+        author: (c.author && c.author.login) ? c.author.login : (a.name || "unknown"),
         date: new Date(a.date),
         msg: (a.message || "").split("\n")[0],
         parents: (c.parents || []).length,
@@ -5550,7 +5555,7 @@ function buildThemeRow(mount) {
         branches: 0,
       },
       totals: totals,
-      shape: detectShape(monthList, n),
+      shape: detectShape(monthList, n, ageDays),
       months: monthList,
       chapters: buildChapters(monthList, list, releases, tags),
       clock: {
@@ -5615,8 +5620,8 @@ function buildThemeRow(mount) {
 
   function median(a) { if (!a.length) return 0; var s = a.slice().sort(function (x, y) { return x - y; }); var m = Math.floor(s.length / 2); return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; }
 
-  function detectShape(months, n) {
-    if (months.length <= 1 || n < 5 || (n < 60 && (new Date(list[list.length-1].date) - new Date(list[0].date)) / 86400000 < 90)) return { arc: "fresh", label: "Fresh Start", summary: n + " commits and counting — this story is just opening." };
+  function detectShape(months, n, ageDays) {
+    if (months.length <= 1 || n < 5 || (n < 60 && ageDays < 90)) return { arc: "fresh", label: "Fresh Start", summary: n + " commits and counting — this story is just opening." };
     var counts = months.map(function (m) { return m.commits; });
     var med = median(counts), half = Math.floor(counts.length / 2);
     var fv = counts.slice(0, half).reduce(function (a, b) { return a + b; }, 0) / Math.max(half, 1);
@@ -5947,6 +5952,7 @@ function buildThemeRow(mount) {
         loadingVisible(false);
         if (err instanceof UserError) showError(err.message, err.hint);
         else {
+          console.error("[commit-canvas] analysis failed:", err);
           var net = wrapNet(err);
           if (net && net instanceof UserError) showError(net.message, net.hint);
           else showError("Couldn't analyze that repository.", "Check the URL and try again — or use the local CLI, which works offline for any repo: ./run.sh /path/to/repo");
