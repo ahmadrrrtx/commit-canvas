@@ -3413,6 +3413,27 @@ window.__CC_DEMO__ = {"meta":{"v":2,"generated":"2026-09-01T12:53:12","source":"
     return out + "</svg>";
   }
 
+  /* Scroll a chapter into view within its OWN scroll container only.
+     scrollIntoView() also scrolls ancestor scrollports — when the story is
+     embedded in the homepage frame that yanks the outer page. So we scroll
+     the nearest scrollable ancestor manually instead. */
+  function scrollToChapter(target) {
+    if (!target) return;
+    var sp = target.parentElement, cont = null;
+    while (sp && sp !== document.documentElement) {
+      var cs = getComputedStyle(sp);
+      if (/(auto|scroll)/.test(cs.overflowY)) { cont = sp; break; }
+      sp = sp.parentElement;
+    }
+    var behavior = REDUCED ? "auto" : "smooth";
+    if (cont) {
+      var top = target.getBoundingClientRect().top - cont.getBoundingClientRect().top + cont.scrollTop;
+      cont.scrollTo({ top: Math.max(0, top - cont.clientHeight / 2 + target.offsetHeight / 2), behavior: behavior });
+    } else if (target.scrollIntoView) {
+      target.scrollIntoView({ behavior: behavior, block: "center" });
+    }
+  }
+
   function chapters(root, d) {
     var wrap = section(root, "story", "Chapter one to now", "The story, chapter by chapter",
       "Every chapter below is grounded in real git data — timestamps, tags, and commit counts. Nothing invented.");
@@ -3427,8 +3448,7 @@ window.__CC_DEMO__ = {"meta":{"v":2,"generated":"2026-09-01T12:53:12","source":"
       b.type = "button";
       b.innerHTML = "<b>" + String(i + 1).padStart(2, "0") + "</b> " + esc(ch.title.replace(/^The /, ""));
       b.addEventListener("click", function () {
-        var target = document.getElementById("ch-" + i);
-        if (target && target.scrollIntoView) target.scrollIntoView({ behavior: "smooth", block: "center" });
+        scrollToChapter(document.getElementById("ch-" + i));
       });
       nav.appendChild(b);
     });
