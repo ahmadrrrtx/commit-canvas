@@ -288,7 +288,7 @@
       }
 
       var facts = el("ul", "ch-facts");
-      (ch.facts || []).slice(0, 3).forEach(function (f) {
+      (ch.facts || []).slice(0, 4).forEach(function (f) {
         facts.appendChild(el("li", f.charAt(0) === "“" ? "q" : null, esc(f)));
       });
 
