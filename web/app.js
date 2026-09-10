@@ -205,7 +205,9 @@
   /* Scroll a chapter into view within its OWN scroll container only.
      scrollIntoView() also scrolls ancestor scrollports — when the story is
      embedded in the homepage frame that yanks the outer page. So we scroll
-     the nearest scrollable ancestor manually instead. */
+     the nearest scrollable ancestor manually instead.
+     - top-aligns the chapter (centering hides the heading of tall chapters)
+     - falls back to plain scrollTop where ScrollToOptions isn't supported */
   function scrollToChapter(target) {
     if (!target) return;
     var sp = target.parentElement, cont = null;
@@ -214,12 +216,15 @@
       if (/(auto|scroll)/.test(cs.overflowY)) { cont = sp; break; }
       sp = sp.parentElement;
     }
-    var behavior = REDUCED ? "auto" : "smooth";
+    var smooth = !REDUCED && "scrollBehavior" in document.documentElement.style;
     if (cont) {
-      var top = target.getBoundingClientRect().top - cont.getBoundingClientRect().top + cont.scrollTop;
-      cont.scrollTo({ top: Math.max(0, top - cont.clientHeight / 2 + target.offsetHeight / 2), behavior: behavior });
+      var top = target.getBoundingClientRect().top - cont.getBoundingClientRect().top + cont.scrollTop - 24;
+      top = Math.max(0, Math.min(top, cont.scrollHeight - cont.clientHeight));
+      if (smooth) { try { cont.scrollTo({ top: top, behavior: "smooth" }); return; } catch (e) {} }
+      cont.scrollTop = top;
     } else if (target.scrollIntoView) {
-      target.scrollIntoView({ behavior: behavior, block: "center" });
+      if (smooth) { try { target.scrollIntoView({ behavior: "smooth", block: "start" }); return; } catch (e) {} }
+      target.scrollIntoView(true);
     }
   }
 
@@ -232,11 +237,13 @@
     /* chapter navigation — compact, clickable, scroll-aware */
     var nav = el("nav", "ch-nav");
     nav.setAttribute("aria-label", "Chapter navigation");
+    var chipLockUntil = 0; /* ignore the scroll-spy briefly after an explicit chip click */
     chs.forEach(function (ch, i) {
       var b = el("button", "ch-nav-btn");
       b.type = "button";
       b.innerHTML = "<b>" + String(i + 1).padStart(2, "0") + "</b> " + esc(ch.title.replace(/^The /, ""));
       b.addEventListener("click", function () {
+        chipLockUntil = Date.now() + 900;
         nav.querySelectorAll(".ch-nav-btn").forEach(function (x, xi) { x.classList.toggle("on", xi === i); });
         scrollToChapter(document.getElementById("ch-" + i));
       });
@@ -297,6 +304,7 @@
     if ("IntersectionObserver" in window && chs.length > 1) {
       var navBtns = nav.querySelectorAll(".ch-nav-btn");
       var spy = new IntersectionObserver(function (es) {
+        if (Date.now() < chipLockUntil) return; /* an explicit chip click is settling */
         es.forEach(function (e) {
           if (!e.isIntersecting) return;
           var ix = +e.target.id.replace("ch-", "");
@@ -1932,7 +1940,9 @@
     opts = opts || {};
     container.innerHTML = "";
     container.classList.add("cc-root");
-    document.title = "The story of " + data.repo.name;
+    /* only own the tab title on a standalone story page — an embedded demo
+       (homepage frame) must not hijack the host page's title */
+    if (document.body.classList.contains("cc-story")) document.title = "The story of " + data.repo.name;
 
     /* presentation layer: theme + density (never touches the model) */
     var savedTheme = null, savedDensity = null;
@@ -2115,6 +2125,9 @@
     fab.addEventListener("click", function () { panel.hidden = !panel.hidden; });
     document.addEventListener("click", function (e) {
       if (!panel.hidden && !panel.contains(e.target) && e.target !== fab && !fab.contains(e.target)) panel.hidden = true;
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !panel.hidden) panel.hidden = true;
     });
     document.body.appendChild(fab);
     document.body.appendChild(panel);

@@ -257,6 +257,8 @@ body {
 .chapter {
   position: relative;
   margin-left: 68px;
+  /* keep chapter headings clear of the fixed story bar on anchor jumps */
+  scroll-margin-top: 84px;
   padding: var(--sp-8);
   background: var(--surface);
   border: 1px solid var(--line);
