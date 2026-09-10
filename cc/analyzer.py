@@ -685,24 +685,28 @@ def build_chapters(commits, months, tags, tag_by_commit, day_counts,
     gap = _largest_silence(months)
     if gap and gap["days"] >= 21:
         silence_facts = [f"No commits for {_human_gap(gap['days'])} — {gap['from']} to {gap['to']}"]
+        # observed silence, not explained silence: the history proves absence
+        # of commits, never absence of work — say exactly that and stop.
+        boundary = "The history records the absence — not the reason."
         after = gap["after_month"]
         if after and after["commits"] >= 5:
             silence_facts.append(
                 f"Then {after['label']} brought {after['commits']} commits")
             chapters.append({
                 "kind": "silence", "title": "The Silence",
-                "subtitle": f"{_human_gap(gap['days'])} of nothing",
+                "subtitle": f"{_human_gap(gap['days'])} with no commits",
                 "start": gap["from"], "end": gap["to"],
                 "facts": silence_facts + [
                     f"“{after['msg']}” — the commit that ended it",
+                    boundary,
                 ],
             })
         else:
             chapters.append({
                 "kind": "silence", "title": "The Silence",
-                "subtitle": f"{_human_gap(gap['days'])} of nothing",
+                "subtitle": f"{_human_gap(gap['days'])} with no commits",
                 "start": gap["from"], "end": gap["to"],
-                "facts": silence_facts,
+                "facts": silence_facts + [boundary],
             })
 
     # 4 — The Grind (longest run of consecutive active months)

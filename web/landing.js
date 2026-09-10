@@ -352,11 +352,12 @@ function buildThemeRow(mount) {
     }
     if (gap) {
       chapters.push({
-        kind: "silence", title: "The Silence", subtitle: gap.days + " days of nothing",
+        kind: "silence", title: "The Silence", subtitle: gap.days + " days with no commits",
         start: gap.key + "-28", end: gap.after.key + "-01",
         facts: ["No commits for " + gap.days + " days",
                 "Then " + gap.after.label + " brought " + gap.after.commits + " commits",
-                "\u201C" + gap.after.msg + "\u201D — the commit that ended it"],
+                "\u201C" + gap.after.msg + "\u201D — the commit that ended it",
+                "The history records the absence — not the reason."],
       });
     }
     if (releases.length) {
