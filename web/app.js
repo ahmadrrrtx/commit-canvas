@@ -237,6 +237,7 @@
       b.type = "button";
       b.innerHTML = "<b>" + String(i + 1).padStart(2, "0") + "</b> " + esc(ch.title.replace(/^The /, ""));
       b.addEventListener("click", function () {
+        nav.querySelectorAll(".ch-nav-btn").forEach(function (x, xi) { x.classList.toggle("on", xi === i); });
         scrollToChapter(document.getElementById("ch-" + i));
       });
       nav.appendChild(b);
